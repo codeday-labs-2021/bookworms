@@ -1,7 +1,7 @@
 Bookworms API
 =============
 
-API server for bookworms web app written in Go and hosted on Vercel.
+API server for bookworms web app written in Go and hosted on Vercel as serverless functions.
 
 ## Prerequisite
 
