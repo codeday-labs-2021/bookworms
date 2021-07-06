@@ -10,7 +10,7 @@ Bookworms is a CodeDay Labs project to create a web app to share your ideas of a
 
 Check [client](./client) and [server](./server) for how to install them.
 
-## Self-hosted
+## Self-hosting
 
 If you clone / fork this project and want to host it on your own, few configuration you need to do in advance.
 
