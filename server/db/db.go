@@ -9,23 +9,23 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var collection *mongo.Collection
-var ctx = context.TODO()
+var Ctx = context.TODO()
 
-func Init() {
+func DB() *mongo.Database {
 	clientOptions := options.Client().ApplyURI(os.Getenv("MONGODB_URI"))
 
-	client, err := mongo.Connect(ctx, clientOptions)
+	client, err := mongo.Connect(Ctx, clientOptions)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = client.Ping(ctx, nil)
+	//check for the connection
+	err = client.Ping(Ctx, nil)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	//	books := client.Database("bookworms").Collection("books").FindOne()
+	return client.Database("bookworms")
 }
