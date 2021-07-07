@@ -6,16 +6,20 @@ name: Deploy server to Vercel
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches:
+      - '*'
+      - '!gh-pages'
   pull_request:
-    branches: [ main ]
+    branches:
+      - '*'
+      - '!gh-pages'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  deploy:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -27,12 +31,25 @@ jobs:
           cd server
           go fmt ./...
           go vet ./...
-          cd -
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.16' # The Go version to download (if necessary) and use.
       - name: Test
         run: |
           cd server
           go test ./...
-          cd -
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'ref/heads/main' }}
+    needs:
+      - lint
+      - test
+    steps:
+      - uses: actions/checkout@v2
       - uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
