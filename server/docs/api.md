@@ -1,7 +1,7 @@
 API Design
 ==========
 
-- [GET /ping](#get--ping)
+- [GET /ping](#get-ping)
 
 
 ### GET /ping
