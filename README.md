@@ -3,8 +3,8 @@ Bookworms
 
 Bookworms is a CodeDay Labs project to create a web app to share your ideas of a book with others.
 
-[![Deploy client to github pages](https://github.com/jeromewu/bookworms/actions/workflows/client.yml/badge.svg?branch=main)](https://github.com/jeromewu/bookworms/actions/workflows/client.yml)
-[![Deploy server to Vercel](https://github.com/jeromewu/bookworms/actions/workflows/server.yml/badge.svg?branch=main)](https://github.com/jeromewu/bookworms/actions/workflows/server.yml)
+[![Deploy client to Github Pages](https://github.com/codeday-labs/bookworms/actions/workflows/client.yml/badge.svg?branch=main)](https://github.com/codeday-labs/bookworms/actions/workflows/client.yml)
+[![Deploy server to Vercel](https://github.com/codeday-labs/bookworms/actions/workflows/server.yml/badge.svg?branch=main)](https://github.com/codeday-labs/bookworms/actions/workflows/server.yml)
 
 ## Installation
 
