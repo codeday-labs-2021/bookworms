@@ -3,12 +3,18 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
-	"github.com/jeromewu/bookworms/server/db"
+	"github.com/codeday-labs/bookworms/server/db"
+	"github.com/codeday-labs/bookworms/server/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+type ReviewBody struct {
+	BookName string `json:"book_name"`
+}
 
 func filterReviews(filter interface{}) ([]*db.Review, error) {
 	// a slice to store decoded reviews
@@ -61,9 +67,13 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fmt.Println(reviews)
-
 		json.NewEncoder(w).Encode(reviews)
+	case "POST":
+		var request ReviewBody
+
+		utils.DecodeJSONBody(w, r, &request)
+
+		log.Println(request)
 
 	default:
 		fmt.Fprint(w, "Bad request: ", r.Method, r.URL)
