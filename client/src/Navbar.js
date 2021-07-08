@@ -1,6 +1,5 @@
 import logo from './logo192.png';
 import {Link} from 'react-router-dom';
-import Col from "react-bootstrap/Col";
 
 /**
  * The navigation bar
@@ -8,15 +7,11 @@ import Col from "react-bootstrap/Col";
  */
 function Navbar() {
     return (
-        <nav className = "navbar">
+        <nav className="navbar">
             <img src = {logo} height={45} width={45} alt="logo"></img>
             <Link to="/"> <h1> bookworms </h1> </Link>
-            <div className = "links">
-                <Link to ="/create" style = {{
-                    color: 'white',
-                    backgroundColor: '#dd9f33',
-                    borderRadius: '8px',
-                }}>Add Review</Link>
+            <div className="links">
+                <Link to ="/create"> <button>Add Review </button></Link>
             </div>
         </nav>
     );

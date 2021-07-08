@@ -20,7 +20,7 @@ function Create () {
     }
 
     return (
-        <div className ="create">
+        <div className="create">
             <h2> Add a New Book Review </h2>
 
             <Form>

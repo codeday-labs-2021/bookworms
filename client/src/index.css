@@ -55,7 +55,7 @@
   box-sizing: border-box;
   display: block;
 }
-.create button {
+.navbar button, .create button {
   background: #dd9f33;
   color: #fff;
   border: 0;
