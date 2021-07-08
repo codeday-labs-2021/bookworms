@@ -21,11 +21,15 @@ type ReviewBody struct {
 	Categories string `json:"categories"`
 }
 
+// singular collection name from mongodb collections conventions
+var ReviewsCollection = "review"
+
 func filterReviews(filter interface{}) ([]*db.Review, error) {
+
 	// a slice to store decoded reviews
 	var reviews []*db.Review
 
-	cur, err := db.DB().Collection("reviews").Find(db.Ctx, filter)
+	cur, err := db.DB().Collection(ReviewsCollection).Find(db.Ctx, filter)
 
 	if err != nil {
 		return reviews, nil
@@ -39,6 +43,7 @@ func filterReviews(filter interface{}) ([]*db.Review, error) {
 		if err != nil {
 			return reviews, nil
 		}
+
 		reviews = append(reviews, &r)
 	}
 
@@ -63,11 +68,14 @@ func getAll() ([]*db.Review, error) {
 }
 
 func createReview(review *db.Review) error {
-	_, err := db.DB().Collection("review").InsertOne(db.Ctx, review)
+	_, err := db.DB().Collection(ReviewsCollection).InsertOne(db.Ctx, review)
 	return err
 }
 
 func Reviews(w http.ResponseWriter, r *http.Request) {
+
+	log.Println(r.Method)
+
 	switch r.Method {
 	case "GET":
 		reviews, err := getAll()
@@ -77,7 +85,15 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		json.NewEncoder(w).Encode(reviews)
+		response, err := json.Marshal(reviews)
+
+		if err != nil {
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		w.Write(response)
 	case "POST":
 		var request ReviewBody
 
@@ -110,7 +126,7 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusCreated)
 		w.Write(response)
 
 	default:
