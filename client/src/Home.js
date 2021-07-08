@@ -1,5 +1,5 @@
-import {useState} from 'react';
-import ReviewList from './ReviewList';
+// import {useState} from 'react';
+// import ReviewList from './ReviewList';
 
 /**
  * Homepage
