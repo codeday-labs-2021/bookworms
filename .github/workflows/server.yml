@@ -17,6 +17,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: server
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   lint:
@@ -28,7 +32,6 @@ jobs:
           go-version: '^1.16' # The Go version to download (if necessary) and use.
       - name: Lint
         run: |
-          cd server
           go fmt ./...
           go vet ./...
   test:
@@ -40,7 +43,6 @@ jobs:
           go-version: '^1.16' # The Go version to download (if necessary) and use.
       - name: Test
         run: |
-          cd server
           go test ./...
   deploy:
     runs-on: ubuntu-latest
