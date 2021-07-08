@@ -68,7 +68,6 @@ func DecodeJSONBody(w http.ResponseWriter, r *http.Request, dst interface{}) err
 		case err.Error() == "http: request body too large":
 			msg := "Request body must not be larger than 1MB"
 			return &malformedRequest{status: http.StatusRequestEntityTooLarge, msg: msg}
-
 		default:
 			return err
 		}

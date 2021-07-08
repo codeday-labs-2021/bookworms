@@ -5,15 +5,20 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/codeday-labs/bookworms/server/db"
 	"github.com/codeday-labs/bookworms/server/utils"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type ReviewBody struct {
-	BookName string `json:"book_name"`
+	Names      string `json:"names"`
+	BookName   string `json:"book_name"`
+	BookReview string `json:"book_review"`
+	Categories string `json:"categories"`
 }
 
 func filterReviews(filter interface{}) ([]*db.Review, error) {
@@ -57,6 +62,11 @@ func getAll() ([]*db.Review, error) {
 	return filterReviews(filter)
 }
 
+func createReview(review *db.Review) error {
+	_, err := db.DB().Collection("review").InsertOne(db.Ctx, review)
+	return err
+}
+
 func Reviews(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
@@ -71,9 +81,29 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		var request ReviewBody
 
-		utils.DecodeJSONBody(w, r, &request)
+		err := utils.DecodeJSONBody(w, r, &request)
 
-		log.Println(request)
+		if err != nil {
+			utils.ErrorResponse(w, err.Error(), 401)
+		}
+
+		review := db.Review{
+			ID:             primitive.NewObjectID(),
+			CreatedAt:      time.Now(),
+			UpdatedAt:      time.Now(),
+			Names:          request.Names,
+			BookName:       request.BookName,
+			BookReview:     request.BookReview,
+			BookCategories: request.Categories,
+		}
+
+		err = createReview(&review)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		utils.SuccessResponse(w, 200, review)
 
 	default:
 		fmt.Fprint(w, "Bad request: ", r.Method, r.URL)
