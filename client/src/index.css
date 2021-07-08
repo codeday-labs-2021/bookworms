@@ -17,18 +17,15 @@
 .navbar h1 {
   color: #dd9f33;
 }
+
 .navbar .links {
   margin-left: auto;
 }
 .navbar a {
-  margin-left: 16px;
   text-decoration: none;
   padding: 6px;
-  color: #333;
 }
-.navbar a:hover {
-  color: #dd9f33;
-}
+
 .content {
   max-width: 600px;
   margin: 40px auto;
@@ -50,7 +47,7 @@
   color: #dd9f33;
   margin-bottom: 30px;
 }
-.create input, .create textarea, .create select {
+.create input, .create textarea {
   width: 100%;
   padding: 6px 10px;
   margin: 10px 0;
