@@ -103,7 +103,15 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		utils.SuccessResponse(w, 200, review)
+		response, err := json.Marshal(review)
+
+		if err != nil {
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(response)
 
 	default:
 		fmt.Fprint(w, "Bad request: ", r.Method, r.URL)

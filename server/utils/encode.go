@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strings"
 
@@ -36,8 +35,6 @@ func DecodeJSONBody(w http.ResponseWriter, r *http.Request, dst interface{}) err
 	dec.DisallowUnknownFields()
 
 	err := dec.Decode(&dst)
-
-	log.Println(err)
 
 	if err != nil {
 		var syntaxError *json.SyntaxError
