@@ -1,7 +1,8 @@
-import {useState} from 'react';
+// import {useState} from 'react';
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import {useHistory} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 /**
@@ -10,13 +11,22 @@ import "bootstrap/dist/css/bootstrap.min.css";
  */
 function Create () {
 
-    const [name, setName] = useState('');
-    const [bookName, setBookName] = useState('');
-    const [review, setReview] = useState('');
-    const [categories, setCategories] = useState('');
+    /* book review components */
+    // const [name, setName] = useState('');
+    // const [bookName, setBookName] = useState('');
+    // const [review, setReview] = useState('');
+    // const [categories, setCategories] = useState('');
+
+    /* other page related components */
+    // const [isPending, setIsPending] = useState(false);
+    const history = useHistory();
 
     function handleSubmit(e) {
         e.preventDefault();
+        // setIsPending(true);
+
+        // setIsPending(false);
+        history.push('/');
     }
 
     return (
@@ -54,7 +64,7 @@ function Create () {
 
             </Form>
 
-            <button> Submit </button>
+            <button onClick={handleSubmit}> Submit </button>
         </div>
         
     );
