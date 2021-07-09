@@ -6,28 +6,62 @@ name: Deploy client to Github Pages
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches:
+      - '*'
+      - '!gh-pages'
   pull_request:
-    branches: [ main ]
+    branches:
+      - '*'
+      - '!gh-pages'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: client
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build-and-deploy:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v2.3.1
-
-      #- name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
-      #  run: |
-      #    npm install
-      #    npm run build
-
-      - name: Deploy 🚀
+      - uses: actions/checkout@v2.3.1
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Lint
+        run: |
+          npm install
+          npm run lint
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.1
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Test
+        run: |
+          npm install
+          npm run test
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    needs:
+      - lint
+      - test
+    steps:
+      - uses: actions/checkout@v2.3.1
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: client # The folder the action should deploy.
+          folder: client/build # The folder the action should deploy.
