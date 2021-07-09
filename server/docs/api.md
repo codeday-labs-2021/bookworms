@@ -2,7 +2,8 @@ API Design
 ==========
 
 - [GET /ping](#get-ping)
-
+- [POST /api/reviews](#post-reviews)
+- [GET /api/reviews](#get-reviews)
 
 ### GET /ping
 
@@ -21,7 +22,6 @@ $ curl -H "Accept: application/json" -H "Content-Type: application/json" https:/
 ```
 
 
-- [GET /api/reviews](#get-reviews)
 
 
 ### GET /api/reviews
@@ -62,7 +62,6 @@ $ curl -H "Accept: application/json" -H "Content-Type: application/json" https:/
 ```
 
 
-- [POST /api/reviews](#post-review)
 
 
 ### POST /api/reviews

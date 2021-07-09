@@ -27,5 +27,7 @@ func DB() *mongo.Database {
 		log.Fatal(err)
 	}
 
+	//	defer client.Disconnect(Ctx)
+
 	return client.Database("bookworms")
 }

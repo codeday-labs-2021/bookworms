@@ -15,10 +15,10 @@ import (
 )
 
 type ReviewBody struct {
-	Names      string `json:"names"`
-	BookName   string `json:"book_name"`
-	BookReview string `json:"book_review"`
-	Categories string `json:"categories"`
+	Names      string   `json:"user_name"`
+	BookName   string   `json:"book_name"`
+	BookReview string   `json:"text"`
+	Categories []string `json:"categories"`
 }
 
 // singular collection name from mongodb collections conventions
@@ -74,7 +74,7 @@ func createReview(review *db.Review) error {
 
 func Reviews(w http.ResponseWriter, r *http.Request) {
 
-	log.Println(r.Method)
+	log.Println(r.URL.Query())
 
 	switch r.Method {
 	case "GET":
