@@ -17,7 +17,6 @@
 .navbar h1 {
   color: #dd9f33;
 }
-
 .navbar .links {
   margin-left: auto;
 }
@@ -25,11 +24,35 @@
   text-decoration: none;
   padding: 6px;
 }
-
 .content {
   max-width: 600px;
   margin: 40px auto;
   padding: 20px;
+}
+
+/* review previews / list */
+.review-preview {
+  padding: 10px 16px;
+  margin: 20px 0;
+  border-bottom: 1px solid #ebc686;
+}
+.review-preview:hover {
+  box-shadow: 1px 4px 5px #dd9f33;
+}
+.review-preview h1 {
+  font-size: 20px;
+  color: #dd9f33;
+}
+.review-preview h2 {
+  font-size:17px;
+  color: #90662e;
+  margin-bottom: 10px;
+}
+.review-preview .footer{
+  display:flex;
+}
+.review-preview .footer-right{
+  margin-left:auto;
 }
 
 /* create new blog form */
