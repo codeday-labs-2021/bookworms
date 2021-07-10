@@ -10,7 +10,7 @@ API Design
 **Example Request**
 
 ```
-$ curl -H "Accept: application/json" -H "Content-Type: application/json" https://bookworms-api.vercel.app/api/ping
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/ping
 ```
 
 **Example Response**
@@ -29,7 +29,7 @@ $ curl -H "Accept: application/json" -H "Content-Type: application/json" https:/
 **Example Request**
 
 ```
-$ curl -H "Accept: application/json" -H "Content-Type: application/json" https://bookworms-api.vercel.app/api/reviews
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews
 
 ```
 
@@ -65,7 +65,7 @@ $ curl -d '{
     "book_name":"Harry Potter",
     "user_name":"test_user",
     "categories":["Animals","Plantation"] 
-}' -H 'Content-Type: application/json' https://bookworms-api.vercel.app/api/reviews 
+}' -H 'Content-Type: application/json' -x POST https://bookworms-api.vercel.app/api/reviews 
 
 ```
 

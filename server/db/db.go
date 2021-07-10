@@ -17,7 +17,7 @@ func DB() *mongo.Database {
 	client, err := mongo.Connect(Ctx, clientOptions)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println("Db failed to connect")
 	}
 
 	//check for the connection

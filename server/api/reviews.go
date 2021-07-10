@@ -32,7 +32,7 @@ func filterReviews(filter interface{}) ([]*db.Review, error) {
 	cur, err := db.DB().Collection(ReviewsCollection).Find(db.Ctx, filter)
 
 	if err != nil {
-		return reviews, nil
+		return reviews, err
 	}
 
 	// Iterate over a returned cursor and decode each at a time
@@ -79,18 +79,23 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 		reviews, err := getAll()
 
 		if err != nil && err != mongo.ErrNoDocuments {
-			fmt.Println("error here")
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]string{"message": "Something went wrong!"})
 			return
 		}
 
 		response, err := json.Marshal(reviews)
 
 		if err != nil {
+			utils.RespondWithError(w, "Something went wrong!", http.StatusInternalServerError)
 			return
 		}
 
+		db.DB().Client().Disconnect(db.Ctx)
+
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusCreated)
+		w.WriteHeader(http.StatusOK)
 		w.Write(response)
 	case "POST":
 		var request ReviewBody
@@ -98,7 +103,7 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 		err := utils.DecodeJSONBody(w, r, &request)
 
 		if err != nil {
-			utils.ErrorResponse(w, err.Error(), 401)
+			utils.RespondWithError(w, err.Error(), 400)
 		}
 
 		// validate request and Handle errors
@@ -130,6 +135,8 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return
 		}
+
+		db.DB().Client().Disconnect(db.Ctx)
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)

@@ -20,7 +20,7 @@ type successResp struct {
 }
 
 // Reusable err response function
-func ErrorResponse(w http.ResponseWriter, message string, status int) {
+func RespondWithError(w http.ResponseWriter, message string, status int) {
 	response := errorResp{
 		message:   message,
 		timeStamp: time.Now(),
