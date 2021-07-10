@@ -15,9 +15,9 @@ import (
 )
 
 type ReviewBody struct {
-	Names      string   `json:"user_name"`
+	UserName   string   `json:"user_name"`
 	BookName   string   `json:"book_name"`
-	BookReview string   `json:"text"`
+	Text       string   `json:"text"`
 	Categories []string `json:"categories"`
 }
 
@@ -62,7 +62,7 @@ func filterReviews(filter interface{}) ([]*db.Review, error) {
 }
 
 func getAll() ([]*db.Review, error) {
-	// Passing bson.D matteches all documents in a collection
+	// Passing bson.D{{}} matches all documents in a collection
 	filter := bson.D{{}}
 	return filterReviews(filter)
 }
@@ -73,8 +73,6 @@ func createReview(review *db.Review) error {
 }
 
 func Reviews(w http.ResponseWriter, r *http.Request) {
-
-	log.Println(r.URL.Query())
 
 	switch r.Method {
 	case "GET":
@@ -103,14 +101,22 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 			utils.ErrorResponse(w, err.Error(), 401)
 		}
 
+		// validate request and Handle errors
+		if len(request.UserName) == 0 || len(request.BookName) == 0 || len(request.Text) == 0 || len(request.Categories) == 0 {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]string{"message": "All fields are required"})
+			return
+		}
+
 		review := db.Review{
-			ID:             primitive.NewObjectID(),
-			CreatedAt:      time.Now(),
-			UpdatedAt:      time.Now(),
-			Names:          request.Names,
-			BookName:       request.BookName,
-			BookReview:     request.BookReview,
-			BookCategories: request.Categories,
+			ID:         primitive.NewObjectID(),
+			CreatedAt:  time.Now(),
+			UpdatedAt:  time.Now(),
+			UserName:   request.UserName,
+			BookName:   request.BookName,
+			Text:       request.Text,
+			Categories: request.Categories,
 		}
 
 		err = createReview(&review)
@@ -130,6 +136,7 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 		w.Write(response)
 
 	default:
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprint(w, "Bad request: ", r.Method, r.URL)
 	}
 

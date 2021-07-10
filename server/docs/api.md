@@ -2,8 +2,8 @@ API Design
 ==========
 
 - [GET /ping](#get-ping)
-- [POST /api/reviews](#post-reviews)
-- [GET /api/reviews](#get-reviews)
+- [POST /api/reviews](#post-api-reviews)
+- [GET /api/reviews](#get-api-reviews)
 
 ### GET /ping
 
@@ -41,7 +41,7 @@ $ curl -H "Accept: application/json" -H "Content-Type: application/json" https:/
 
 [
  {
-  "_id": "000000000000000000000000",
+  "id": "000000000000000000000000",
   "names": "",
   "book_name": "Bible",
   "book_review": "This is an amazing book everybody can have",
@@ -50,7 +50,7 @@ $ curl -H "Accept: application/json" -H "Content-Type: application/json" https:/
   "updated_at": "0001-01-01T00:00:00Z"
   },
  {
-  "_id": "60e6e312659b4cfc5bed43af",
+  "id": "60e6e312659b4cfc5bed43af",
   "names": "John doe",
   "book_name": "Bible",
   "book_review": "This is an amazing book everybody can have",
@@ -84,7 +84,7 @@ $ curl -d '{
 201 OK
 
 {
-    "_id": "60e70c87220511241fcdda39",
+    "id": "60e70c87220511241fcdda39",
     "names": "John doe",
     "book_name": "Bible",
     "book_review": "This is an amazing book everybody can have",
