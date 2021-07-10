@@ -41,28 +41,19 @@ $ curl -H "Accept: application/json" -H "Content-Type: application/json" https:/
 
 [
  {
-  "id": "000000000000000000000000",
-  "names": "",
-  "book_name": "Bible",
-  "book_review": "This is an amazing book everybody can have",
-  "book_categories": "religious",
-  "created_at": "0001-01-01T00:00:00Z",
-  "updated_at": "0001-01-01T00:00:00Z"
-  },
- {
-  "id": "60e6e312659b4cfc5bed43af",
-  "names": "John doe",
-  "book_name": "Bible",
-  "book_review": "This is an amazing book everybody can have",
-  "book_categories": "religious",
-  "created_at": "2021-07-08T11:35:46.692Z",
-  "updated_at": "2021-07-08T11:35:46.692Z"
+    "id": "60e99b85759604b8965e7f35",
+    "user_name": "test_user",
+    "book_name": "Harry Potter",
+    "text": "I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
+    "categories": [
+      "Animals",
+      "Plantation"
+    ],
+    "created_at": "2021-07-10T13:07:17.242Z",
+    "updated_at": "2021-07-10T13:07:17.242Z"
  }
 ]
 ```
-
-
-
 
 ### POST /api/reviews
 
@@ -70,10 +61,10 @@ $ curl -H "Accept: application/json" -H "Content-Type: application/json" https:/
 
 ```
 $ curl -d '{
-    "names":"John doe",
-    "book_name":"Bible",
-    "book_review":"This is an amazing book everybody can have",
-    "categories":"religious"
+    "text":"I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
+    "book_name":"Harry Potter",
+    "user_name":"test_user",
+    "categories":["Animals","Plantation"] 
 }' -H 'Content-Type: application/json' https://bookworms-api.vercel.app/api/reviews 
 
 ```
@@ -84,12 +75,15 @@ $ curl -d '{
 201 OK
 
 {
-    "id": "60e70c87220511241fcdda39",
-    "names": "John doe",
-    "book_name": "Bible",
-    "book_review": "This is an amazing book everybody can have",
-    "book_categories": "religious",
-    "created_at": "2021-07-08T16:32:39.0067414+02:00",
-    "updated_at": "2021-07-08T16:32:39.0067416+02:00"
+ "id": "60e99b85759604b8965e7f35",
+ "user_name": "test_user",
+ "book_name": "Harry Potter",
+ "text": "I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
+ "categories": [
+        "Animals",
+        "Plantation"
+ ],
+ "created_at": "2021-07-10T15:07:17.2424397+02:00",
+ "updated_at": "2021-07-10T15:07:17.2424413+02:00"
 }
 ```
