@@ -10,7 +10,7 @@ import (
 
 var Ctx = context.TODO()
 
-func DB() *mongo.Database {
+func DB() (*mongo.Database, error) {
 	clientOptions := options.Client().ApplyURI(os.Getenv("MONGODB_URI"))
 
 	client, err := mongo.Connect(Ctx, clientOptions)
@@ -19,9 +19,9 @@ func DB() *mongo.Database {
 	err = client.Ping(Ctx, nil)
 
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
 	//	defer client.Disconnect(Ctx)
-	return client.Database("bookworms")
+	return client.Database("bookworms"), nil
 }

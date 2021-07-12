@@ -8,7 +8,6 @@ import (
 	"github.com/codeday-labs/bookworms/server/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type ReviewBody struct {
@@ -26,10 +25,16 @@ func filterReviews(filter interface{}) ([]*db.Review, error) {
 	// a slice to store decoded reviews
 	var reviews []*db.Review
 
-	cur, err := db.DB().Collection(ReviewsCollection).Find(db.Ctx, filter)
+	DB, err := db.DB()
+
+	if err != nil {
+		return nil, err
+	}
+
+	cur, err := DB.Collection(ReviewsCollection).Find(db.Ctx, filter)
 
 	// close db connection
-	defer db.DB().Client().Disconnect(db.Ctx)
+	defer DB.Client().Disconnect(db.Ctx)
 
 	// once once done iterating the cursor close
 	defer cur.Close(db.Ctx)
@@ -54,10 +59,6 @@ func filterReviews(filter interface{}) ([]*db.Review, error) {
 		return reviews, err
 	}
 
-	if len(reviews) == 0 {
-		return reviews, mongo.ErrNoDocuments
-	}
-
 	return reviews, nil
 }
 
@@ -68,16 +69,26 @@ func getAll() ([]*db.Review, error) {
 }
 
 func createReview(review *db.Review) error {
-	_, err := db.DB().Collection(ReviewsCollection).InsertOne(db.Ctx, review)
-	defer db.DB().Client().Disconnect(db.Ctx)
-	return err
+	DB, err := db.DB()
+
+	if err != nil {
+		return err
+	}
+
+	DB.Collection(ReviewsCollection).InsertOne(db.Ctx, review)
+	defer DB.Client().Disconnect(db.Ctx)
+	return nil
 }
 
 func Reviews(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		reviews, _ := getAll()
+		reviews, err := getAll()
+
+		if err != nil {
+			utils.RespondWithError(w, "Failed to get reviews", http.StatusInternalServerError)
+		}
 
 		utils.RespondWithSuccess(w, http.StatusOK, reviews)
 
