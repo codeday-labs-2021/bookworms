@@ -88,6 +88,7 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			utils.RespondWithError(w, "Failed to get reviews", http.StatusInternalServerError)
+			return
 		}
 
 		utils.RespondWithSuccess(w, http.StatusOK, reviews)
