@@ -1,9 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
 	"time"
 
@@ -22,7 +19,7 @@ type ReviewBody struct {
 }
 
 // singular collection name from mongodb collections conventions
-var ReviewsCollection = "review"
+const ReviewsCollection = "review"
 
 func filterReviews(filter interface{}) ([]*db.Review, error) {
 
@@ -79,38 +76,26 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 		reviews, err := getAll()
 
 		if err != nil && err != mongo.ErrNoDocuments {
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(map[string]string{"message": "Something went wrong!"})
-			return
-		}
-
-		response, err := json.Marshal(reviews)
-
-		if err != nil {
-			utils.RespondWithError(w, "Something went wrong!", http.StatusInternalServerError)
+			utils.RespondWithError(w, "Something went wrong!", http.StatusBadRequest)
 			return
 		}
 
 		db.DB().Client().Disconnect(db.Ctx)
 
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		w.Write(response)
+		utils.SuccessResponse(w, http.StatusOK, reviews)
+
 	case "POST":
 		var request ReviewBody
 
 		err := utils.DecodeJSONBody(w, r, &request)
 
 		if err != nil {
-			utils.RespondWithError(w, err.Error(), 400)
+			utils.RespondWithError(w, err.Error(), http.StatusBadRequest)
 		}
 
 		// validate request and Handle errors
 		if len(request.UserName) == 0 || len(request.BookName) == 0 || len(request.Text) == 0 || len(request.Categories) == 0 {
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(map[string]string{"message": "All fields are required"})
+			utils.RespondWithError(w, "All fields are required", http.StatusBadRequest)
 			return
 		}
 
@@ -127,24 +112,15 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 		err = createReview(&review)
 
 		if err != nil {
-			log.Fatal(err)
-		}
-
-		response, err := json.Marshal(review)
-
-		if err != nil {
-			return
+			utils.RespondWithError(w, "Failed to create review", http.StatusInternalServerError)
 		}
 
 		db.DB().Client().Disconnect(db.Ctx)
 
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusCreated)
-		w.Write(response)
+		utils.SuccessResponse(w, http.StatusCreated, review)
 
 	default:
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprint(w, "Bad request: ", r.Method, r.URL)
+		utils.RespondWithError(w, "Route not found!", http.StatusBadRequest)
 	}
 
 }

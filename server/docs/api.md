@@ -39,20 +39,23 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/review
 200 OK
 
 
-[
- {
-    "id": "60e99b85759604b8965e7f35",
-    "user_name": "test_user",
-    "book_name": "Harry Potter",
-    "text": "I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
-    "categories": [
-      "Animals",
-      "Plantation"
-    ],
-    "created_at": "2021-07-10T13:07:17.242Z",
-    "updated_at": "2021-07-10T13:07:17.242Z"
- }
-]
+{
+    "success": true,
+    "data": [
+        {
+            "id": "60ebe58329dc4addabf50b2c",
+            "user_name": "test_user",
+            "book_name": "Harry Potter",
+            "text": "I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
+            "categories": [
+                "Animals",
+                "Plantation"
+            ],
+            "created_at": "2021-07-12T06:47:31.067Z",
+            "updated_at": "2021-07-12T06:47:31.067Z"
+        }
+    ]
+}
 ```
 
 ### POST /api/reviews
@@ -75,15 +78,18 @@ $ curl -d '{
 201 OK
 
 {
- "id": "60e99b85759604b8965e7f35",
- "user_name": "test_user",
- "book_name": "Harry Potter",
- "text": "I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
- "categories": [
-        "Animals",
-        "Plantation"
- ],
- "created_at": "2021-07-10T15:07:17.2424397+02:00",
- "updated_at": "2021-07-10T15:07:17.2424413+02:00"
+    "success": true,
+    "data": {
+        "id": "60ebe58329dc4addabf50b2c",
+        "user_name": "test_user",
+        "book_name": "Harry Potter",
+        "text": "I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
+        "categories": [
+            "Animals",
+            "Plantation"
+        ],
+        "created_at": "2021-07-12T08:47:31.0672556+02:00",
+        "updated_at": "2021-07-12T08:47:31.0672571+02:00"
+    }
 }
 ```
