@@ -38,14 +38,14 @@ func filterReviews(filter interface{}) ([]*db.Review, error) {
 		var r db.Review
 		err := cur.Decode(&r)
 		if err != nil {
-			return reviews, nil
+			return reviews, err
 		}
 
 		reviews = append(reviews, &r)
 	}
 
 	if err := cur.Err(); err != nil {
-		return reviews, nil
+		return reviews, err
 	}
 
 	// once once done iterating the cursor close
@@ -122,5 +122,4 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 	default:
 		utils.RespondWithError(w, "Route not found!", http.StatusBadRequest)
 	}
-
 }
