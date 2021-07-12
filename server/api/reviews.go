@@ -28,6 +28,12 @@ func filterReviews(filter interface{}) ([]*db.Review, error) {
 
 	cur, err := db.DB().Collection(ReviewsCollection).Find(db.Ctx, filter)
 
+	// close db connection
+	defer db.DB().Client().Disconnect(db.Ctx)
+
+	// once once done iterating the cursor close
+	defer cur.Close(db.Ctx)
+
 	if err != nil {
 		return reviews, err
 	}
@@ -48,9 +54,6 @@ func filterReviews(filter interface{}) ([]*db.Review, error) {
 		return reviews, err
 	}
 
-	// once once done iterating the cursor close
-	cur.Close(db.Ctx)
-
 	if len(reviews) == 0 {
 		return reviews, mongo.ErrNoDocuments
 	}
@@ -66,6 +69,7 @@ func getAll() ([]*db.Review, error) {
 
 func createReview(review *db.Review) error {
 	_, err := db.DB().Collection(ReviewsCollection).InsertOne(db.Ctx, review)
+	defer db.DB().Client().Disconnect(db.Ctx)
 	return err
 }
 
@@ -73,14 +77,7 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		reviews, err := getAll()
-
-		if err != nil && err != mongo.ErrNoDocuments {
-			utils.RespondWithError(w, "Something went wrong!", http.StatusBadRequest)
-			return
-		}
-
-		db.DB().Client().Disconnect(db.Ctx)
+		reviews, _ := getAll()
 
 		utils.SuccessResponse(w, http.StatusOK, reviews)
 
@@ -91,6 +88,7 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			utils.RespondWithError(w, err.Error(), http.StatusBadRequest)
+			return
 		}
 
 		// validate request and Handle errors
@@ -113,9 +111,8 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			utils.RespondWithError(w, "Failed to create review", http.StatusInternalServerError)
+			return
 		}
-
-		db.DB().Client().Disconnect(db.Ctx)
 
 		utils.SuccessResponse(w, http.StatusCreated, review)
 

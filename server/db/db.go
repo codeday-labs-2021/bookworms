@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"log"
 	"os"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -20,10 +19,9 @@ func DB() *mongo.Database {
 	err = client.Ping(Ctx, nil)
 
 	if err != nil {
-		log.Println("Db can't be pinged")
+		return nil
 	}
 
 	//	defer client.Disconnect(Ctx)
-
 	return client.Database("bookworms")
 }
