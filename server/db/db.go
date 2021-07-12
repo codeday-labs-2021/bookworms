@@ -16,15 +16,11 @@ func DB() *mongo.Database {
 
 	client, err := mongo.Connect(Ctx, clientOptions)
 
-	if err != nil {
-		log.Println("Db failed to connect")
-	}
-
 	//check for the connection
 	err = client.Ping(Ctx, nil)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println("Db can't be pinged")
 	}
 
 	//	defer client.Disconnect(Ctx)
