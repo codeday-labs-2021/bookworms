@@ -2,8 +2,8 @@ API Design
 ==========
 
 - [GET /ping](#get-ping)
-- [POST /api/reviews](#post-api-reviews)
-- [GET /api/reviews](#get-api-reviews)
+- [POST /api/reviews](#post-apireviews)
+- [GET /api/reviews](#get-apireviews)
 
 ### GET /ping
 
