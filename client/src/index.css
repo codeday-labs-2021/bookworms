@@ -26,8 +26,7 @@
 }
 .content {
   max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
+  margin: 20px auto;
 }
 
 /* review previews / list */
@@ -48,11 +47,11 @@
   color: #90662e;
   margin-bottom: 10px;
 }
-.review-preview .footer{
+.review-preview .footer, .home .top{
   display:flex;
 }
-.review-preview .footer-right{
-  margin-left:auto;
+.review-preview .footer-right, .home .top-right{
+  margin-left: auto;
 }
 
 /* create new blog form */
@@ -85,4 +84,22 @@
   padding: 8px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+/* search bar */
+.search .searchInputs {
+  margin-top: 105px;
+  display: flex;
+}
+.search input {
+  background-color: white;
+  border: 0;
+  /* border-radius:8px; */
+  font-size: 18px;
+  padding: 15px;
+  height: 30px;
+  width: 205px;
+}
+.search input:focus {
+  outline: none;
 }
