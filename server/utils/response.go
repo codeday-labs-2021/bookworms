@@ -29,7 +29,7 @@ func RespondWithError(w http.ResponseWriter, message string, status int) {
 }
 
 // Reusable success response function
-func SuccessResponse(w http.ResponseWriter, status int, data interface{}) {
+func RespondWithSuccess(w http.ResponseWriter, status int, data interface{}) {
 	response := successResp{
 		Success: true,
 		Data:    data,

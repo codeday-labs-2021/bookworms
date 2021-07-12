@@ -79,7 +79,7 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		reviews, _ := getAll()
 
-		utils.SuccessResponse(w, http.StatusOK, reviews)
+		utils.RespondWithSuccess(w, http.StatusOK, reviews)
 
 	case "POST":
 		var request ReviewBody
@@ -114,7 +114,7 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		utils.SuccessResponse(w, http.StatusCreated, review)
+		utils.RespondWithSuccess(w, http.StatusCreated, review)
 
 	default:
 		utils.RespondWithError(w, "Route not found!", http.StatusBadRequest)
