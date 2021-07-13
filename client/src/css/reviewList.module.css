@@ -9,12 +9,12 @@
     box-shadow: 1px 4px 5px #dd9f33;
 }
 
-.h1 {
+.title {
     font-size: 20px;
     color: #dd9f33;
 }
 
-.h2 {
+.author {
     font-size:17px;
     color: #90662e;
     margin-bottom: 10px;
