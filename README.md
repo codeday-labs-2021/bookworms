@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="#">
+    <img alt="bookworms" width="128px" height="128px" src="https://github.com/codeday-labs/bookworms/raw/main/docs/images/logo.png">
+  </a>
+</p>
+
 Bookworms
 =========
 
