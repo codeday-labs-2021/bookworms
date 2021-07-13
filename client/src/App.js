@@ -1,7 +1,7 @@
 import Navbar from './Navbar';
 import Home from './Home';
 import Create from './Create';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 /**
  * The root of the app
@@ -10,7 +10,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter basename="/bookworms">
       <div className="App">
         <Navbar />
         <div className="content">
@@ -24,7 +24,7 @@ function App() {
           </Switch>
         </div>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 

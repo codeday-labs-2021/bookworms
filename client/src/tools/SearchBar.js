@@ -3,7 +3,7 @@ import {useState} from 'react';
 
 function SearchBar () {
 
-    const [filteredData, setFilteredData] = useState([]);
+    const [setFilteredData] = useState([]);
     const [wordEntered, setWordEntered] = useState("");  
 
     const handleSearch = (event) => {
@@ -17,10 +17,10 @@ function SearchBar () {
         }
     }
     
-    const clearInput = () => {
-        setFilteredData([]);
-        setWordEntered("");
-    };
+    // const clearInput = () => {
+    //     setFilteredData([]);
+    //     setWordEntered("");
+    // };
     
 
     return (

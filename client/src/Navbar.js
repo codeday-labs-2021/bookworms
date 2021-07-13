@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
  * The navigation bar
  * 
  */
+
 function Navbar() {
     return (
         <nav className="navbar">
