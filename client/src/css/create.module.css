@@ -26,7 +26,7 @@
     display: block;
 }
 
-.submitButton {
+.submitButton, .submitButton:hover, .submitButton:active, .submitButton:focus {
     background: #dd9f33;
     color: #fff;
     border: 0;
@@ -34,4 +34,3 @@
     border-radius: 8px;
     cursor: pointer;
 }
-  
