@@ -1,4 +1,4 @@
-package handler
+package reviews
 
 import (
 	"net/http"
@@ -80,7 +80,7 @@ func createReview(review *db.Review) error {
 	return nil
 }
 
-func Reviews(w http.ResponseWriter, r *http.Request) {
+func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
