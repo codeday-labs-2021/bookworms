@@ -3,7 +3,7 @@ import {useState} from 'react';
 
 function SearchBar () {
 
-    const [setFilteredData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
     const [wordEntered, setWordEntered] = useState("");  
 
     const handleSearch = (event) => {
@@ -27,11 +27,12 @@ function SearchBar () {
         <div className="search">
             <input 
                 type="text" 
+                className="searchTerm"
                 placeholder="Enter a Book Name..."
                 value={wordEntered}
                 onChange={handleSearch}
                 />
-            <SearchIcon />
+            <SearchIcon className="searchButton"/>
         </div>
     );
 }

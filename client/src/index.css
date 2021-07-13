@@ -13,6 +13,7 @@
   max-width: 600px;
   margin: 0 auto;
   border-bottom: 1px solid #f2f2f2;
+  /* background-color: #f9e9d4; */
 }
 .navbar h1 {
   color: #dd9f33;
@@ -29,29 +30,8 @@
   margin: 20px auto;
 }
 
-/* review previews / list */
-.review-preview {
-  padding: 10px 16px;
-  margin: 20px 0;
-  border-bottom: 1px solid #ebc686;
-}
-.review-preview:hover {
-  box-shadow: 1px 4px 5px #dd9f33;
-}
-.review-preview h1 {
-  font-size: 20px;
-  color: #dd9f33;
-}
-.review-preview h2 {
-  font-size:17px;
-  color: #90662e;
-  margin-bottom: 10px;
-}
-.review-preview .footer, .home .top{
-  display:flex;
-}
-.review-preview .footer-right, .home .top-right{
-  margin-left: auto;
+.top {
+  /* background-color: #f9e9d4; */
 }
 
 /* create new blog form */
@@ -87,14 +67,33 @@
 }
 
 /* search bar */
-.search .searchInputs {
-  margin-top: 105px;
+.search {
+  width: 100%;
   display: flex;
+}
+.search .searchTerm{
+  width: 100%;
+  border: 1px solid #afb2b3;
+  border-right: none;
+  /* padding: 5px; */
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #afb2b3;
+}
+.search .searchButton{
+  width: 5.2%;
+  height: 10%;
+  text-align: center;
+  color: #000;
+  border: 1px solid #afb2b3;
+  background: white;
+  border-radius: 0 5px 5px 0;
+  border-left: none;
+  cursor: pointer;
 }
 .search input {
   background-color: white;
   border: 0;
-  /* border-radius:8px; */
   font-size: 18px;
   padding: 15px;
   height: 30px;

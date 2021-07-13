@@ -16,8 +16,8 @@ function ReviewList ({reviews}) {
         <div className="review-list">
             {reviews.map((r) => (
                 <div className={styles.normal} key={r.id}>
-                    <h1 className={styles.h1}> {r.bookname} </h1>
-                    <h2 classNmae={styles.h2}> Published by {r.name} </h2>
+                    <h1 className={styles.title}> {r.bookname} </h1>
+                    <h2 classNmae={styles.author}> Published by {r.name} </h2>
                     <p> {r.body} </p>
                     <div className={styles.footer}>
                         <p> {r.categories} </p>

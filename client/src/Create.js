@@ -4,12 +4,10 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {useHistory} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
-
 /**
  * The user's create view 
  * 
  */
-
 function Create () {
 
     /* book review components */
