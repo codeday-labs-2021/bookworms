@@ -4,7 +4,7 @@ import {useState} from 'react';
 
 function SearchBar () {
 
-    const [filteredData, setFilteredData] = useState([]);
+    // const [filteredData, setFilteredData] = useState([]);
     const [wordEntered, setWordEntered] = useState("");  
     const [isSearching, setIsSearching] = useState(false);
 
@@ -13,15 +13,15 @@ function SearchBar () {
         setWordEntered(searchWord);
     
         if (searchWord === "") {
-          setFilteredData([]);
+        //   setFilteredData([]);
         } else {
-          setFilteredData(searchWord);
+        //   setFilteredData(searchWord);
           setIsSearching(true);
         }
     }
     
     const clearInput = () => {
-        setFilteredData([]);
+        // setFilteredData([]);
         setWordEntered("");
         setIsSearching(false);
     };
