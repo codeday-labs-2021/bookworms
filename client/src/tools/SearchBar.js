@@ -3,18 +3,18 @@ import {useState} from 'react';
 
 function SearchBar () {
 
-    const [filteredData, setFilteredData] = useState([]);
+    // const [filteredData, setFilteredData] = useState([]);
     const [wordEntered, setWordEntered] = useState("");  
 
     const handleSearch = (event) => {
         const searchWord = event.target.value;
         setWordEntered(searchWord);
     
-        if (searchWord === "") {
-          setFilteredData([]);
-        } else {
+        // if (searchWord === "") {
+        //   setFilteredData([]);
+        // } else {
         //   setFilteredData(newFilter);
-        }
+        // }
     }
     
     // const clearInput = () => {

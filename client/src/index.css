@@ -34,30 +34,7 @@
   /* background-color: #f9e9d4; */
 }
 
-/* create new blog form */
-.create {
-  max-width: 400px;
-  margin: 0 auto;
-  text-align: center;
-}
-.create label {
-  text-align: left;
-  display: block;
-}
-.create h2 {
-  font-size: 20px;
-  color: #dd9f33;
-  margin-bottom: 30px;
-}
-.create input, .create textarea {
-  width: 100%;
-  padding: 6px 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-  display: block;
-}
-.navbar button, .create button {
+.navbar button {
   background: #dd9f33;
   color: #fff;
   border: 0;

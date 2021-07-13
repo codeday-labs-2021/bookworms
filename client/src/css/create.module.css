@@ -1,24 +1,23 @@
 /* create new blog form */
 .create {
-    max-width: 400px;
+    max-width: 500px;
     margin: 0 auto;
     text-align: center;
-    display: flex;
 }
 
-label {
+.label {
     text-align: left;
     display: block;
 }
 
-.h2 {
+.heading {
     font-size: 20px;
     color: #dd9f33;
     margin-bottom: 30px;
     text-align: center;
 }
 
-input, textarea {
+.inputArea {
     width: 100%;
     padding: 6px 10px;
     margin: 10px 0;
@@ -27,14 +26,12 @@ input, textarea {
     display: block;
 }
 
-button {
+.submitButton {
     background: #dd9f33;
     color: #fff;
     border: 0;
     padding: 8px;
     border-radius: 8px;
-    display: flex;
-    justify-content: flex-end;
     cursor: pointer;
 }
   
