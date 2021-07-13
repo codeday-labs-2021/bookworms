@@ -1,0 +1,31 @@
+/* review previews / list */
+.normal {
+    padding: 10px 16px;
+    margin: 20px 0;
+    border-bottom: 1px solid #ebc686;
+  }
+
+.normal:hover {
+    box-shadow: 1px 4px 5px #dd9f33;
+}
+
+.h1 {
+    font-size: 20px;
+    color: #dd9f33;
+}
+
+.h2 {
+    font-size:17px;
+    color: #90662e;
+    margin-bottom: 10px;
+    text-align: left;
+}
+  
+.footer{
+    display:flex;
+  }
+
+.footerRight{
+    margin-left: auto;
+}
+  
