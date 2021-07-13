@@ -1,0 +1,40 @@
+/* create new blog form */
+.create {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+}
+
+label {
+    text-align: left;
+    display: block;
+}
+
+.h2 {
+    font-size: 20px;
+    color: #dd9f33;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    display: block;
+}
+
+button {
+    background: #dd9f33;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+  

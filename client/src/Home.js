@@ -1,6 +1,6 @@
+import ReviewList from './ReviewList';
 import SearchBar from './tools/SearchBar';
 import FilterOrder from './tools/FilterOrder';
-import ReviewList from './ReviewList'
 import data from './reviewData.json';
 import Toolbar from '@material-ui/core/Toolbar';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -18,7 +18,7 @@ function Home(props) {
         <div className="home">
             <div className="top">
                 <SearchBar /> 
-                <div className="top-right"><FilterOrder /></div>
+                <FilterOrder />
             </div>
             <div className="body">
                 <ReviewList reviews={data}/>
