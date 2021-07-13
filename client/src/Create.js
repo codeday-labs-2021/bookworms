@@ -4,10 +4,13 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {useHistory} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
+import styles from './css/create.module.css';
+
 /**
  * The user's create view 
  * 
  */
+
 function Create () {
 
     /* book review components */
@@ -21,49 +24,49 @@ function Create () {
     const history = useHistory();
 
     function handleSubmit(e) {
-        e.preventDefault();
+        // e.preventDefault();
         // setIsPending(true);
 
         // setIsPending(false);
-        history.push('/');
+        // history.push('/');
     }
 
     return (
-        <div className="create">
-            <h2> Add a New Book Review </h2>
+        <div className={styles.create}>
+            <h2 className={styles.heading}> Add a New Book Review </h2>
 
             <Form>
                 <Form.Group as={Row} controlId="formName">
-                    <Form.Label column sm="4">Name</Form.Label>
+                    <Form.Label column sm="4" className={styles.label}>Name</Form.Label>
                     <Col sm="8">
-                    <Form.Control type="text" />
+                    <Form.Control required type="text" className={styles.inputArea}/>
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formBookName">
-                    <Form.Label column sm="4">Book Name</Form.Label>
+                    <Form.Label column sm="4" className={styles.label}>Book Name</Form.Label>
                     <Col sm="8">
-                    <Form.Control type="text" />
+                    <Form.Control type="text" className={styles.inputArea}/>
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formReview">
-                    <Form.Label column sm="4">Book Review</Form.Label>
+                    <Form.Label column sm="4" className={styles.label}>Book Review</Form.Label>
                     <Col sm="8">
-                    <Form.Control as="textarea" rows={3} />
+                    <Form.Control as="textarea" rows={3} className={styles.inputArea}/>
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formCategory">
-                    <Form.Label column sm="4">Book Categories</Form.Label>
+                    <Form.Label column sm="4" className={styles.label}>Book Categories</Form.Label>
                     <Col sm="8">
-                    <Form.Control type="text" />
+                    <Form.Control type="text" className={styles.inputArea}/>
                     </Col>
                 </Form.Group>
 
             </Form>
 
-            <button onClick={handleSubmit}> Submit </button>
+            <button className={styles.submitButton} onClick={handleSubmit}> Submit </button>
         </div>
         
     );
