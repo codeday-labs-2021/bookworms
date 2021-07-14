@@ -1,0 +1,32 @@
+/* navbar */
+.navbar {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    border-bottom: 1px solid #f2f2f2;
+    /* background-color: #f9e9d4; */
+}
+
+.name {
+    color: #dd9f33;
+}
+
+.links {
+    margin-left: auto;
+}
+  
+.navbar a {
+    text-decoration: none;
+    padding: 6px;
+}
+
+.addButton {
+    background: #dd9f33;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
