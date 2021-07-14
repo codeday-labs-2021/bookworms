@@ -1,11 +1,11 @@
 import ReviewList from './ReviewList';
-import SearchBar from './tools/SearchBar';
-import FilterOrder from './tools/FilterOrder';
+import SearchBar from './components/SearchBar';
+import FilterOrder from './components/FilterOrder';
 import data from './reviewData.json';
 import Toolbar from '@material-ui/core/Toolbar';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Fab from '@material-ui/core/Fab';
-import ScrollTop from './tools/ScrolltoTop';
+import ScrollTop from './components/ScrolltoTop';
 import styles from './css/home.module.css';
 
 /**
