@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/bookworms/static/css/main.5269e007.chunk.css",
-    "main.js": "/bookworms/static/js/main.3ba8a032.chunk.js",
-    "main.js.map": "/bookworms/static/js/main.3ba8a032.chunk.js.map",
-    "runtime-main.js": "/bookworms/static/js/runtime-main.3ad4cf8e.js",
-    "runtime-main.js.map": "/bookworms/static/js/runtime-main.3ad4cf8e.js.map",
+    "main.css": "/bookworms/static/css/main.29e441b9.chunk.css",
+    "main.js": "/bookworms/static/js/main.5f42bae3.chunk.js",
+    "main.js.map": "/bookworms/static/js/main.5f42bae3.chunk.js.map",
+    "runtime-main.js": "/bookworms/static/js/runtime-main.436489e9.js",
+    "runtime-main.js.map": "/bookworms/static/js/runtime-main.436489e9.js.map",
     "static/css/2.4be38407.chunk.css": "/bookworms/static/css/2.4be38407.chunk.css",
-    "static/js/2.7f9fd54a.chunk.js": "/bookworms/static/js/2.7f9fd54a.chunk.js",
-    "static/js/2.7f9fd54a.chunk.js.map": "/bookworms/static/js/2.7f9fd54a.chunk.js.map",
-    "static/js/3.d242ad36.chunk.js": "/bookworms/static/js/3.d242ad36.chunk.js",
-    "static/js/3.d242ad36.chunk.js.map": "/bookworms/static/js/3.d242ad36.chunk.js.map",
+    "static/js/2.f44f6350.chunk.js": "/bookworms/static/js/2.f44f6350.chunk.js",
+    "static/js/2.f44f6350.chunk.js.map": "/bookworms/static/js/2.f44f6350.chunk.js.map",
+    "static/js/3.7d33abfd.chunk.js": "/bookworms/static/js/3.7d33abfd.chunk.js",
+    "static/js/3.7d33abfd.chunk.js.map": "/bookworms/static/js/3.7d33abfd.chunk.js.map",
     "index.html": "/bookworms/index.html",
     "static/css/2.4be38407.chunk.css.map": "/bookworms/static/css/2.4be38407.chunk.css.map",
-    "static/css/main.5269e007.chunk.css.map": "/bookworms/static/css/main.5269e007.chunk.css.map",
-    "static/js/2.7f9fd54a.chunk.js.LICENSE.txt": "/bookworms/static/js/2.7f9fd54a.chunk.js.LICENSE.txt",
+    "static/css/main.29e441b9.chunk.css.map": "/bookworms/static/css/main.29e441b9.chunk.css.map",
+    "static/js/2.f44f6350.chunk.js.LICENSE.txt": "/bookworms/static/js/2.f44f6350.chunk.js.LICENSE.txt",
     "static/media/logo192.a0354706.png": "/bookworms/static/media/logo192.a0354706.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.3ad4cf8e.js",
+    "static/js/runtime-main.436489e9.js",
     "static/css/2.4be38407.chunk.css",
-    "static/js/2.7f9fd54a.chunk.js",
-    "static/css/main.5269e007.chunk.css",
-    "static/js/main.3ba8a032.chunk.js"
+    "static/js/2.f44f6350.chunk.js",
+    "static/css/main.29e441b9.chunk.css",
+    "static/js/main.5f42bae3.chunk.js"
   ]
 }
