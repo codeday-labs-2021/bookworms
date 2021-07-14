@@ -32,7 +32,7 @@ func likeReview(id string, review *db.Review) error {
 		db.Ctx,
 		bson.M{"_id": objectID},
 		bson.D{
-			{"$inc", bson.D{{"likes", 1}}},
+			{Key: "$inc", Value: bson.D{{Key: "likes", Value: 1}}},
 		},
 		options.Update().SetUpsert(true),
 	)
