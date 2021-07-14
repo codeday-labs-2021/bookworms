@@ -2,12 +2,14 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/codeday-labs/bookworms/server/db"
 	"github.com/codeday-labs/bookworms/server/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type ReviewBody struct {
@@ -20,7 +22,7 @@ type ReviewBody struct {
 // singular collection name from mongodb collections conventions
 const ReviewsCollection = "review"
 
-func filterReviews(filter interface{}) ([]*db.Review, error) {
+func filterReviews(filter interface{}, findOptions *options.FindOptions) ([]*db.Review, error) {
 
 	// a slice to store decoded reviews
 	var reviews []*db.Review
@@ -34,7 +36,7 @@ func filterReviews(filter interface{}) ([]*db.Review, error) {
 		return nil, err
 	}
 
-	cur, err := DB.Collection(ReviewsCollection).Find(db.Ctx, filter)
+	cur, err := DB.Collection(ReviewsCollection).Find(db.Ctx, filter, findOptions)
 
 	// once once done iterating the cursor close
 	defer cur.Close(db.Ctx)
@@ -62,10 +64,20 @@ func filterReviews(filter interface{}) ([]*db.Review, error) {
 	return reviews, nil
 }
 
-func getAll() ([]*db.Review, error) {
-	// Passing bson.D{{}} matches all documents in a collection
+func getAll(sortQery ...string) ([]*db.Review, error) {
 	filter := bson.D{{}}
-	return filterReviews(filter)
+	findOptions := options.Find()
+	if len(sortQery) > 0 {
+		sortKey, err := strconv.ParseInt(sortQery[0], 10, 32)
+		if err != nil {
+			return filterReviews(filter, findOptions)
+		}
+		if sortKey == -1 || sortKey == 1 {
+			sortOptions := findOptions.SetSort(bson.D{{"likes", sortKey}})
+			return filterReviews(filter, sortOptions)
+		}
+	}
+	return filterReviews(filter, findOptions)
 }
 
 func createReview(review *db.Review) error {
@@ -84,7 +96,17 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		reviews, err := getAll()
+
+		var reviews []*db.Review
+		var err error
+
+		sortQuery := r.URL.Query().Get("sort")
+
+		if len(sortQuery) > 0 {
+			reviews, err = getAll(sortQuery)
+		} else {
+			reviews, err = getAll()
+		}
 
 		if err != nil {
 			utils.RespondWithError(w, "Failed to get reviews", http.StatusInternalServerError)

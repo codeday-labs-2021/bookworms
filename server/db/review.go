@@ -14,4 +14,5 @@ type Review struct {
 	Categories []string           `bson:"categories" json:"categories"`
 	CreatedAt  time.Time          `bson:"created_at" json:"created_at"`
 	UpdatedAt  time.Time          `bson:"updated_at" json:"updated_at"`
+	Likes      int                `bson:"likes" json:"likes"`
 }

@@ -58,6 +58,22 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/review
 }
 ```
 
+If you would like to return sorted result according to populality likes
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?sort=1
+
+```
+
+This will return data in ascending order based on likes.
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?sort=-1
+
+```
+
+This will return data in descending order based on likes
+
 ### POST /api/reviews
 
 **Example Request**
