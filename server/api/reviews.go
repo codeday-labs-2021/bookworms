@@ -1,4 +1,4 @@
-package reviews
+package handler
 
 import (
 	"net/http"
@@ -17,8 +17,7 @@ type ReviewBody struct {
 	Categories []string `json:"categories"`
 }
 
-// singular collection name from mongodb collections conventions
-const ReviewsCollection = "review"
+const ReviewsCollection string = "review"
 
 func filterReviews(filter interface{}) ([]*db.Review, error) {
 
@@ -74,6 +73,8 @@ func createReview(review *db.Review) error {
 	if err != nil {
 		return err
 	}
+
+	DB.Drop(db.Ctx)
 
 	DB.Collection(ReviewsCollection).InsertOne(db.Ctx, review)
 	defer DB.Client().Disconnect(db.Ctx)

@@ -13,10 +13,10 @@ var Ctx = context.TODO()
 func DB() (*mongo.Database, error) {
 	clientOptions := options.Client().ApplyURI(os.Getenv("MONGODB_URI"))
 
-	client, err := mongo.Connect(Ctx, clientOptions)
+	client, _ := mongo.Connect(Ctx, clientOptions)
 
 	//check for the connection
-	err = client.Ping(Ctx, nil)
+	err := client.Ping(Ctx, nil)
 
 	if err != nil {
 		return nil, err

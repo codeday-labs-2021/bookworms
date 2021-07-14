@@ -6,6 +6,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+const ReviewsCollection string = "review"
+
 type Review struct {
 	ID         primitive.ObjectID `bson:"_id" json:"id"`
 	UserName   string             `bson:"user_name" json:"user_name"`
