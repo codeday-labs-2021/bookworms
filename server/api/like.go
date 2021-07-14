@@ -18,6 +18,8 @@ func likeReview(id string, review *db.Review) error {
 
 	DB, err := db.DB()
 
+	defer DB.Client().Disconnect(db.Ctx)
+
 	if err != nil {
 		return err
 	}
@@ -43,13 +45,13 @@ func likeReview(id string, review *db.Review) error {
 
 	review.Likes += 1
 
-	defer DB.Client().Disconnect(db.Ctx)
-
 	return nil
 }
 
-func FindReview(id string, review *db.Review) error {
+func findReview(id string, review *db.Review) error {
 	DB, err := db.DB()
+
+	defer DB.Client().Disconnect(db.Ctx)
 
 	if err != nil {
 		return err
@@ -67,7 +69,6 @@ func FindReview(id string, review *db.Review) error {
 		return err
 	}
 
-	defer DB.Client().Disconnect(db.Ctx)
 	return nil
 }
 
@@ -85,10 +86,10 @@ func LikeHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = FindReview(requestBody.ReviewID, &review)
+		err = findReview(requestBody.ReviewID, &review)
 
 		if err != nil {
-			utils.RespondWithError(w, "Post not found!", http.StatusBadRequest)
+			utils.RespondWithError(w, "Review id parsed doesn't correspond to any of stored!", http.StatusBadRequest)
 			return
 		}
 

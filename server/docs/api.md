@@ -100,7 +100,9 @@ $ curl -d '{
 
 **Example Request**
 
+
 ```
+
 $ curl -d '
 {
     "review_id": "60eec6d2054f49d2c58d3390"
@@ -139,14 +141,14 @@ $ curl -d '
 **Example Request**
 
 ```
-$ curl https://bookworms-api.vercel.app/api/filter\?category\=Plantation 
+$ curl https://bookworms-api.vercel.app/api/filter\?categories\=Plantation 
 
 ```
 
 **Example Response**
 
 ```
-201 OK
+200 OK
 
 {
     "success": true,

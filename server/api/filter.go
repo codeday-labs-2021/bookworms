@@ -57,9 +57,9 @@ func FilterHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 
-		query := r.URL.Query().Get("category")
+		query := r.URL.Query().Get("categories")
 
-		if len(query) <= 0 {
+		if len(query) == 0 {
 			utils.RespondWithError(w, "Filter query must be specified", http.StatusBadRequest)
 			return
 		}
