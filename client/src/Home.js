@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Fab from '@material-ui/core/Fab';
 import ScrollTop from './tools/ScrolltoTop';
+import styles from './css/home.module.css';
 
 /**
  * Homepage
@@ -15,10 +16,10 @@ import ScrollTop from './tools/ScrolltoTop';
 function Home(props) {    
 
     return (
-        <div className="home">
-            <div className="top">
+        <div>
+            <div className={styles.top}>
                 <SearchBar /> 
-                <FilterOrder />
+                <div className={styles.topRight}><FilterOrder /></div>
             </div>
             <div className="body">
                 <ReviewList reviews={data}/>
