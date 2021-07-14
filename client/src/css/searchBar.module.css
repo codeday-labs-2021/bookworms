@@ -25,16 +25,3 @@
   border-left: none;
   cursor: pointer;
 }
-  
-.inputArea {
-  border: 0;
-  font-size: 18px;
-  padding: 15px;
-  height: 30px;
-  width: 205px;
-  background-color: white;
-}
-  
-.inputArea:focus {
-  outline: none;
-}
