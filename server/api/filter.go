@@ -21,10 +21,6 @@ func filterReview(searchQeury []string) ([]*db.Review, error) {
 		return nil, err
 	}
 
-	// cur, err := DB.Collection(db.ReviewsCollection).Find(
-	// 	db.Ctx,
-	// 	bson.M{"categories": searchQeury},
-	// )
 	cur, err := DB.Collection(db.ReviewsCollection).Find(
 		db.Ctx,
 		bson.M{
