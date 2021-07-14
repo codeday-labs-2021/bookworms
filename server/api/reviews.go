@@ -74,8 +74,6 @@ func createReview(review *db.Review) error {
 		return err
 	}
 
-	DB.Drop(db.Ctx)
-
 	DB.Collection(ReviewsCollection).InsertOne(db.Ctx, review)
 	defer DB.Client().Disconnect(db.Ctx)
 	return nil

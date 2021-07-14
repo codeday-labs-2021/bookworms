@@ -14,7 +14,7 @@ type newLikeBody struct {
 	ReviewID string `json:"review_id"`
 }
 
-func likeReview(id string) error {
+func likeReview(id string, review *db.Review) error {
 
 	DB, err := db.DB()
 
@@ -41,7 +41,10 @@ func likeReview(id string) error {
 		return err
 	}
 
+	review.Likes += 1
+
 	defer DB.Client().Disconnect(db.Ctx)
+
 	return nil
 }
 
@@ -89,14 +92,12 @@ func LikeHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = likeReview(requestBody.ReviewID)
+		err = likeReview(requestBody.ReviewID, &review)
 
 		if err != nil {
 			utils.RespondWithError(w, "Failed to add like", http.StatusInternalServerError)
 			return
 		}
-
-		review.Likes += 1
 
 		utils.RespondWithSuccess(w, http.StatusAccepted, review)
 
