@@ -67,17 +67,21 @@ func filterReviews(filter interface{}, findOptions *options.FindOptions) ([]*db.
 func getAll(sortQery ...string) ([]*db.Review, error) {
 	filter := bson.D{{}}
 	findOptions := options.Find()
+
+	sortByDate := findOptions.SetSort(bson.D{{"created_at", -1}})
+
 	if len(sortQery) > 0 {
 		sortKey, err := strconv.ParseInt(sortQery[0], 10, 32)
 		if err != nil {
-			return filterReviews(filter, findOptions)
+			return filterReviews(filter, sortByDate)
 		}
 		if sortKey == -1 || sortKey == 1 {
 			sortOptions := findOptions.SetSort(bson.D{{"likes", sortKey}})
 			return filterReviews(filter, sortOptions)
 		}
 	}
-	return filterReviews(filter, findOptions)
+
+	return filterReviews(filter, sortByDate)
 }
 
 func createReview(review *db.Review) error {
