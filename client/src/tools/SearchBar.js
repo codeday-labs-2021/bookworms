@@ -1,4 +1,5 @@
 import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
 import {useState} from 'react';
 import styles from '../css/searchBar.module.css';
 
@@ -6,31 +7,28 @@ function SearchBar () {
 
     // const [filteredData, setFilteredData] = useState([]);
     const [wordEntered, setWordEntered] = useState("");  
+    const [isSearching, setIsSearching] = useState(false);
 
     const handleSearch = (e) => {
         const searchWord = e.target.value;
         setWordEntered(searchWord);
     
-        // if (searchWord === "") {
+        if (searchWord === "") {
         //   setFilteredData([]);
-<<<<<<< Updated upstream
-        // } else {
-        //   setFilteredData(newFilter);
-        // }
-=======
             setIsSearching(false);
         } else {
         //   setFilteredData(searchWord);
           setIsSearching(true);
         }
->>>>>>> Stashed changes
     }
     
-    // const clearInput = () => {
-    //     setFilteredData([]);
-    //     setWordEntered("");
-    // };
+    const clearInput = () => {
+        // setFilteredData([]);
+        setWordEntered("");
+        setIsSearching(false);
+    };
     
+    const BarIcon = isSearching ? CloseIcon : SearchIcon;
 
     return (
         <div className={styles.search}>
@@ -41,13 +39,9 @@ function SearchBar () {
                 value={wordEntered}
                 onChange={handleSearch}
                 />
-<<<<<<< Updated upstream
-            <SearchIcon className="searchButton"/>
-=======
             <BarIcon
                 className={styles.searchButton}
                 onClick={clearInput}/>
->>>>>>> Stashed changes
         </div>
     );
 }
