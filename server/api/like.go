@@ -99,9 +99,7 @@ func LikeHandler(w http.ResponseWriter, r *http.Request) {
 			utils.RespondWithError(w, "Failed to add like", http.StatusInternalServerError)
 			return
 		}
-
-		utils.RespondWithSuccess(w, http.StatusAccepted, review)
-
+		utils.RespondWithSuccess(w, http.StatusCreated, review)
 	default:
 		utils.RespondWithError(w, "Route not found!", http.StatusBadRequest)
 	}
