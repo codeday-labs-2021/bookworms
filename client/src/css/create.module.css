@@ -1,0 +1,36 @@
+/* create new blog form */
+.create {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.label {
+    text-align: left;
+    display: block;
+}
+
+.heading {
+    font-size: 20px;
+    color: #dd9f33;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.inputArea {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    display: block;
+}
+
+.submitButton, .submitButton:hover, .submitButton:active, .submitButton:focus {
+    background: #dd9f33;
+    color: #fff;
+    border: 0;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}

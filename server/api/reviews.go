@@ -2,14 +2,12 @@ package handler
 
 import (
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/codeday-labs/bookworms/server/db"
 	"github.com/codeday-labs/bookworms/server/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type ReviewBody struct {
@@ -19,69 +17,8 @@ type ReviewBody struct {
 	Categories []string `json:"categories"`
 }
 
-// singular collection name from mongodb collections conventions
-const ReviewsCollection = "review"
-
-func filterReviews(filter interface{}, findOptions *options.FindOptions) ([]*db.Review, error) {
-
-	// a slice to store decoded reviews
-	var reviews []*db.Review
-
-	DB, err := db.DB()
-
-	// close db connection
-	defer DB.Client().Disconnect(db.Ctx)
-
-	if err != nil {
-		return nil, err
-	}
-
-	cur, err := DB.Collection(ReviewsCollection).Find(db.Ctx, filter, findOptions)
-
-	// once once done iterating the cursor close
-	defer cur.Close(db.Ctx)
-
-	if err != nil {
-		return reviews, err
-	}
-
-	// Iterate over a returned cursor and decode each at a time
-
-	for cur.Next(db.Ctx) {
-		var r db.Review
-		err := cur.Decode(&r)
-		if err != nil {
-			return reviews, err
-		}
-
-		reviews = append(reviews, &r)
-	}
-
-	if err := cur.Err(); err != nil {
-		return reviews, err
-	}
-
-	return reviews, nil
-}
-
-func getAll(sortQery ...string) ([]*db.Review, error) {
-	filter := bson.D{{}}
-	findOptions := options.Find()
-
-	sortByDate := findOptions.SetSort(bson.D{{Key: "created_at", Value: -1}})
-
-	if len(sortQery) > 0 {
-		sortKey, err := strconv.ParseInt(sortQery[0], 10, 32)
-		if err != nil {
-			return filterReviews(filter, sortByDate)
-		}
-		if sortKey == -1 || sortKey == 1 {
-			sortOptions := findOptions.SetSort(bson.D{{Key: "likes", Value: sortKey}})
-			return filterReviews(filter, sortOptions)
-		}
-	}
-
-	return filterReviews(filter, sortByDate)
+func getAll() ([]*db.Review, error) {
+	return utils.FilterReviews(bson.D{{}})
 }
 
 func createReview(review *db.Review) error {
@@ -91,12 +28,12 @@ func createReview(review *db.Review) error {
 		return err
 	}
 
-	DB.Collection(ReviewsCollection).InsertOne(db.Ctx, review)
+	DB.Collection(utils.ReviewsCollection).InsertOne(db.Ctx, review)
 	defer DB.Client().Disconnect(db.Ctx)
 	return nil
 }
 
-func Reviews(w http.ResponseWriter, r *http.Request) {
+func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
@@ -107,7 +44,7 @@ func Reviews(w http.ResponseWriter, r *http.Request) {
 		sortQuery := r.URL.Query().Get("sort")
 
 		if len(sortQuery) > 0 {
-			reviews, err = getAll(sortQuery)
+			//		reviews, err = getAll(sortQuery)
 		} else {
 			reviews, err = getAll()
 		}
