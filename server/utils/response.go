@@ -22,7 +22,7 @@ type successResp struct {
 func RespondWithError(w http.ResponseWriter, message string, status int) {
 	response := errorResp{
 		Message:   message,
-		TimeStamp: time.Now().UTC().UnixNano(),
+		TimeStamp: time.Now().UnixNano() / int64(time.Millisecond),
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
@@ -34,7 +34,7 @@ func RespondWithSuccess(w http.ResponseWriter, status int, data interface{}) {
 	response := successResp{
 		Success:   true,
 		Data:      data,
-		TimeStamp: time.Now().UTC().UnixNano(),
+		TimeStamp: time.Now().UnixNano() / int64(time.Millisecond),
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
