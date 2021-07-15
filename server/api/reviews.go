@@ -17,55 +17,8 @@ type ReviewBody struct {
 	Categories []string `json:"categories"`
 }
 
-// singular collection name from mongodb collections conventions
-const ReviewsCollection = "review"
-
-func filterReviews(filter interface{}) ([]*db.Review, error) {
-
-	// a slice to store decoded reviews
-	var reviews []*db.Review
-
-	DB, err := db.DB()
-
-	// close db connection
-	defer DB.Client().Disconnect(db.Ctx)
-
-	if err != nil {
-		return nil, err
-	}
-
-	cur, err := DB.Collection(ReviewsCollection).Find(db.Ctx, filter)
-
-	// once once done iterating the cursor close
-	defer cur.Close(db.Ctx)
-
-	if err != nil {
-		return reviews, err
-	}
-
-	// Iterate over a returned cursor and decode each at a time
-
-	for cur.Next(db.Ctx) {
-		var r db.Review
-		err := cur.Decode(&r)
-		if err != nil {
-			return reviews, err
-		}
-
-		reviews = append(reviews, &r)
-	}
-
-	if err := cur.Err(); err != nil {
-		return reviews, err
-	}
-
-	return reviews, nil
-}
-
 func getAll() ([]*db.Review, error) {
-	// Passing bson.D{{}} matches all documents in a collection
-	filter := bson.D{{}}
-	return filterReviews(filter)
+	return utils.FilterReviews(bson.D{{}})
 }
 
 func createReview(review *db.Review) error {
@@ -75,12 +28,12 @@ func createReview(review *db.Review) error {
 		return err
 	}
 
-	DB.Collection(ReviewsCollection).InsertOne(db.Ctx, review)
+	DB.Collection(utils.ReviewsCollection).InsertOne(db.Ctx, review)
 	defer DB.Client().Disconnect(db.Ctx)
 	return nil
 }
 
-func Reviews(w http.ResponseWriter, r *http.Request) {
+func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
