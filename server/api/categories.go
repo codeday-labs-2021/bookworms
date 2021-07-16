@@ -1,58 +1,57 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/codeday-labs/bookworms/server/db"
 	"github.com/codeday-labs/bookworms/server/utils"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type categoriesResponse struct {
-	Name string `json:"id"`
-}
+func findAllCategoris() ([]string, error) {
 
-func findAllCategoris() ([]categoriesResponse, error) {
-
-	// var categories []string
+	var categories []string
 
 	DB, err := db.DB()
+
+	defer DB.Client().Disconnect(db.Ctx)
 
 	if err != nil {
 		return nil, err
 	}
 
-	categoriesProjector := bson.D{{Key: "$project", Value: bson.D{{Key: "categories", Value: 1}}}}
+	categoriesProjector := bson.D{{Key: "$project", Value: bson.D{{Key: "categories", Value: 1}, {Key: "_id", Value: 0}}}}
 
 	showCategoriesCursor, err := db.ReviewCollection.Aggregate(db.Ctx, mongo.Pipeline{categoriesProjector})
 
-	defer DB.Client().Disconnect(db.Ctx)
-
-	var decodedCategories []bson.M
+	var decodedCategories []db.Review
 
 	if err = showCategoriesCursor.All(db.Ctx, &decodedCategories); err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	for _, value := range decodedCategories {
-		for _, v := range value {
-			if data, ok := v.(primitive.A); ok {
-				deserialized := []string(data)
-				log.Println(deserialized)
-			}
-		}
+		categories = append(categories, value.Categories...)
 	}
 
-	return nil, nil
+	return utils.RemoveDuplicates(categories), nil
 }
 
 func Categories(w http.ResponseWriter, r *http.Request) {
+	utils.HandleCors(&w, "GET")
 	switch r.Method {
-	case "GET":
-		findAllCategoris()
+	case http.MethodOptions:
+		w.WriteHeader(http.StatusNoContent)
+	case http.MethodGet:
+		categorisData, err := findAllCategoris()
+
+		if err != nil {
+			utils.RespondWithError(w, "Failed to get categories!", http.StatusBadRequest)
+			return
+		}
+
+		utils.RespondWithSuccess(w, http.StatusOK, categorisData)
 	default:
 		utils.RespondWithError(w, "Route not found!", http.StatusBadRequest)
 	}

@@ -1,8 +1,31 @@
 package utils
 
-import "github.com/codeday-labs/bookworms/server/db"
+import (
+	"strings"
+
+	"github.com/codeday-labs/bookworms/server/db"
+)
 
 const ReviewsCollection string = "review"
+
+func RemoveDuplicates(arraySlice []string) []string {
+	keys := make(map[string]bool)
+	list := []string{}
+
+	var sliceLowerCase []string
+
+	for _, entry := range arraySlice {
+		sliceLowerCase = append(sliceLowerCase, strings.Trim(strings.ToLower(entry), " "))
+	}
+
+	for _, entry := range sliceLowerCase {
+		if _, value := keys[entry]; !value {
+			keys[entry] = true
+			list = append(list, strings.Title(entry))
+		}
+	}
+	return list
+}
 
 //FilterReviews based on filter passed
 func FilterReviews(filter interface{}) ([]*db.Review, error) {
