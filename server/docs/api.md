@@ -6,6 +6,7 @@ API Design
 - [GET /api/reviews](#get-apireviews)
 - [POST /api/like](#post-apilike)
 - [GET /api/filter](#get-apifilter)
+- [GET /api/categories](#get-apicategories)
 
 ### GET /ping
 
@@ -196,5 +197,38 @@ $ curl https://bookworms-api.vercel.app/api/filter\?categories\=Plantation
         }
     ],
     "time_stamp": "Wed Jul 14 13:27:28 +0200 2021"
+}
+```
+
+### GET /api/categories
+
+
+**Example Request**
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/categories
+```
+
+
+**Example Response**
+```
+{
+    "success": true,
+    "data": [
+        "Plantation",
+        "Animals",
+        "Fantasy",
+        "Sci-Fi",
+        "Fiction",
+        "Nonfiction",
+        "Science",
+        "Romance",
+        "Drama",
+        "Horror",
+        "Mystery",
+        "Literature",
+        "History"
+    ],
+    "time_stamp": 1626439320890
 }
 ```
