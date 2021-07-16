@@ -9,6 +9,7 @@ import (
 )
 
 var Ctx = context.TODO()
+var ReviewCollection *mongo.Collection
 
 func DB() (*mongo.Database, error) {
 	clientOptions := options.Client().ApplyURI(os.Getenv("MONGODB_URI"))
@@ -26,6 +27,9 @@ func DB() (*mongo.Database, error) {
 		return nil, err
 	}
 
-	//	defer client.Disconnect(Ctx)
+	db := client.Database("bookworms")
+
+	ReviewCollection = db.Collection("review")
+
 	return client.Database("bookworms"), nil
 }
