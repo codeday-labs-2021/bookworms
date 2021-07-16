@@ -73,7 +73,7 @@ func findReview(id string, review *db.Review) error {
 }
 
 func LikeHandler(w http.ResponseWriter, r *http.Request) {
-	utils.HandleCors(&w, "POST,OPTIONS")
+	utils.HandleCors(&w, "POST")
 	switch r.Method {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusOK)
