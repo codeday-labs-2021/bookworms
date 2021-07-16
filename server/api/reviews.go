@@ -34,7 +34,7 @@ func createReview(review *db.Review) error {
 }
 
 func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
-
+	utils.HandleCors(&w, "GET, POST")
 	switch r.Method {
 	case "GET":
 		reviews, err := getAll()
