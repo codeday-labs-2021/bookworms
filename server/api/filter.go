@@ -13,7 +13,6 @@ func FilterHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusOK)
-		return
 	case http.MethodGet:
 
 		query := r.URL.Query().Get("categories")
