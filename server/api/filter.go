@@ -11,7 +11,10 @@ import (
 func FilterHandler(w http.ResponseWriter, r *http.Request) {
 	utils.HandleCors(&w, "GET")
 	switch r.Method {
-	case "GET":
+	case http.MethodOptions:
+		w.WriteHeader(http.StatusOK)
+		return
+	case http.MethodGet:
 
 		query := r.URL.Query().Get("categories")
 
