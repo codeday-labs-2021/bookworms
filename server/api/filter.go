@@ -9,7 +9,7 @@ import (
 )
 
 func FilterHandler(w http.ResponseWriter, r *http.Request) {
-	utils.HandleCors(&w, r, "GET")
+	utils.HandleCors(&w, "GET")
 	switch r.Method {
 	case "GET":
 
