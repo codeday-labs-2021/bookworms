@@ -14,7 +14,6 @@ func FilterHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusNoContent)
 	case http.MethodGet:
-
 		query := r.URL.Query().Get("categories")
 
 		if len(query) == 0 {

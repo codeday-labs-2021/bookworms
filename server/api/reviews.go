@@ -37,7 +37,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	utils.HandleCors(&w, "GET, POST")
 	switch r.Method {
 	case http.MethodOptions:
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusNoContent)
 	case http.MethodGet:
 		reviews, err := getAll()
 
