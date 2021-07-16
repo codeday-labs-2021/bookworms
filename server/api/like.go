@@ -76,8 +76,7 @@ func LikeHandler(w http.ResponseWriter, r *http.Request) {
 	utils.HandleCors(&w, "POST")
 	switch r.Method {
 	case http.MethodOptions:
-		w.WriteHeader(http.StatusOK)
-
+		w.WriteHeader(http.StatusNoContent)
 	case http.MethodPost:
 
 		var requestBody newLikeBody
