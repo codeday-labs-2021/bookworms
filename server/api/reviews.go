@@ -36,8 +36,9 @@ func createReview(review *db.Review) error {
 func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	utils.HandleCors(&w, "GET, POST")
 	switch r.Method {
-	case "GET":
-
+	case http.MethodOptions:
+		w.WriteHeader(http.StatusNoContent)
+	case http.MethodGet:
 		var reviews []*db.Review
 		var err error
 
@@ -56,7 +57,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 
 		utils.RespondWithSuccess(w, http.StatusOK, reviews)
 
-	case "POST":
+	case http.MethodPost:
 		var request ReviewBody
 
 		err := utils.DecodeJSONBody(w, r, &request)
