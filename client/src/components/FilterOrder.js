@@ -27,10 +27,8 @@ export default function FilterOrder() {
           displayEmpty
           className={classes.selectEmpty}
         >
-          <MenuItem value={10}>Book Name (Ascending)</MenuItem>
-          <MenuItem value={20}>Book Name (Descending)</MenuItem>
-          <MenuItem value={30}>Popularity</MenuItem>
           <MenuItem value="">Latest Reviews</MenuItem>
+          <MenuItem value={30}>Popularity</MenuItem>
         </Select>
       </FormControl>
     </div>
