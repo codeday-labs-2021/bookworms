@@ -15,6 +15,10 @@ func DB() (*mongo.Database, error) {
 
 	client, err := mongo.Connect(Ctx, clientOptions)
 
+	if err != nil {
+		return nil, err
+	}
+
 	//check for the connection
 	err = client.Ping(Ctx, nil)
 

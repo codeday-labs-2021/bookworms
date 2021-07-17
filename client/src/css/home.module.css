@@ -1,0 +1,13 @@
+/* homepage */
+.top {
+    display: flex;
+    align-items: center;
+}
+
+.topRight {
+    margin-left: auto;
+}
+
+.body {
+    margin-top: 10px;
+}

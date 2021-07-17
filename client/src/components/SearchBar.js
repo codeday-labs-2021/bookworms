@@ -34,7 +34,7 @@ function SearchBar () {
         <div className={styles.search}>
             <input 
                 type="text" 
-                className={styles.inputArea && styles.searchTerm}
+                className={styles.searchTerm}
                 placeholder="Enter a Book Name..."
                 value={wordEntered}
                 onChange={handleSearch}

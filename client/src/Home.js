@@ -1,11 +1,12 @@
 import ReviewList from './ReviewList';
-import SearchBar from './tools/SearchBar';
-import FilterOrder from './tools/FilterOrder';
-import data from './reviewData.json';
+import SearchBar from './components/SearchBar';
+import FilterOrder from './components/FilterOrder';
 import Toolbar from '@material-ui/core/Toolbar';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Fab from '@material-ui/core/Fab';
-import ScrollTop from './tools/ScrolltoTop';
+import ScrollTop from './components/ScrolltoTop';
+import styles from './css/home.module.css';
+import {useState, useEffect} from 'react';
 
 /**
  * Homepage
@@ -14,14 +15,37 @@ import ScrollTop from './tools/ScrolltoTop';
 
 function Home(props) {    
 
+    const [data, setData] = useState([]);
+    const [isPending, setIsPending] = useState(true);
+
+    async function getReview(){
+        fetch('https://bookworms-api.vercel.app/api/reviews', {
+            method: 'GET',
+            headers: {'Accept': 'application/json'},
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(reviews => {
+            let dataArray = []
+            for (var i = 0; i < reviews.data.length; i++) {
+                dataArray.push(reviews.data[i])
+            }
+            setData(dataArray);
+            setIsPending(false);
+        })
+    }
+
+    useEffect(() => getReview(), []);
+
     return (
-        <div className="home">
-            <div className="top">
+        <div>
+            <div className={styles.top}>
                 <SearchBar /> 
-                <FilterOrder />
+                <div className={styles.topRight}><FilterOrder /></div>
             </div>
-            <div className="body">
-                <ReviewList reviews={data}/>
+            <div className={styles.body}>
+               {isPending ? "Loading..." : <ReviewList reviews={data}/>}
             </div>
             <Toolbar id="back-to-top-anchor" />
                 <ScrollTop {...props}>
