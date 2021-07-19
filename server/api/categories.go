@@ -15,7 +15,12 @@ func findAllCategoris() ([]string, error) {
 
 	DB, err := db.DB()
 
-	defer DB.Client().Disconnect(db.Ctx)
+	defer func() {
+		err := DB.Client().Disconnect(db.Ctx)
+		if err != nil {
+			return
+		}
+	}()
 
 	if err != nil {
 		return nil, err
@@ -24,6 +29,10 @@ func findAllCategoris() ([]string, error) {
 	categoriesProjector := bson.D{{Key: "$project", Value: bson.D{{Key: "categories", Value: 1}, {Key: "_id", Value: 0}}}}
 
 	showCategoriesCursor, err := db.ReviewCollection.Aggregate(db.Ctx, mongo.Pipeline{categoriesProjector})
+
+	if err != nil {
+		return nil, err
+	}
 
 	var decodedCategories []db.Review
 

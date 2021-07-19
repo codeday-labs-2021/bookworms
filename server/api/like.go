@@ -18,7 +18,12 @@ func likeReview(id string, review *db.Review) error {
 
 	DB, err := db.DB()
 
-	defer DB.Client().Disconnect(db.Ctx)
+	defer func() {
+		err := DB.Client().Disconnect(db.Ctx)
+		if err != nil {
+			return
+		}
+	}()
 
 	if err != nil {
 		return err
@@ -51,7 +56,12 @@ func likeReview(id string, review *db.Review) error {
 func findReview(id string, review *db.Review) error {
 	DB, err := db.DB()
 
-	defer DB.Client().Disconnect(db.Ctx)
+	defer func() {
+		err := DB.Client().Disconnect(db.Ctx)
+		if err != nil {
+			return
+		}
+	}()
 
 	if err != nil {
 		return err

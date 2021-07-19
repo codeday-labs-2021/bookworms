@@ -33,7 +33,12 @@ func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 	}
 
 	// close db connection
-	defer DB.Client().Disconnect(db.Ctx)
+	defer func() {
+		err := DB.Client().Disconnect(db.Ctx)
+		if err != nil {
+			return
+		}
+	}()
 
 	opts := options.Find()
 
@@ -84,6 +89,7 @@ func createReview(review *db.Review) error {
 	}
 
 	DB.Collection(utils.ReviewsCollection).InsertOne(db.Ctx, review)
+
 	defer DB.Client().Disconnect(db.Ctx)
 	return nil
 }

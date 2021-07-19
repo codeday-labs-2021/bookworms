@@ -54,7 +54,12 @@ func FilterReviews(filter interface{}) ([]*db.Review, error) {
 	DB, err := db.DB()
 
 	// close db connection
-	defer DB.Client().Disconnect(db.Ctx)
+	defer func() {
+		err := DB.Client().Disconnect(db.Ctx)
+		if err != nil {
+			return
+		}
+	}()
 
 	if err != nil {
 		return nil, err
@@ -63,7 +68,9 @@ func FilterReviews(filter interface{}) ([]*db.Review, error) {
 	cur, err := DB.Collection(ReviewsCollection).Find(db.Ctx, filter)
 
 	// once once done iterating the cursor close
-	defer cur.Close(db.Ctx)
+	defer func() {
+		cur.Close(db.Ctx)
+	}()
 
 	if err != nil {
 		return reviews, err
