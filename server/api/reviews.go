@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 	"time"
 
@@ -8,6 +9,8 @@ import (
 	"github.com/codeday-labs/bookworms/server/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type ReviewBody struct {
@@ -17,8 +20,30 @@ type ReviewBody struct {
 	Categories []string `json:"categories"`
 }
 
-func getAll() ([]*db.Review, error) {
-	return utils.FilterReviews(bson.D{{}})
+func getAll(sortQuery string, searchQuery string, categoriesQuery string) ([]db.Review, error) {
+
+	// log.Println(sortQuery)
+	// log.Println(searchQuery)
+	// log.Println(categoriesQuery)
+
+	opts := options.Find()
+
+	opts.SetSort(bson.D{{Key: "likes", Value: -1}})
+
+	matchKeyWord := bson.D{{Key: "$match", Value: bson.D{{Key: "book_name", Value: searchQuery}}}}
+
+	reviewsCursor, err := db.ReviewCollection.Aggregate(db.Ctx, mongo.Pipeline{matchKeyWord})
+
+	var reviews []db.Review
+
+	if err = reviewsCursor.All(db.Ctx, &reviews); err != nil {
+		return nil, err
+	}
+
+	// agree gaters
+	log.Println(reviews)
+
+	return reviews, nil
 }
 
 func createReview(review *db.Review) error {
@@ -39,23 +64,23 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusNoContent)
 	case http.MethodGet:
-		var reviews []*db.Review
-		var err error
+		// var reviews []db.Review
+		// var err error
 
-		sortQuery := r.URL.Query().Get("sort")
+		// log.Println("here")
 
-		if len(sortQuery) > 0 {
-			//		reviews, err = getAll(sortQuery)
-		} else {
-			reviews, err = getAll()
-		}
+		// sortQuery := r.URL.Query().Get("sort")
+		// searchQuery := r.URL.Query().Get("search")
+		// categoriesQuery := r.URL.Query().Get("categories")
 
-		if err != nil {
-			utils.RespondWithError(w, "Failed to get reviews", http.StatusInternalServerError)
-			return
-		}
+		// reviews, err = getAll(sortQuery, searchQuery, categoriesQuery)
 
-		utils.RespondWithSuccess(w, http.StatusOK, reviews)
+		// if err != nil {
+		// 	utils.RespondWithError(w, "Failed to get reviews", http.StatusInternalServerError)
+		// 	return
+		// }
+
+		// utils.RespondWithSuccess(w, http.StatusOK, reviews)
 
 	case http.MethodPost:
 		var request ReviewBody
