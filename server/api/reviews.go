@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"time"
@@ -53,7 +54,8 @@ func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 		opts.SetSort(bson.D{{Key: "likes", Value: -1}})
 	}
 
-	matchKeyWord := bson.D{{Key: "$match", Value: bson.D{{Key: "book_name", Value: searchQuery}}}}
+	matchKeyWord := bson.D{{Key: "book_name", Value: bson.D{{
+		Key: "$regex", Value: primitive.Regex{Pattern: fmt.Sprintf("^%s.*", searchQuery), Options: "i"}}}}}
 
 	if len(searchQuery) > 0 {
 		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, matchKeyWord, opts)
