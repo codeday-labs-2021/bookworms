@@ -19,21 +19,19 @@ function Home(props) {
     const [isPending, setIsPending] = useState(true);
 
     async function getReview(){
-        fetch('https://bookworms-api.vercel.app/api/reviews', {
+        const response = await fetch('https://bookworms-api.vercel.app/api/reviews', {
             method: 'GET',
             headers: {'Accept': 'application/json'},
-        })
-        .then(response => {
-            return response.json();
-        })
-        .then(reviews => {
-            let dataArray = []
-            for (var i = 0; i < reviews.data.length; i++) {
-                dataArray.push(reviews.data[i])
-            }
-            setData(dataArray);
+        });
+
+        if (!response.ok){
+            const message = `An error has occured: ${response.status}`;
+            throw new Error(message);
+        } else {
+            const reviews = await response.json();
+            setData(reviews.data);
             setIsPending(false);
-        })
+        }
     }
 
     useEffect(() => getReview(), []);
