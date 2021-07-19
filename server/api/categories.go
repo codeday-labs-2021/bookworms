@@ -38,7 +38,7 @@ func findAllCategoris() ([]string, error) {
 	return utils.RemoveDuplicates(categories), nil
 }
 
-func Categories(w http.ResponseWriter, r *http.Request) {
+func CategoriesHandler(w http.ResponseWriter, r *http.Request) {
 	utils.HandleCors(&w, "GET")
 	switch r.Method {
 	case http.MethodOptions:

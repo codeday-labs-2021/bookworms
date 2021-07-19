@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/codeday-labs/bookworms/server/db"
@@ -38,6 +39,10 @@ func SortASC(a []string) []string {
 		}
 	}
 	return a
+}
+
+func ConvertStringToNum(str string) (int, error) {
+	return strconv.Atoi(str)
 }
 
 //FilterReviews based on filter passed

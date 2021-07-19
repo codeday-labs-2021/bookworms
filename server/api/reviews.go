@@ -1,8 +1,9 @@
 package handler
 
 import (
-	"log"
+	"errors"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/codeday-labs/bookworms/server/db"
@@ -20,28 +21,55 @@ type ReviewBody struct {
 	Categories []string `json:"categories"`
 }
 
-func getAll(sortQuery string, searchQuery string, categoriesQuery string) ([]db.Review, error) {
+func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
+	var reviewsCursor *mongo.Cursor
+	var err error
 
-	// log.Println(sortQuery)
-	// log.Println(searchQuery)
-	// log.Println(categoriesQuery)
+	DB, err := db.DB()
+
+	if err != nil {
+		return nil, err
+	}
+
+	// close db connection
+	defer DB.Client().Disconnect(db.Ctx)
 
 	opts := options.Find()
 
-	opts.SetSort(bson.D{{Key: "likes", Value: -1}})
+	if len(sortQuery) > 0 {
+		recencySort, err := utils.ConvertStringToNum(sortQuery)
+
+		if err != nil {
+			return nil, errors.New("Invalid value for sort query")
+		}
+
+		if recencySort == 1 {
+			opts.SetSort(bson.D{{Key: "likes", Value: 1}})
+		} else {
+			opts.SetSort(bson.D{{Key: "likes", Value: -1}})
+		}
+
+	} else {
+		opts.SetSort(bson.D{{Key: "likes", Value: -1}})
+	}
 
 	matchKeyWord := bson.D{{Key: "$match", Value: bson.D{{Key: "book_name", Value: searchQuery}}}}
 
-	reviewsCursor, err := db.ReviewCollection.Aggregate(db.Ctx, mongo.Pipeline{matchKeyWord})
+	if len(searchQuery) > 0 {
+		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, matchKeyWord, opts)
+	} else {
+		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, bson.M{}, opts)
+	}
+
+	if err != nil {
+		return nil, err
+	}
 
 	var reviews []db.Review
 
 	if err = reviewsCursor.All(db.Ctx, &reviews); err != nil {
 		return nil, err
 	}
-
-	// agree gaters
-	log.Println(reviews)
 
 	return reviews, nil
 }
@@ -64,23 +92,26 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusNoContent)
 	case http.MethodGet:
-		// var reviews []db.Review
-		// var err error
+		var reviews []db.Review
+		var err error
 
-		// log.Println("here")
+		query, err := url.ParseQuery(r.URL.RawQuery)
 
-		// sortQuery := r.URL.Query().Get("sort")
-		// searchQuery := r.URL.Query().Get("search")
-		// categoriesQuery := r.URL.Query().Get("categories")
+		if err != nil {
+			utils.RespondWithError(w, "Failed to parse query", http.StatusBadRequest)
+		}
 
-		// reviews, err = getAll(sortQuery, searchQuery, categoriesQuery)
+		sortQuery := query.Get("sort")
+		searchQuery := query.Get("search")
 
-		// if err != nil {
-		// 	utils.RespondWithError(w, "Failed to get reviews", http.StatusInternalServerError)
-		// 	return
-		// }
+		reviews, err = getAll(sortQuery, searchQuery)
 
-		// utils.RespondWithSuccess(w, http.StatusOK, reviews)
+		if err != nil {
+			utils.RespondWithError(w, "Failed to get reviews: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		utils.RespondWithSuccess(w, http.StatusOK, reviews)
 
 	case http.MethodPost:
 		var request ReviewBody
