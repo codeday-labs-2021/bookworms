@@ -29,6 +29,14 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/ping
 
 ### GET /api/reviews
 
+
+This api does three things
+
+- Get all reviews (By default in descending order according to likes)
+- Get all reviews with a partular keyword in books name(Search)
+- Get reviews in ascending order of likes
+
+
 **Example Request**
 
 ```
@@ -75,6 +83,21 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/review
 
 ```
 
+To enable search you need to todo it this way
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?search=Keyword here
+
+```
+
+To do sort and search at the sametime do
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?search=Keyword here&sort=1
+
+```
+
+
 This will return data in descending order based on likes
 
 ### POST /api/reviews
@@ -112,6 +135,9 @@ $ curl -d '{
     }
 }
 ```
+
+
+
 
 ### POST /api/like
 
@@ -158,9 +184,18 @@ $ curl -d '
 **Example Request**
 
 ```
-$ curl https://bookworms-api.vercel.app/api/filter\?categories\=Plantation 
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/filter\?categories\=plantation 
 
 ```
+
+You can also pass two or more variable just make sure to separate with commas
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/filter\?categories\=plantation,Animals 
+
+```
+
+
 
 **Example Response**
 
