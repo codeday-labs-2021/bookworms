@@ -1,6 +1,6 @@
-import logo from './logo192.png';
+import logo from '../logo192.png';
 import {Link} from 'react-router-dom';
-import styles from './css/navBar.module.css'
+import styles from '../css/navBar.module.css'
 
 /**
  * The navigation bar
