@@ -15,7 +15,7 @@ import {useState, useEffect} from 'react';
 
 function Home(props) {    
 
-    const [data, setData] = useState([]);
+    const [reviews, setReviews] = useState([]);
     const [isPending, setIsPending] = useState(true);
 
     async function getReview(){
@@ -28,8 +28,8 @@ function Home(props) {
             const message = `An error has occured: ${response.status}`;
             throw new Error(message);
         } else {
-            const reviews = await response.json();
-            setData(reviews.data);
+            const reviewsArray = await response.json();
+            setReviews(reviewsArray.data);
             setIsPending(false);
         }
     }
@@ -43,7 +43,7 @@ function Home(props) {
                 <div className={styles.topRight}><FilterOrder /></div>
             </div>
             <div className={styles.body}>
-               {isPending ? "Loading..." : <ReviewList reviews={data}/>}
+               {isPending ? "Loading..." : <ReviewList reviews={reviews}/>}
             </div>
             <Toolbar id="back-to-top-anchor" />
                 <ScrollTop {...props}>
