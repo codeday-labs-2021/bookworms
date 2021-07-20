@@ -22,6 +22,8 @@ type ReviewBody struct {
 	Categories []string `json:"categories"`
 }
 
+// Use $text for better search and ranking
+
 func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 	var reviewsCursor *mongo.Cursor
 	var err error
@@ -34,9 +36,8 @@ func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 
 	// close db connection
 	defer func() {
-		err := DB.Client().Disconnect(db.Ctx)
-		if err != nil {
-			return
+		if err := DB.Client().Disconnect(db.Ctx); err != nil {
+			panic(err)
 		}
 	}()
 

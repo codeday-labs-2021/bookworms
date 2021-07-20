@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"sort"
 	"strconv"
 	"strings"
 
@@ -13,32 +14,17 @@ func RemoveDuplicates(arraySlice []string) []string {
 	keys := make(map[string]bool)
 	list := []string{}
 
-	var sliceLowerCase []string
-
 	for _, entry := range arraySlice {
-		sliceLowerCase = append(sliceLowerCase, strings.Trim(strings.ToLower(entry), " "))
-	}
-
-	for _, entry := range sliceLowerCase {
-		if _, value := keys[entry]; !value {
-			keys[entry] = true
-			list = append(list, strings.Title(entry))
+		s := strings.Title(strings.ToLower(strings.Trim(entry, " ")))
+		if _, ok := keys[s]; !ok {
+			keys[s] = true
+			list = append(list, s)
 		}
 	}
-	return SortASC(list)
-}
 
-func SortASC(a []string) []string {
-	for i := 0; i < len(a)-1; i++ {
-		for j := i + 1; j < len(a); j++ {
-			if strings.Compare(a[i], a[j]) > 0 {
-				temp := a[i]
-				a[i] = a[j]
-				a[j] = temp
-			}
-		}
-	}
-	return a
+	sort.Strings(list)
+
+	return list
 }
 
 func ConvertStringToNum(str string) (int, error) {
