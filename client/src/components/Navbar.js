@@ -5,8 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import LoginIcon from '@material-ui/icons/LocalLibrary';
 import Tooltip from '@material-ui/core/Tooltip';
 import styles from '../css/navBar.module.css'
-import {makeStyles} from '@material-ui/core';
-import Login from './Login';
+import Login from './form/Login';
 
 /**
  * The navigation bar
