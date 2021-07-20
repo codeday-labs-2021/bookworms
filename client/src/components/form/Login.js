@@ -2,6 +2,7 @@ import {useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import {Link} from 'react-router-dom';
 
 /**
  * Login pop-up
@@ -11,6 +12,11 @@ import Button from 'react-bootstrap/Button';
 function Login(props) {
 
   const [validated, setValidated] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+
+  const handleClose = () => {
+    props.onHide();
+  }
 
   function handleSubmit(e) {
     const login = e.currentTarget;
@@ -18,7 +24,10 @@ function Login(props) {
     if (login.checkValidity() === false){
         e.stopPropagation();
     } else {
-        // setIsPending(true);
+        setIsPending(true);
+        setTimeout(() => {
+          handleClose();
+      }, 2000);
     }
     setValidated(true);
     e.preventDefault();
@@ -32,7 +41,7 @@ function Login(props) {
       centered
     >
       <Modal.Header>
-        <Modal.Title id="login"> Sign in </Modal.Title>
+        <Modal.Title id="login"> Log in </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -73,12 +82,16 @@ function Login(props) {
               Please provide your thoughts and ideas about the book.
             </Form.Control.Feedback>
           </Form.Group>
-                  
-          <br/>
-          
-          <Button type="submit"> Login </Button>
+
+          <br/>             
+
+          <Button type="submit" disabled={isPending}>  {isPending ? 'Logging in...' : 'Login'} </Button>
         </Form>
       </Modal.Body>
+
+      <Modal.Footer>
+        <Link>Not a registered user?</Link>
+      </Modal.Footer>
     </Modal>
   );
 }
