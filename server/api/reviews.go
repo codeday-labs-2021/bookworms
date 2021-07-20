@@ -1,8 +1,7 @@
 package handler
 
 import (
-	"errors"
-	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -13,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/x/bsonx"
 )
 
 type ReviewBody struct {
@@ -41,33 +41,64 @@ func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 		}
 	}()
 
-	opts := options.Find()
-
-	if len(sortQuery) > 0 {
-		recencySort, err := utils.ConvertStringToNum(sortQuery)
-
-		if err != nil {
-			return nil, errors.New("Invalid value for sort query")
-		}
-
-		if recencySort == 1 {
-			opts.SetSort(bson.D{{Key: "likes", Value: 1}})
-		} else {
-			opts.SetSort(bson.D{{Key: "likes", Value: -1}})
-		}
-
-	} else {
-		opts.SetSort(bson.D{{Key: "likes", Value: -1}})
+	// // Create index
+	indexModel := []mongo.IndexModel{
+		{Keys: bsonx.Doc{{Key: "book_name", Value: bsonx.String("text")}}},
+		{Keys: bsonx.Doc{{Key: "text", Value: bsonx.String("text")}}},
+		{Keys: bsonx.Doc{{Key: "created_at", Value: bsonx.Int32(-1)}}},
 	}
 
-	matchKeyWord := bson.D{{Key: "book_name", Value: bson.D{{
-		Key: "$regex", Value: primitive.Regex{Pattern: fmt.Sprintf("^%s.*", searchQuery), Options: "i"}}}}}
+	indexOptions := options.CreateIndexes().SetMaxTime(10 * time.Second)
 
-	if len(searchQuery) > 0 {
-		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, matchKeyWord, opts)
-	} else {
-		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, bson.M{}, opts)
+	// fmt.Printf("DB.Collection(db.ReviewsCollection).Indexes(): %v\n", DB.Collection(db.ReviewsCollection).Indexes())
+
+	// dropedIndeces, deleteIndeces := DB.Collection(db.ReviewsCollection).Indexes().DropOne(db.Ctx, "text_text")
+
+	// if deleteIndeces != nil {
+	// 	panic(deleteIndeces)
+	// }
+
+	// fmt.Print("Dropped indeces ")
+	// log.Println(dropedIndeces)
+
+	_, errIndex := DB.Collection(db.ReviewsCollection).Indexes().CreateMany(db.Ctx, indexModel, indexOptions)
+
+	if errIndex != nil {
+		log.Println(errIndex.Error())
 	}
+
+	// opts := options.Find()
+
+	// if len(sortQuery) > 0 {
+	// 	recencySort, err := utils.ConvertStringToNum(sortQuery)
+
+	// 	if err != nil {
+	// 		return nil, errors.New("Invalid value for sort query")
+	// 	}
+
+	// 	if recencySort == 1 {
+	// 		opts.SetSort(bson.D{{Key: "likes", Value: 1}})
+	// 	} else {
+	// 		opts.SetSort(bson.D{{Key: "likes", Value: -1}})
+	// 	}
+
+	// } else {
+	// 	opts.SetSort(bson.D{{Key: "likes", Value: -1}})
+	// }
+
+	// Aggreagators
+
+	matchKeyWord := bson.D{{Key: "$match", Value: bson.D{{Key: "$text", Value: bson.D{{Key: "$search", Value: searchQuery}}}}}}
+	sortByRank := bson.D{{Key: "$sort", Value: bson.D{{Key: "score", Value: bson.D{{Key: "$meta", Value: "textScore"}}}}}}
+	// projectFilter := bson.D{{Key: "$project", Value: bson.D{{Key: "text", Value: 1}}}}
+
+	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Aggregate(db.Ctx, mongo.Pipeline{matchKeyWord, sortByRank})
+
+	// if len(searchQuery) > 0 {
+	// 	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, matchKeyWord, opts)
+	// } else {
+	// 	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, bson.M{}, opts)
+	// }
 
 	if err != nil {
 		return nil, err
