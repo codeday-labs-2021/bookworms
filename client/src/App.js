@@ -1,6 +1,6 @@
 import Navbar from './components/Navbar';
 import Home from './Home';
-import Create from './Create';
+import Create from './components/form/Create';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {createTheme, ThemeProvider} from '@material-ui/core';
 

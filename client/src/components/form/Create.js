@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import "bootstrap/dist/css/bootstrap.min.css";
-import styles from './css/create.module.css';
+import styles from '../../css/create.module.css';
 
 /**
  * The user's create view 
