@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -11,8 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/x/bsonx"
 )
 
 type ReviewBody struct {
@@ -42,31 +39,6 @@ func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 	}()
 
 	// // Create index
-	indexModel := []mongo.IndexModel{
-		{Keys: bsonx.Doc{{Key: "book_name", Value: bsonx.String("text")}}},
-		{Keys: bsonx.Doc{{Key: "text", Value: bsonx.String("text")}}},
-		{Keys: bsonx.Doc{{Key: "created_at", Value: bsonx.Int32(-1)}}},
-	}
-
-	indexOptions := options.CreateIndexes().SetMaxTime(10 * time.Second)
-
-	// fmt.Printf("DB.Collection(db.ReviewsCollection).Indexes(): %v\n", DB.Collection(db.ReviewsCollection).Indexes())
-
-	// dropedIndeces, deleteIndeces := DB.Collection(db.ReviewsCollection).Indexes().DropOne(db.Ctx, "text_text")
-
-	// if deleteIndeces != nil {
-	// 	panic(deleteIndeces)
-	// }
-
-	// fmt.Print("Dropped indeces ")
-	// log.Println(dropedIndeces)
-
-	_, errIndex := DB.Collection(db.ReviewsCollection).Indexes().CreateMany(db.Ctx, indexModel, indexOptions)
-
-	if errIndex != nil {
-		log.Println(errIndex.Error())
-	}
-
 	// opts := options.Find()
 
 	// if len(sortQuery) > 0 {
@@ -90,9 +62,10 @@ func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 
 	matchKeyWord := bson.D{{Key: "$match", Value: bson.D{{Key: "$text", Value: bson.D{{Key: "$search", Value: searchQuery}}}}}}
 	sortByRank := bson.D{{Key: "$sort", Value: bson.D{{Key: "score", Value: bson.D{{Key: "$meta", Value: "textScore"}}}}}}
-	// projectFilter := bson.D{{Key: "$project", Value: bson.D{{Key: "text", Value: 1}}}}
+	projectFilter := bson.D{{Key: "$project", Value: bson.D{{Key: "book_name", Value: 1}, {Key: "_id", Value: 0}}}}
 
-	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Aggregate(db.Ctx, mongo.Pipeline{matchKeyWord, sortByRank})
+	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Aggregate(
+		db.Ctx, mongo.Pipeline{matchKeyWord, projectFilter, sortByRank})
 
 	// if len(searchQuery) > 0 {
 	// 	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, matchKeyWord, opts)
