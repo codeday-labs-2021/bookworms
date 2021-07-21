@@ -2,9 +2,11 @@ package handler
 
 import (
 	"errors"
-	"fmt"
+	"log"
 	"net/http"
 	"net/url"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/codeday-labs/bookworms/server/db"
@@ -23,12 +25,13 @@ type ReviewBody struct {
 }
 
 // Use $text for better search and ranking
-
-func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
+func getAll(sortQuery string, searchQuery string, categoriesQuery string) ([]db.Review, error) {
 	var reviewsCursor *mongo.Cursor
 	var err error
 
 	DB, err := db.DB()
+
+	var reviews []db.Review
 
 	// close db connection
 	defer func() {
@@ -60,19 +63,18 @@ func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 		opts.SetSort(bson.D{{Key: "created_at", Value: -1}})
 	}
 
-	// Aggreagators
+	categoriesArr := strings.Split(categoriesQuery, ",")
 
-	matchKeyWord := bson.D{{Key: "book_name", Value: bson.D{{
-		Key: "$regex", Value: primitive.Regex{Pattern: fmt.Sprintf("^%s.*", searchQuery), Options: "i"}}}}}
+	categoriesFilter := bson.M{"categories": bson.M{"$in": categoriesArr}}
 
-	// sortByRank := bson.D{{Key: "$sort", Value: bson.D{{Key: "score", Value: bson.D{{Key: "$meta", Value: "textScore"}}}}}}
-	// projectFilter := bson.D{{Key: "$project", Value: bson.D{{Key: "book_name", Value: 1}, {Key: "_id", Value: 0}}}}
-
-	// reviewsCursor, err = DB.Collection(db.ReviewsCollection).Aggregate(
-	// 	db.Ctx, mongo.Pipeline{matchKeyWord})
-
-	if len(searchQuery) > 0 {
-		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, matchKeyWord, opts)
+	if len(searchQuery) > 0 && len(categoriesQuery) > 0 {
+		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, categoriesFilter, opts)
+		return search(reviewsCursor, err, searchQuery)
+	} else if len(searchQuery) > 0 {
+		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, bson.M{}, opts)
+		return search(reviewsCursor, err, searchQuery)
+	} else if len(categoriesQuery) > 0 {
+		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, categoriesFilter, opts)
 	} else {
 		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, bson.M{}, opts)
 	}
@@ -81,13 +83,55 @@ func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 		return nil, err
 	}
 
-	var reviews []db.Review
-
 	if err = reviewsCursor.All(db.Ctx, &reviews); err != nil {
 		return nil, err
 	}
 
 	return reviews, nil
+}
+
+func search(cursor *mongo.Cursor, err error, search string) ([]db.Review, error) {
+
+	var reviews []db.Review
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err = cursor.All(db.Ctx, &reviews); err != nil {
+		return nil, err
+	}
+
+	occurences := make(map[primitive.ObjectID]int)
+	searchKeywords := strings.Split(search, " ")
+
+	for _, entry := range searchKeywords {
+		for _, item := range reviews {
+			if contains(strings.Split(strings.ToLower(strings.Trim(item.Text, " ")), " "), strings.ToLower(entry)) {
+				occurences[item.ID] += 1
+				log.Println(strings.Split(strings.ToLower(strings.Trim(item.Text, " ")), " "), entry)
+			}
+		}
+	}
+
+	if len(occurences) <= 0 {
+		return reviews, nil
+	}
+
+	sort.SliceStable(reviews, func(i, j int) bool {
+		return occurences[reviews[i].ID] > occurences[reviews[j].ID]
+	})
+
+	return reviews, nil
+}
+
+func contains(slice []string, item string) bool {
+	for _, entry := range slice {
+		if entry == item {
+			return true
+		}
+	}
+	return false
 }
 
 func createReview(review *db.Review) error {
@@ -120,8 +164,9 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 
 		sortQuery := query.Get("sort")
 		searchQuery := query.Get("search")
+		categoriesQuery := query.Get("categories")
 
-		reviews, err = getAll(sortQuery, searchQuery)
+		reviews, err = getAll(sortQuery, searchQuery, categoriesQuery)
 
 		if err != nil {
 			utils.RespondWithError(w, "Failed to get reviews: "+err.Error(), http.StatusInternalServerError)
