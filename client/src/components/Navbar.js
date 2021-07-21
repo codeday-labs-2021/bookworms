@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import LoginIcon from '@material-ui/icons/LocalLibrary';
 import Tooltip from '@material-ui/core/Tooltip';
 import styles from '../css/navBar.module.css'
-import Login from './form/Login';
+import Signin from './form/Signin';
 
 /**
  * The navigation bar
@@ -27,7 +27,7 @@ function Navbar() {
                 <Tooltip title="Login">
                     <LoginIcon color="primary" className={styles.button} fontSize="large" onClick={() => setLoginShow(true)}/>
                 </Tooltip>
-                <Login         
+                <Signin         
                     show={loginShow}
                     onHide={() => setLoginShow(false)}
                 />

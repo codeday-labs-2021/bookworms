@@ -18,16 +18,21 @@ function Login(props) {
     props.onHide();
   }
 
+  const afterSubmit = () => {
+    setIsPending(false);
+  }
+
   function handleSubmit(e) {
     const login = e.currentTarget;
     // check for blank fields
     if (login.checkValidity() === false){
         e.stopPropagation();
     } else {
-        setIsPending(true);
-        setTimeout(() => {
-          handleClose();
+      setTimeout(() => {
+        handleClose();
+        afterSubmit();
       }, 2000);
+      setIsPending(true);
     }
     setValidated(true);
     e.preventDefault();
@@ -90,7 +95,7 @@ function Login(props) {
       </Modal.Body>
 
       <Modal.Footer>
-        <Link>Not a registered user?</Link>
+        <Link to="/signup" onClick={() => handleClose()}>Not a registered user?</Link>
       </Modal.Footer>
     </Modal>
   );
