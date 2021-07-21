@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"time"
@@ -10,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type ReviewBody struct {
@@ -38,40 +41,41 @@ func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 		return nil, err
 	}
 
-	// // Create index
-	// opts := options.Find()
+	opts := options.Find()
 
-	// if len(sortQuery) > 0 {
-	// 	recencySort, err := utils.ConvertStringToNum(sortQuery)
+	if len(sortQuery) > 0 {
+		recencySort, err := utils.ConvertStringToNum(sortQuery)
 
-	// 	if err != nil {
-	// 		return nil, errors.New("Invalid value for sort query")
-	// 	}
+		if err != nil {
+			return nil, errors.New("Invalid value for sort query")
+		}
 
-	// 	if recencySort == 1 {
-	// 		opts.SetSort(bson.D{{Key: "likes", Value: 1}})
-	// 	} else {
-	// 		opts.SetSort(bson.D{{Key: "likes", Value: -1}})
-	// 	}
+		if recencySort == 1 {
+			opts.SetSort(bson.D{{Key: "likes", Value: 1}})
+		} else {
+			opts.SetSort(bson.D{{Key: "likes", Value: -1}})
+		}
 
-	// } else {
-	// 	opts.SetSort(bson.D{{Key: "likes", Value: -1}})
-	// }
+	} else {
+		opts.SetSort(bson.D{{Key: "created_at", Value: -1}})
+	}
 
 	// Aggreagators
 
-	matchKeyWord := bson.D{{Key: "$text", Value: bson.D{{Key: "$search", Value: searchQuery}}}}
+	matchKeyWord := bson.D{{Key: "book_name", Value: bson.D{{
+		Key: "$regex", Value: primitive.Regex{Pattern: fmt.Sprintf("^%s.*", searchQuery), Options: "i"}}}}}
+
 	// sortByRank := bson.D{{Key: "$sort", Value: bson.D{{Key: "score", Value: bson.D{{Key: "$meta", Value: "textScore"}}}}}}
 	// projectFilter := bson.D{{Key: "$project", Value: bson.D{{Key: "book_name", Value: 1}, {Key: "_id", Value: 0}}}}
 
-	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Aggregate(
-		db.Ctx, mongo.Pipeline{matchKeyWord})
+	// reviewsCursor, err = DB.Collection(db.ReviewsCollection).Aggregate(
+	// 	db.Ctx, mongo.Pipeline{matchKeyWord})
 
-	// if len(searchQuery) > 0 {
-	// 	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, matchKeyWord, opts)
-	// } else {
-	// 	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, bson.M{}, opts)
-	// }
+	if len(searchQuery) > 0 {
+		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, matchKeyWord, opts)
+	} else {
+		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, bson.M{}, opts)
+	}
 
 	if err != nil {
 		return nil, err
