@@ -27,16 +27,16 @@ func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 
 	DB, err := db.DB()
 
-	if err != nil {
-		return nil, err
-	}
-
 	// close db connection
 	defer func() {
 		if err := DB.Client().Disconnect(db.Ctx); err != nil {
 			panic(err)
 		}
 	}()
+
+	if err != nil {
+		return nil, err
+	}
 
 	// // Create index
 	// opts := options.Find()
