@@ -60,12 +60,12 @@ func getAll(sortQuery string, searchQuery string) ([]db.Review, error) {
 
 	// Aggreagators
 
-	matchKeyWord := bson.D{{Key: "$match", Value: bson.D{{Key: "$text", Value: bson.D{{Key: "$search", Value: searchQuery}}}}}}
-	sortByRank := bson.D{{Key: "$sort", Value: bson.D{{Key: "score", Value: bson.D{{Key: "$meta", Value: "textScore"}}}}}}
-	projectFilter := bson.D{{Key: "$project", Value: bson.D{{Key: "book_name", Value: 1}, {Key: "_id", Value: 0}}}}
+	matchKeyWord := bson.D{{Key: "$text", Value: bson.D{{Key: "$search", Value: searchQuery}}}}
+	// sortByRank := bson.D{{Key: "$sort", Value: bson.D{{Key: "score", Value: bson.D{{Key: "$meta", Value: "textScore"}}}}}}
+	// projectFilter := bson.D{{Key: "$project", Value: bson.D{{Key: "book_name", Value: 1}, {Key: "_id", Value: 0}}}}
 
 	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Aggregate(
-		db.Ctx, mongo.Pipeline{matchKeyWord, projectFilter, sortByRank})
+		db.Ctx, mongo.Pipeline{matchKeyWord})
 
 	// if len(searchQuery) > 0 {
 	// 	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, matchKeyWord, opts)

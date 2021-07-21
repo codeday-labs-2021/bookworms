@@ -41,9 +41,8 @@ func FilterReviews(filter interface{}) ([]*db.Review, error) {
 
 	// close db connection
 	defer func() {
-		err := DB.Client().Disconnect(db.Ctx)
-		if err != nil {
-			return
+		if err := DB.Client().Disconnect(db.Ctx); err != nil {
+			panic(err)
 		}
 	}()
 
