@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"log"
 	"net/http"
 	"net/url"
 	"sort"
@@ -105,11 +104,11 @@ func search(cursor *mongo.Cursor, err error, search string) ([]db.Review, error)
 	occurences := make(map[primitive.ObjectID]int)
 	searchKeywords := strings.Split(search, " ")
 
-	for _, entry := range searchKeywords {
-		for _, item := range reviews {
+	//Find occurence of keyword in each review
+	for _, item := range reviews {
+		for _, entry := range searchKeywords {
 			if contains(strings.Split(strings.ToLower(strings.Trim(item.Text, " ")), " "), strings.ToLower(entry)) {
 				occurences[item.ID] += 1
-				log.Println(strings.Split(strings.ToLower(strings.Trim(item.Text, " ")), " "), entry)
 			}
 		}
 	}
