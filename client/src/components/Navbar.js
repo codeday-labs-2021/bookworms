@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import SigninIcon from '@material-ui/icons/LocalLibrary';
 import Tooltip from '@material-ui/core/Tooltip';
 import styles from '../css/navBar.module.css'
-import Signin from './form/Signin';
+import Signin from './form/SignIn';
 
 /**
  * The navigation bar
@@ -22,10 +22,10 @@ function Navbar() {
             <Link to="/"> <h1 className={styles.name}>bookworms</h1> </Link>
             <div className={styles.links}>
                 <Tooltip title="Add Reviews">
-                    <Link to ="/create"><AddIcon color="primary" className={styles.button} fontSize="large"/></Link>
+                    <Link to ="/create"><AddIcon color="secondary" className={styles.button} fontSize="large"/></Link>
                 </Tooltip>
-                <Tooltip title="Login">
-                    <SigninIcon color="primary" className={styles.button} fontSize="large" onClick={() => setSignInShow(true)}/>
+                <Tooltip title="Sign In">
+                    <SigninIcon color="secondary" className={styles.button} fontSize="large" onClick={() => setSignInShow(true)}/>
                 </Tooltip>
                 <Signin         
                     show={signInShow}

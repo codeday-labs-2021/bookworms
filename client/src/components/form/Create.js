@@ -92,9 +92,6 @@ function Create () {
                             className={styles.inputArea}
                             onChange={handleChange}/>
                     </Col>
-                    <Form.Control.Feedback type="invalid">
-                        Please provide your name.
-                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formBookName">
@@ -108,9 +105,6 @@ function Create () {
                             className={styles.inputArea}
                             onChange={handleChange}/>
                     </Col>
-                    <Form.Control.Feedback type="invalid">
-                        Please provide the book name.
-                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formReview">
@@ -125,9 +119,6 @@ function Create () {
                             value={text}
                             onChange={handleChange}/>
                     </Col>
-                    <Form.Control.Feedback type="invalid">
-                        Please provide your thoughts and ideas about the book.
-                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formCategory">
@@ -141,9 +132,6 @@ function Create () {
                             value={categories}
                             onChange={handleChange}/>
                     </Col>
-                    <Form.Control.Feedback type="invalid">
-                        Please provide the book categories.
-                    </Form.Control.Feedback>
                 </Form.Group>
                 <Button className={styles.submitButton} disabled={isPending} type="submit"> {isPending ? 'Adding...' : 'Submit'} </Button>
             </Form>

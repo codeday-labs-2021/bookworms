@@ -1,7 +1,7 @@
 import Navbar from './components/Navbar';
 import Home from './Home';
 import Create from './components/form/Create';
-import Signup from './components/form/Signup';
+import Signup from './components/form/SignUp';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {createTheme, ThemeProvider} from '@material-ui/core';
 
@@ -22,22 +22,22 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router basename="/bookworms">
-        <div className="App">
-          <Navbar />
-          <div className="content">
-            <Switch>
-              <Route exact path="/"> 
-                <Home />
-              </Route>
-              <Route path="/create"> 
-                <Create />
-              </Route>
-              <Route path="/signup">
-                <Signup />
-              </Route>
-            </Switch>
+        <Switch>
+          <Route path="/signup">
+            <Signup />
+          </Route>
+          <div className="App">
+            <Navbar />
+            <div className="content">
+                <Route exact path="/"> 
+                  <Home />
+                </Route>
+                <Route path="/create"> 
+                  <Create />
+                </Route>
+            </div>
           </div>
-        </div>
+        </Switch>
       </Router>
     </ThemeProvider>
   );

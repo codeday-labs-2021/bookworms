@@ -1,0 +1,51 @@
+.container {
+    align-items: center;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 3%;
+}
+
+.logo {
+    margin: auto;
+}
+
+.content {
+    background-color: #f9e9d4;
+    margin: 15px auto;
+    border-radius: 8px;
+    max-width: 400px;
+}
+
+.form {
+    align-items: center;
+    width: 90%;
+    padding: 10px;
+    margin: auto;
+}
+
+.field, .mediia {
+    margin-bottom: 10px;
+}
+
+.feedback {
+    text-align: left;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: auto;
+}
+
+.signupButton, .signupButton:active, .signupButton:focus {
+    background: #dd9f33;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.signupButton:hover{
+    background: #b58026;
+}

@@ -23,9 +23,9 @@ function Login(props) {
   }
 
   function handleSubmit(e) {
-    const login = e.currentTarget;
+    const signin = e.currentTarget;
     // check for blank fields
-    if (login.checkValidity() === false){
+    if (signin.checkValidity() === false){
         e.stopPropagation();
     } else {
       setTimeout(() => {
@@ -42,11 +42,11 @@ function Login(props) {
     <Modal
       {...props}
       size="lg"
-      aria-labelledby="login"
+      aria-labelledby="signin"
       centered
     >
       <Modal.Header>
-        <Modal.Title id="login"> Log in </Modal.Title>
+        <Modal.Title id="signin"> Sign in </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -83,19 +83,16 @@ function Login(props) {
             <Form.Check
               type="checkbox"
               label="Remember me"/>
-            <Form.Control.Feedback type="invalid">
-              Please provide your thoughts and ideas about the book.
-            </Form.Control.Feedback>
           </Form.Group>
 
           <br/>             
 
-          <Button type="submit" disabled={isPending}>  {isPending ? 'Logging in...' : 'Login'} </Button>
+          <Button type="submit" disabled={isPending}>  {isPending ? 'Signing in...' : 'Sign in'} </Button>
         </Form>
       </Modal.Body>
 
       <Modal.Footer>
-        <Link to="/signup" onClick={() => handleClose()}>Not a registered user?</Link>
+        <Link to="/signup" onClick={() => handleClose()}> Not a registered user? </Link>
       </Modal.Footer>
     </Modal>
   );
