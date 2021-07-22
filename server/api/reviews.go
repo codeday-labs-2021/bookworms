@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"net/url"
 	"sort"
@@ -23,7 +24,6 @@ type ReviewBody struct {
 	Categories []string `json:"categories"`
 }
 
-// Use $text for better search and ranking
 func getAll(sortQuery string, searchQuery string, categoriesQuery string) ([]db.Review, error) {
 	var reviewsCursor *mongo.Cursor
 	var err error
@@ -35,7 +35,8 @@ func getAll(sortQuery string, searchQuery string, categoriesQuery string) ([]db.
 	// close db connection
 	defer func() {
 		if err := DB.Client().Disconnect(db.Ctx); err != nil {
-			panic(err)
+			log.Println(err.Error())
+			return
 		}
 	}()
 
@@ -101,14 +102,42 @@ func search(cursor *mongo.Cursor, err error, search string) ([]db.Review, error)
 		return nil, err
 	}
 
-	occurences := make(map[primitive.ObjectID]int)
 	searchKeywords := strings.Split(search, " ")
 
+	reviewsWithKeyword := make(map[primitive.ObjectID]db.Review)
+
+	// Review body should contain matched keyword atleast once
+	for _, item := range searchKeywords {
+		for _, entry := range reviews {
+			if contains(strings.Split(strings.ToLower(strings.Trim(entry.Text, " ")), " "), item) {
+				reviewsWithKeyword[entry.ID] = entry
+			}
+		}
+	}
+
+	withKeywordsReviews := make([]db.Review, 0)
+
+	for _, value := range reviewsWithKeyword {
+		withKeywordsReviews = append(withKeywordsReviews, value)
+	}
+
+	occurences := make(map[primitive.ObjectID]map[string]int)
+
 	//Find occurence of keyword in each review
-	for _, item := range reviews {
+	for _, item := range withKeywordsReviews {
 		for _, entry := range searchKeywords {
-			if contains(strings.Split(strings.ToLower(strings.Trim(item.Text, " ")), " "), strings.ToLower(entry)) {
-				occurences[item.ID] += 1
+			reviewBodyArray := strings.Split(strings.ToLower(strings.Trim(item.Text, " ")), " ")
+			for _, reviewItem := range reviewBodyArray {
+				if contains(reviewBodyArray, entry) {
+					_, ok := occurences[item.ID]
+
+					if !ok {
+						occurences[item.ID] = make(map[string]int)
+					}
+					if reviewItem == entry {
+						occurences[item.ID][reviewItem] += 1
+					}
+				}
 			}
 		}
 	}
@@ -117,11 +146,21 @@ func search(cursor *mongo.Cursor, err error, search string) ([]db.Review, error)
 		return reviews, nil
 	}
 
-	sort.SliceStable(reviews, func(i, j int) bool {
-		return occurences[reviews[i].ID] > occurences[reviews[j].ID]
+	log.Println("Occurences: ", occurences)
+
+	occurenceMap := make(map[primitive.ObjectID]int)
+
+	for index, item := range occurences {
+		for _, entry := range item {
+			occurenceMap[index] = entry
+		}
+	}
+
+	sort.SliceStable(withKeywordsReviews, func(i, j int) bool {
+		return occurenceMap[reviews[i].ID] < occurenceMap[reviews[j].ID]
 	})
 
-	return reviews, nil
+	return withKeywordsReviews, nil
 }
 
 func contains(slice []string, item string) bool {
