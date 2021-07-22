@@ -32,10 +32,10 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/ping
 This api does three things
 
 - Get all reviews (By default are arranged in descending order of the date they were created meaning the most recent comes first)
-- Get all reviews with a partular keyword in books name
-- Get reviews in ascending order of likes
+- Get all reviews with a partular keyword in review body(text) 
+- Get reviews  ordered by likes or books names
 - Filter reviews by categories
-- all those operations can also happen in single api call
+- All those operations can also happen in single api call
 
 **Example Request**
 
