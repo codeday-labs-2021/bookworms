@@ -1,7 +1,7 @@
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite'; 
 import {useState} from 'react';
-import styles from './css/reviewList.module.css';
+import styles from '../css/reviewList.module.css';
 
 function ReviewList ({reviews}) {
 

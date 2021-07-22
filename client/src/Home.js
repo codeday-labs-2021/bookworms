@@ -1,4 +1,4 @@
-import ReviewList from './ReviewList';
+import ReviewList from './components/ReviewList';
 import SearchBar from './components/SearchBar';
 import FilterOrder from './components/FilterOrder';
 import Toolbar from '@material-ui/core/Toolbar';
