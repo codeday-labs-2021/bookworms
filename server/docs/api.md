@@ -5,7 +5,6 @@ API Design
 - [POST /api/reviews](#post-apireviews)
 - [GET /api/reviews](#get-apireviews)
 - [POST /api/like](#post-apilike)
-- [GET /api/filter](#get-apifilter)
 - [GET /api/categories](#get-apicategories)
 
 ### GET /ping
@@ -274,22 +273,22 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/catego
 **Example Response**
 ```
 {
-    "success": true,
-    "data": [
-        "Plantation",
-        "Animals",
-        "Fantasy",
-        "Sci-Fi",
-        "Fiction",
-        "Nonfiction",
-        "Science",
-        "Romance",
-        "Drama",
-        "Horror",
-        "Mystery",
-        "Literature",
-        "History"
-    ],
-    "time_stamp": 1626439320890
+  "success": true,
+  "data": [
+      "Animals",
+      "Drama",
+      "Fantasy",
+      "Fiction",
+      "History",
+      "Horror",
+      "Literature",
+      "Mystery",
+      "Nonfiction",
+      "Plantation",
+      "Romance",
+      "Sci-Fi",
+       "Science"
+  ],
+  "time_stamp": 1626953710816
 }
 ```
