@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"log"
 	"net/http"
 	"net/url"
 	"sort"
@@ -24,7 +23,7 @@ type ReviewBody struct {
 	Categories []string `json:"categories"`
 }
 
-func getAll(sortQuery string, searchQuery string, categoriesQuery string) ([]db.Review, error) {
+func getAll(sortQuery string, sortOrder string, searchQuery string, categoriesQuery string) ([]db.Review, error) {
 	var reviewsCursor *mongo.Cursor
 	var err error
 
@@ -35,7 +34,6 @@ func getAll(sortQuery string, searchQuery string, categoriesQuery string) ([]db.
 	// close db connection
 	defer func() {
 		if err := DB.Client().Disconnect(db.Ctx); err != nil {
-			log.Println(err.Error())
 			return
 		}
 	}()
@@ -47,19 +45,24 @@ func getAll(sortQuery string, searchQuery string, categoriesQuery string) ([]db.
 	opts := options.Find()
 
 	if len(sortQuery) > 0 {
-		recencySort, err := utils.ConvertStringToNum(sortQuery)
+
+		if len(sortOrder) < 0 {
+			return nil, errors.New("Specify your sorting order!")
+		}
+
+		recencySort, err := utils.ConvertStringToNum(sortOrder)
 
 		if err != nil {
-			return nil, errors.New("Invalid value for sort query")
+			return nil, errors.New("Invalid value for sort operation")
 		}
 
-		if recencySort == 1 {
-			opts.SetSort(bson.D{{Key: "likes", Value: 1}})
-		} else {
-			opts.SetSort(bson.D{{Key: "likes", Value: -1}})
+		if sortQuery != "likes" && sortQuery != "book_name" {
+			return nil, errors.New("Invalid sort Query")
 		}
 
-	} else if len(searchQuery) < 0 {
+		opts.SetSort(bson.D{{Key: sortQuery, Value: recencySort}})
+
+	} else if len(searchQuery) == 0 {
 		opts.SetSort(bson.D{{Key: "created_at", Value: -1}})
 	}
 
@@ -227,8 +230,9 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 		sortQuery := query.Get("sort")
 		searchQuery := query.Get("search")
 		categoriesQuery := query.Get("categories")
+		sortOrder := query.Get("sortOrder")
 
-		reviews, err = getAll(sortQuery, searchQuery, categoriesQuery)
+		reviews, err = getAll(sortQuery, sortOrder, searchQuery, categoriesQuery)
 
 		if err != nil {
 			utils.RespondWithError(w, "Failed to get reviews: "+err.Error(), http.StatusInternalServerError)

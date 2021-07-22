@@ -32,10 +32,11 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/ping
 
 This api does three things
 
-- Get all reviews (By default in descending order according to likes)
-- Get all reviews with a partular keyword in books name(Search)
+- Get all reviews (By default are arranged in descending order of the date they were created meaning the most recent comes first)
+- Get all reviews with a partular keyword in books name
 - Get reviews in ascending order of likes
-
+- Filter reviews by categories
+- all those operations can also happen in single api call
 
 **Example Request**
 
@@ -69,22 +70,33 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/review
 }
 ```
 
-If you would like to return sorted result according to populality likes
+- If you would like to return sorted result according to populality likes
 
 ```
-$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?sort=1
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?sort=likes&sortOrder=-1
 
 ```
 
-This will return data in ascending order based on likes.
+This means that the api will sort by likes(populality) in descending order
+
+
+   - They are two sorting orders
+   - (-1) for ascending order
+   - (1) for descending order
+
+  If you skip the sorting order the api will yell at you!
+
+This will return data in ascending order based on names.
 
 ```
-$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?sort=-1
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?sort=book_name&sortOrder=1
 
 ```
+
+This will return book reviews sorting in ascending order of the booknames(A-Z)
+
 
 To enable search you need to todo it this way
-
 ```
 $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?search=Keyword here
 
@@ -93,12 +105,26 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/review
 To do sort and search at the sametime do
 
 ```
-$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?search=Keyword here&sort=1
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?search=Keyword here&sort=likes&sortOrder=1
 
 ```
 
 
 This will return data in descending order based on likes
+
+- If you would like to filter the following can be used
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews\?categories\=plantation 
+
+```
+
+You can also pass two or more variable just make sure to separate with commas
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews\?categories\=plantation,Animals 
+
+```
 
 ### POST /api/reviews
 
