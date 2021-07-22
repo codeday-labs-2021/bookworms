@@ -1,17 +1,7 @@
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import FavoriteIcon from '@material-ui/icons/Favorite'; 
-import {useState} from 'react';
+import FavIcon from './FavIcon';
 import styles from '../css/reviewList.module.css';
 
 function ReviewList ({reviews}) {
-
-    const [fav, setFav] = useState(false);
-    const toggleFavorite = () => {
-       setFav(!fav);
-    }
-
-    const FavIcon = fav ? FavoriteIcon : FavoriteBorderIcon;
-
     return (
         <div className="review-list">
             {reviews.map((r) => (
@@ -21,9 +11,7 @@ function ReviewList ({reviews}) {
                     <p> {r.text} </p>
                     <div className={styles.footer}>
                         <p> {r.categories.join(', ')} </p>
-                        <FavIcon 
-                            className={styles.footerRight} 
-                            onClick={toggleFavorite}/>
+                        <FavIcon/>
                     </div>
                 </div>
             ))}
