@@ -92,7 +92,7 @@ function Login(props) {
       </Modal.Body>
 
       <Modal.Footer>
-        <Link to="/signup" onClick={() => handleClose()}> Not a registered user? </Link>
+        <Link to="/signup" onClick={handleClose}> Not a registered user? </Link>
       </Modal.Footer>
     </Modal>
   );
