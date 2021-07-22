@@ -26,11 +26,15 @@
     display: block;
 }
 
-.submitButton, .submitButton:hover, .submitButton:active, .submitButton:focus {
+.submitButton, .submitButton:active, .submitButton:focus {
     background: #dd9f33;
     color: #fff;
     border: 0;
     padding: 8px;
     border-radius: 8px;
     cursor: pointer;
+}
+
+.submitButton:hover {
+    background: #b58026;
 }
