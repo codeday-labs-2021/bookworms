@@ -22,10 +22,10 @@ function Navbar() {
             <Link to="/"> <h1 className={styles.name}>bookworms</h1> </Link>
             <div className={styles.links}>
                 <Tooltip title="Add Reviews">
-                    <Link to ="/create"><AddIcon color="secondary" className={styles.button} fontSize="large"/></Link>
+                    <Link to ="/create"><AddIcon className={styles.button} fontSize="large"/></Link>
                 </Tooltip>
                 <Tooltip title="Sign In">
-                    <SigninIcon color="secondary" className={styles.button} fontSize="large" onClick={() => setSignInShow(true)}/>
+                    <SigninIcon className={styles.button} fontSize="large" onClick={() => setSignInShow(true)}/>
                 </Tooltip>
                 <Signin         
                     show={signInShow}

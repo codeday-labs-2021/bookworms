@@ -25,6 +25,7 @@
 
 .button {
     cursor: pointer;
+    color: #dd9f33;
 }
 
 .button:hover {
