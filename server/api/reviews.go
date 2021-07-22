@@ -174,7 +174,7 @@ func (s SortableReview) Len() int {
 func (s SortableReview) Less(i, j int) bool {
 	less := s.frequency[s.reviews[i].ID] > s.frequency[s.reviews[j].ID]
 	if s.frequency[s.reviews[i].ID] == s.frequency[s.reviews[j].ID] {
-		less = s.reviews[i].Likes < s.reviews[j].Likes
+		less = s.reviews[i].Likes > s.reviews[j].Likes
 	}
 	return less
 }
@@ -252,6 +252,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// validate request and Handle errors
+
 		if len(request.UserName) == 0 || len(request.BookName) == 0 || len(request.Text) == 0 || len(request.Categories) == 0 {
 			utils.RespondWithError(w, "All fields are required", http.StatusBadRequest)
 			return
