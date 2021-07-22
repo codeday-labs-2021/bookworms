@@ -1,7 +1,7 @@
 import Navbar from './components/Navbar';
 import Home from './Home';
 import Create from './components/form/Create';
-import Signup from './components/form/tempSignUp';
+import Signup from './components/form/SignUp';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {createTheme, ThemeProvider} from '@material-ui/core';
 
