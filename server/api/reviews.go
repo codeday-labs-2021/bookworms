@@ -59,7 +59,7 @@ func getAll(sortQuery string, searchQuery string, categoriesQuery string) ([]db.
 			opts.SetSort(bson.D{{Key: "likes", Value: -1}})
 		}
 
-	} else {
+	} else if len(searchQuery) < 0 {
 		opts.SetSort(bson.D{{Key: "created_at", Value: -1}})
 	}
 
@@ -146,8 +146,6 @@ func search(cursor *mongo.Cursor, err error, search string) ([]db.Review, error)
 		return reviews, nil
 	}
 
-	log.Println("Occurences: ", occurences)
-
 	occurenceMap := make(map[primitive.ObjectID]int)
 
 	for index, item := range occurences {
@@ -156,11 +154,37 @@ func search(cursor *mongo.Cursor, err error, search string) ([]db.Review, error)
 		}
 	}
 
-	sort.SliceStable(withKeywordsReviews, func(i, j int) bool {
-		return occurenceMap[reviews[i].ID] < occurenceMap[reviews[j].ID]
-	})
+	sortReviews(&withKeywordsReviews, occurenceMap)
 
 	return withKeywordsReviews, nil
+}
+
+type SortableReview struct {
+	reviews   []db.Review
+	frequency map[primitive.ObjectID]int
+}
+
+func (s SortableReview) Len() int {
+	return len(s.reviews)
+}
+
+func (s SortableReview) Less(i, j int) bool {
+	less := s.frequency[s.reviews[i].ID] > s.frequency[s.reviews[j].ID]
+	if s.frequency[s.reviews[i].ID] == s.frequency[s.reviews[j].ID] {
+		less = s.reviews[i].Likes < s.reviews[j].Likes
+	}
+	return less
+}
+
+func (s SortableReview) Swap(i, j int) {
+	s.reviews[j], s.reviews[i] = s.reviews[i], s.reviews[j]
+}
+
+func sortReviews(reviews *[]db.Review, occurence map[primitive.ObjectID]int) {
+	sort.Sort(SortableReview{
+		reviews:   *reviews,
+		frequency: occurence,
+	})
 }
 
 func contains(slice []string, item string) bool {
