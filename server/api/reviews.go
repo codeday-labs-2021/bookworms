@@ -96,8 +96,8 @@ func search(reviews []db.Review, search string) ([]db.Review, error) {
 	reviewsWithKeyword := make(map[primitive.ObjectID]db.Review)
 
 	// Review body should contain matched keyword atleast once
-	for _, item := range searchKeywords {
-		for _, entry := range reviews {
+	for _, entry := range reviews {
+		for _, item := range searchKeywords {
 			if strings.Contains(strings.ToLower(entry.Text), item) {
 				reviewsWithKeyword[entry.ID] = entry
 			}
@@ -110,24 +110,12 @@ func search(reviews []db.Review, search string) ([]db.Review, error) {
 		withKeywordsReviews = append(withKeywordsReviews, value)
 	}
 
-	occurences := make(map[primitive.ObjectID]map[string]int)
+	occurences := make(map[primitive.ObjectID]int)
 
 	//Find occurence of keyword in each review
 	for _, item := range withKeywordsReviews {
 		for _, entry := range searchKeywords {
-			reviewBodyArray := strings.Split(strings.ToLower(strings.Trim(item.Text, " ")), " ")
-			for _, reviewItem := range reviewBodyArray {
-				if contains(reviewBodyArray, entry) {
-					_, ok := occurences[item.ID]
-
-					if !ok {
-						occurences[item.ID] = make(map[string]int)
-					}
-					if reviewItem == entry {
-						occurences[item.ID][reviewItem] += 1
-					}
-				}
-			}
+			occurences[item.ID] += strings.Count(strings.ToLower(item.Text), entry)
 		}
 	}
 
@@ -135,15 +123,7 @@ func search(reviews []db.Review, search string) ([]db.Review, error) {
 		return reviews, nil
 	}
 
-	occurenceMap := make(map[primitive.ObjectID]int)
-
-	for index, item := range occurences {
-		for _, entry := range item {
-			occurenceMap[index] = entry
-		}
-	}
-
-	sortReviews(&withKeywordsReviews, occurenceMap)
+	sortReviews(&withKeywordsReviews, occurences)
 
 	return withKeywordsReviews, nil
 }
