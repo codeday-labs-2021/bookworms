@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"net/url"
 	"sort"
@@ -91,7 +92,7 @@ func getReviews(sortQuery string, sortOrder string, searchQuery string, categori
 
 func search(reviews []db.Review, search string) ([]db.Review, error) {
 
-	searchKeywords := strings.Split(search, " ")
+	searchKeywords := utils.RemoveDuplicateUtility(strings.Split(search, " "))
 
 	reviewsWithKeyword := make(map[primitive.ObjectID]db.Review)
 
@@ -122,6 +123,8 @@ func search(reviews []db.Review, search string) ([]db.Review, error) {
 	if len(occurences) == 0 {
 		return reviews, nil
 	}
+
+	log.Println(occurences)
 
 	sortReviews(&withKeywordsReviews, occurences)
 

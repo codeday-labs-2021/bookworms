@@ -10,20 +10,31 @@ import (
 
 const ReviewsCollection string = "review"
 
-func RemoveDuplicates(arraySlice []string) []string {
+func RemoveDuplicatesAndSort(arraySlice []string) []string {
+	list := RemoveDuplicateUtility(arraySlice)
+
+	sort.Strings(list)
+
+	var output []string
+
+	for _, item := range list {
+		output = append(output, strings.Title(item))
+	}
+
+	return output
+}
+
+func RemoveDuplicateUtility(arraySlice []string) []string {
 	keys := make(map[string]bool)
 	list := []string{}
 
 	for _, entry := range arraySlice {
-		s := strings.Title(strings.ToLower(strings.Trim(entry, " ")))
+		s := strings.ToLower(strings.Trim(entry, " "))
 		if _, ok := keys[s]; !ok {
 			keys[s] = true
 			list = append(list, s)
 		}
 	}
-
-	sort.Strings(list)
-
 	return list
 }
 

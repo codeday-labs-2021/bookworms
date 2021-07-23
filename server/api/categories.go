@@ -43,7 +43,7 @@ func findAllCategoris() ([]string, error) {
 		categories = append(categories, value.Categories...)
 	}
 
-	return utils.RemoveDuplicates(categories), nil
+	return utils.RemoveDuplicatesAndSort(categories), nil
 }
 
 func CategoriesHandler(w http.ResponseWriter, r *http.Request) {
