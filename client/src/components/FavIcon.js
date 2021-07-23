@@ -7,19 +7,19 @@ class FavIcon extends Component {
   constructor() {
     super();
     this.state = {
-      liked: false
+      faved: false
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
     this.setState({
-      liked: !this.state.liked
+      faved: !this.state.faved
     });
   }
 
   render() {
-    const label = this.state.liked ? <FavoriteIcon/> : <UnfavoriteIcon/>;
+    const label = this.state.faved ? <FavoriteIcon/> : <UnfavoriteIcon/>;
 
     return (
         <span onClick={this.handleClick} className={styles.fav}>
