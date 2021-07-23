@@ -66,21 +66,13 @@ func getAll(sortQuery string, sortOrder string, searchQuery string, categoriesQu
 		opts.SetSort(bson.D{{Key: "created_at", Value: -1}})
 	}
 
-	categoriesArr := strings.Split(categoriesQuery, ",")
+	filter := bson.M{}
 
-	categoriesFilter := bson.M{"categories": bson.M{"$in": categoriesArr}}
-
-	if len(searchQuery) > 0 && len(categoriesQuery) > 0 {
-		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, categoriesFilter, opts)
-		return search(reviewsCursor, err, searchQuery)
-	} else if len(searchQuery) > 0 {
-		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, bson.M{}, opts)
-		return search(reviewsCursor, err, searchQuery)
-	} else if len(categoriesQuery) > 0 {
-		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, categoriesFilter, opts)
-	} else {
-		reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, bson.M{}, opts)
+	if len(categoriesQuery) > 0 {
+		filter = bson.M{"categories": bson.M{"$in": strings.Split(categoriesQuery, ",")}}
 	}
+
+	reviewsCursor, err = DB.Collection(db.ReviewsCollection).Find(db.Ctx, filter, opts)
 
 	if err != nil {
 		return nil, err
@@ -90,20 +82,14 @@ func getAll(sortQuery string, sortOrder string, searchQuery string, categoriesQu
 		return nil, err
 	}
 
+	if len(searchQuery) > 0 {
+		return search(reviews, searchQuery)
+	}
+
 	return reviews, nil
 }
 
-func search(cursor *mongo.Cursor, err error, search string) ([]db.Review, error) {
-
-	var reviews []db.Review
-
-	if err != nil {
-		return nil, err
-	}
-
-	if err = cursor.All(db.Ctx, &reviews); err != nil {
-		return nil, err
-	}
+func search(reviews []db.Review, search string) ([]db.Review, error) {
 
 	searchKeywords := strings.Split(search, " ")
 

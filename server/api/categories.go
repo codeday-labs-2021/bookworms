@@ -25,8 +25,6 @@ func findAllCategoris() ([]string, error) {
 		return nil, err
 	}
 
-
-
 	categoriesProjector := bson.D{{Key: "$project", Value: bson.D{{Key: "categories", Value: 1}, {Key: "_id", Value: 0}}}}
 
 	showCategoriesCursor, err := db.ReviewCollection.Aggregate(db.Ctx, mongo.Pipeline{categoriesProjector})
