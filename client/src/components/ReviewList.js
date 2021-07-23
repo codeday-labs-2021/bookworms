@@ -12,6 +12,7 @@ function ReviewList ({reviews}) {
                     <div className={styles.footer}>
                         <p> {r.categories.join(', ')} </p>
                         <FavIcon/>
+                        <p> {r.likes} </p>
                     </div>
                 </div>
             ))}
