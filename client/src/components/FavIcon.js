@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import {Component} from 'react';
 import UnfavoriteIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import styles from '../css/favIcon.module.css';
