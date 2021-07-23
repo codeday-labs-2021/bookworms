@@ -22,9 +22,9 @@ class FavIcon extends Component {
     const label = this.state.liked ? <FavoriteIcon/> : <UnfavoriteIcon/>;
 
     return (
-        <button onClick={this.handleClick} className={styles.fav}>
+        <span onClick={this.handleClick} className={styles.fav}>
           {label}
-        </button>
+        </span>
     );
   }
 }
