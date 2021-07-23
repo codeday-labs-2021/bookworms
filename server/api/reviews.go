@@ -53,10 +53,10 @@ func getReviews(sortQuery string, sortOrder string, searchQuery string, categori
 		numSortOrder, err := utils.ConvertStringToNum(sortOrder)
 
 		if err != nil {
-			return nil, errors.New("Invalid value for sort operation")
+			numSortOrder = -1
 		}
 
-		if sortQuery != "likes" && sortQuery != "book_name" && sortQuery != "created_at" {
+		if validateSort(sortQuery) {
 			return nil, errors.New("Invalid sort Query")
 		}
 
@@ -83,13 +83,25 @@ func getReviews(sortQuery string, sortOrder string, searchQuery string, categori
 	}
 
 	if len(searchQuery) > 0 {
-		return search(reviews, searchQuery)
+
+		var sort string
+
+		if len(sortQuery) > 0 && validateSort(sortQuery) {
+			sort = sortQuery
+		} else {
+			sort = "likes"
+		}
+		return search(reviews, searchQuery, sort)
 	}
 
 	return reviews, nil
 }
 
-func search(reviews []db.Review, search string) ([]db.Review, error) {
+func validateSort(sortQuery string) bool {
+	return sortQuery != "likes" && sortQuery != "book_name" && sortQuery != "created_at"
+}
+
+func search(reviews []db.Review, search string, sort string) ([]db.Review, error) {
 
 	searchKeywords := utils.RemoveDuplicateUtility(strings.Split(search, " "))
 
@@ -123,7 +135,7 @@ func search(reviews []db.Review, search string) ([]db.Review, error) {
 		return reviews, nil
 	}
 
-	sortReviews(&withKeywordsReviews, occurences)
+	sortReviews(&withKeywordsReviews, occurences, sort)
 
 	return withKeywordsReviews, nil
 }
@@ -131,6 +143,7 @@ func search(reviews []db.Review, search string) ([]db.Review, error) {
 type SortableReview struct {
 	reviews   []db.Review
 	frequency map[primitive.ObjectID]int
+	sortQuery string
 }
 
 func (s SortableReview) Len() int {
@@ -140,7 +153,13 @@ func (s SortableReview) Len() int {
 func (s SortableReview) Less(i, j int) bool {
 	less := s.frequency[s.reviews[i].ID] > s.frequency[s.reviews[j].ID]
 	if s.frequency[s.reviews[i].ID] == s.frequency[s.reviews[j].ID] {
-		less = s.reviews[i].Likes > s.reviews[j].Likes
+		if s.sortQuery == "book_name" {
+			less = s.reviews[i].BookName > s.reviews[j].BookName
+		} else if s.sortQuery == "created_at" {
+			less = utils.ConvertDate(s.reviews[i].CreatedAt) > utils.ConvertDate(s.reviews[j].CreatedAt)
+		} else {
+			less = s.reviews[i].Likes > s.reviews[j].Likes
+		}
 	}
 	return less
 }
@@ -149,20 +168,12 @@ func (s SortableReview) Swap(i, j int) {
 	s.reviews[j], s.reviews[i] = s.reviews[i], s.reviews[j]
 }
 
-func sortReviews(reviews *[]db.Review, occurence map[primitive.ObjectID]int) {
+func sortReviews(reviews *[]db.Review, occurence map[primitive.ObjectID]int, sortQuery string) {
 	sort.Sort(SortableReview{
 		reviews:   *reviews,
 		frequency: occurence,
+		sortQuery: sortQuery,
 	})
-}
-
-func contains(slice []string, item string) bool {
-	for _, entry := range slice {
-		if entry == item {
-			return true
-		}
-	}
-	return false
 }
 
 func createReview(review *db.Review) error {
@@ -218,7 +229,6 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// validate request and Handle errors
-
 		if len(request.UserName) == 0 || len(request.BookName) == 0 || len(request.Text) == 0 || len(request.Categories) == 0 {
 			utils.RespondWithError(w, "All fields are required", http.StatusBadRequest)
 			return
