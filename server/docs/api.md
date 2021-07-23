@@ -33,7 +33,7 @@ This api does three things
 
 - Get all reviews (By default are arranged in descending order of the date they were created meaning the most recent comes first)
 - Get all reviews with a partular keyword in review body(text) 
-- Get reviews  ordered by likes or books names
+- Get reviews  ordered by likes(use `likes` in request) , books names(use `book_name`) or recency (use `created_at`)
 - Filter reviews by categories
 - All those operations can also happen in single api call
 

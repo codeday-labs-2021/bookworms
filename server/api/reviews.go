@@ -23,7 +23,7 @@ type ReviewBody struct {
 	Categories []string `json:"categories"`
 }
 
-func getAll(sortQuery string, sortOrder string, searchQuery string, categoriesQuery string) ([]db.Review, error) {
+func getReviews(sortQuery string, sortOrder string, searchQuery string, categoriesQuery string) ([]db.Review, error) {
 	var reviewsCursor *mongo.Cursor
 	var err error
 
@@ -56,7 +56,7 @@ func getAll(sortQuery string, sortOrder string, searchQuery string, categoriesQu
 			return nil, errors.New("Invalid value for sort operation")
 		}
 
-		if sortQuery != "likes" && sortQuery != "book_name" {
+		if sortQuery != "likes" && sortQuery != "book_name" && sortQuery != "created_at" {
 			return nil, errors.New("Invalid sort Query")
 		}
 
@@ -98,7 +98,7 @@ func search(reviews []db.Review, search string) ([]db.Review, error) {
 	// Review body should contain matched keyword atleast once
 	for _, item := range searchKeywords {
 		for _, entry := range reviews {
-			if contains(strings.Split(strings.ToLower(strings.Trim(entry.Text, " ")), " "), item) {
+			if strings.Contains(strings.ToLower(entry.Text), item) {
 				reviewsWithKeyword[entry.ID] = entry
 			}
 		}
@@ -131,7 +131,7 @@ func search(reviews []db.Review, search string) ([]db.Review, error) {
 		}
 	}
 
-	if len(occurences) <= 0 {
+	if len(occurences) == 0 {
 		return reviews, nil
 	}
 
@@ -218,7 +218,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 		categoriesQuery := query.Get("categories")
 		sortOrder := query.Get("sortOrder")
 
-		reviews, err = getAll(sortQuery, sortOrder, searchQuery, categoriesQuery)
+		reviews, err = getReviews(sortQuery, sortOrder, searchQuery, categoriesQuery)
 
 		if err != nil {
 			utils.RespondWithError(w, "Failed to get reviews: "+err.Error(), http.StatusInternalServerError)
