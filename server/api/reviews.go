@@ -34,7 +34,7 @@ func getAll(sortQuery string, sortOrder string, searchQuery string, categoriesQu
 	// close db connection
 	defer func() {
 		if err := DB.Client().Disconnect(db.Ctx); err != nil {
-			return
+			panic(err)
 		}
 	}()
 
@@ -50,7 +50,7 @@ func getAll(sortQuery string, sortOrder string, searchQuery string, categoriesQu
 			return nil, errors.New("Specify your sorting order!")
 		}
 
-		recencySort, err := utils.ConvertStringToNum(sortOrder)
+		numSortOrder, err := utils.ConvertStringToNum(sortOrder)
 
 		if err != nil {
 			return nil, errors.New("Invalid value for sort operation")
@@ -60,7 +60,7 @@ func getAll(sortQuery string, sortOrder string, searchQuery string, categoriesQu
 			return nil, errors.New("Invalid sort Query")
 		}
 
-		opts.SetSort(bson.D{{Key: sortQuery, Value: recencySort}})
+		opts.SetSort(bson.D{{Key: sortQuery, Value: numSortOrder}})
 
 	} else if len(searchQuery) == 0 {
 		opts.SetSort(bson.D{{Key: "created_at", Value: -1}})

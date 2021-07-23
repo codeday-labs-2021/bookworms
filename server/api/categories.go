@@ -15,15 +15,17 @@ func findAllCategoris() ([]string, error) {
 
 	DB, err := db.DB()
 
-	if err != nil {
-		return nil, err
-	}
-
 	defer func() {
 		if err := DB.Client().Disconnect(db.Ctx); err != nil {
 			panic(err)
 		}
 	}()
+
+	if err != nil {
+		return nil, err
+	}
+
+
 
 	categoriesProjector := bson.D{{Key: "$project", Value: bson.D{{Key: "categories", Value: 1}, {Key: "_id", Value: 0}}}}
 
