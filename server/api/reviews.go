@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"log"
 	"net/http"
 	"net/url"
 	"sort"
@@ -123,8 +122,6 @@ func search(reviews []db.Review, search string) ([]db.Review, error) {
 	if len(occurences) == 0 {
 		return reviews, nil
 	}
-
-	log.Println(occurences)
 
 	sortReviews(&withKeywordsReviews, occurences)
 
