@@ -5,7 +5,7 @@ API Design
 - [POST /api/reviews](#post-apireviews)
 - [GET /api/reviews](#get-apireviews)
 - [POST /api/like](#post-apilike)
-- [GET /api/filter](#get-apifilter)
+- [GET /api/categories](#get-apicategories)
 
 ### GET /ping
 
@@ -27,6 +27,15 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/ping
 
 
 ### GET /api/reviews
+
+
+This api does three things
+
+- Get all reviews (By default are arranged in descending order of the date they were created meaning the most recent comes first)
+- Get all reviews with a partular keyword in review body(text) 
+- Get reviews  ordered by likes(use `likes` in request) , books names(use `book_name`) or recency (use `created_at`)
+- Filter reviews by categories
+- All those operations can also happen in single api call
 
 **Example Request**
 
@@ -58,6 +67,62 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/review
         }
     ]
 }
+```
+
+- If you would like to return sorted result according to populality likes
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?sort=likes&sortOrder=-1
+
+```
+
+This means that the api will sort by likes(populality) in descending order
+
+
+   - They are two sorting orders
+   - (-1) for ascending order
+   - (1) for descending order
+
+  If you skip the sorting order the api will yell at you!
+
+This will return data in ascending order based on names.
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?sort=book_name&sortOrder=1
+
+```
+
+This will return book reviews sorting in ascending order of the booknames(A-Z)
+
+
+To enable search you need to todo it this way
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?search=Keyword here
+
+```
+
+To do sort and search at the sametime do
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews?search=Keyword here&sort=likes&sortOrder=1
+
+```
+
+
+This will return data in descending order based on likes
+
+- If you would like to filter the following can be used
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews\?categories\=plantation 
+
+```
+
+You can also pass two or more variable just make sure to separate with commas
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews\?categories\=plantation,Animals 
+
 ```
 
 ### POST /api/reviews
@@ -95,6 +160,9 @@ $ curl -d '{
     }
 }
 ```
+
+
+
 
 ### POST /api/like
 
@@ -141,9 +209,18 @@ $ curl -d '
 **Example Request**
 
 ```
-$ curl https://bookworms-api.vercel.app/api/filter\?categories\=Plantation 
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/filter\?categories\=plantation 
 
 ```
+
+You can also pass two or more variable just make sure to separate with commas
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/filter\?categories\=plantation,Animals 
+
+```
+
+
 
 **Example Response**
 
@@ -180,5 +257,38 @@ $ curl https://bookworms-api.vercel.app/api/filter\?categories\=Plantation
         }
     ],
     "time_stamp": "Wed Jul 14 13:27:28 +0200 2021"
+}
+```
+
+### GET /api/categories
+
+
+**Example Request**
+
+```
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/categories
+```
+
+
+**Example Response**
+```
+{
+  "success": true,
+  "data": [
+      "Animals",
+      "Drama",
+      "Fantasy",
+      "Fiction",
+      "History",
+      "Horror",
+      "Literature",
+      "Mystery",
+      "Nonfiction",
+      "Plantation",
+      "Romance",
+      "Sci-Fi",
+       "Science"
+  ],
+  "time_stamp": 1626953710816
 }
 ```

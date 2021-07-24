@@ -1,8 +1,46 @@
 package utils
 
-import "github.com/codeday-labs/bookworms/server/db"
+import (
+	"sort"
+	"strconv"
+	"strings"
+
+	"github.com/codeday-labs/bookworms/server/db"
+)
 
 const ReviewsCollection string = "review"
+
+func RemoveDuplicatesAndSort(arraySlice []string) []string {
+	list := RemoveDuplicateUtility(arraySlice)
+
+	sort.Strings(list)
+
+	var output []string
+
+	for _, item := range list {
+		output = append(output, strings.Title(item))
+	}
+
+	return output
+}
+
+func RemoveDuplicateUtility(arraySlice []string) []string {
+	keys := make(map[string]bool)
+	list := []string{}
+
+	for _, entry := range arraySlice {
+		s := strings.ToLower(strings.Trim(entry, " "))
+		if _, ok := keys[s]; !ok {
+			keys[s] = true
+			list = append(list, s)
+		}
+	}
+	return list
+}
+
+func ConvertStringToNum(str string) (int, error) {
+	return strconv.Atoi(str)
+}
 
 //FilterReviews based on filter passed
 func FilterReviews(filter interface{}) ([]*db.Review, error) {
@@ -13,7 +51,11 @@ func FilterReviews(filter interface{}) ([]*db.Review, error) {
 	DB, err := db.DB()
 
 	// close db connection
-	defer DB.Client().Disconnect(db.Ctx)
+	defer func() {
+		if err := DB.Client().Disconnect(db.Ctx); err != nil {
+			panic(err)
+		}
+	}()
 
 	if err != nil {
 		return nil, err
@@ -22,7 +64,9 @@ func FilterReviews(filter interface{}) ([]*db.Review, error) {
 	cur, err := DB.Collection(ReviewsCollection).Find(db.Ctx, filter)
 
 	// once once done iterating the cursor close
-	defer cur.Close(db.Ctx)
+	defer func() {
+		cur.Close(db.Ctx)
+	}()
 
 	if err != nil {
 		return reviews, err
