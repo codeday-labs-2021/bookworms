@@ -5,8 +5,9 @@
     align-items: center;
     max-width: 600px;
     margin: 0 auto;
+    height: 90px;
     border-bottom: 1px solid #f2f2f2;
-    /* background-color: #f9e9d4; */
+    background-color: #f9e9d4;
 }
 
 .name {
@@ -22,11 +23,13 @@
     padding: 6px;
 }
 
-.addButton {
-    background: #dd9f33;
-    color: #fff;
-    border: 0;
-    padding: 8px;
-    border-radius: 8px;
+.button {
     cursor: pointer;
+    color: #dd9f33;
+}
+
+.button:hover {
+    border: 0px;
+    background: #d3b792;
+    border-radius: 50%;
 }
