@@ -6,6 +6,8 @@ API Design
 - [GET /api/reviews](#get-apireviews)
 - [POST /api/like](#post-apilike)
 - [GET /api/categories](#get-apicategories)
+- [POST /api/signin](#post-apisignin)
+- [POST /api/signup](#post-apisignup)
 
 ### GET /ping
 
@@ -291,4 +293,67 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/catego
   ],
   "time_stamp": 1626953710816
 }
+```
+
+### POST /api/signup
+
+
+**Example Request**
+
+```
+$ curl --location --request POST 'https://bookworms-api.vercel.app/api/signup' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "names":"test",
+    "email":"user@gmail.com",
+    "password":"12345"
+}'
+```
+
+
+**Example Response**
+```
+201 ok
+
+{
+    "success": true,
+    "data": {
+        "names": "test",
+        "email": "user@gmail.com",
+        "created_at": 1627117527701,
+        "updated_at": 1627117527701
+    },
+    "time_stamp": 1627117528559
+}
+
+```
+
+### POST /api/signin
+
+
+**Example Request**
+
+```
+$ curl --location --request POST 'localhost:3000/api/signin' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email":"user@gmail.com",
+    "password":"12345"
+}'
+
+```
+
+
+**Example Response**
+```
+200 ok
+
+{
+    "success": true,
+    "data": {
+        "message": true
+    },
+    "time_stamp": 1627132610917
+}
+
 ```
