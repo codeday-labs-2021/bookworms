@@ -8,6 +8,7 @@ API Design
 - [GET /api/categories](#get-apicategories)
 - [POST /api/signin](#post-apisignin)
 - [POST /api/signup](#post-apisignup)
+- [DELETE /api/reviews/:id](#delete-apideleteid)
 
 ### GET /ping
 
@@ -325,7 +326,6 @@ $ curl --location --request POST 'https://bookworms-api.vercel.app/api/signup' \
     },
     "time_stamp": 1627117528559
 }
-
 ```
 
 ### POST /api/signin
@@ -340,7 +340,6 @@ $ curl --location --request POST 'https://bookworms-api.vercel.app/api/signin' \
     "email":"user@gmail.com",
     "password":"12345"
 }'
-
 ```
 
 
@@ -355,5 +354,27 @@ $ curl --location --request POST 'https://bookworms-api.vercel.app/api/signin' \
     },
     "time_stamp": 1627132610917
 }
+```
 
+
+### DELETE /api/reviews/:id
+
+**Example Request**
+
+```
+$ curl --location --request DELETE 'https://bookworms-api.vercel.app/api/reviews/60feb2279d2d5eb2d830112b' \
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7ImlkIjoiNjBmZTkzZDljZjRiMDQwMjYxMGMyNWNjIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmEkMTQkbzJFOElRM3pja256aS9WbDZiMnh6dXVseHpWT05LMlphekREZkxQLlVubjJHM1lHTHhZNjYiLCJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDIxLTA3LTI2VDEwOjUyOjEwLjc4NVoiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNy0yNlQxMDo1MjoxMC43ODVaIn0sImV4cCI6MTYyNzM4NDQyMH0.6NnP7Nd8GTFTmy4z0glW50MjqyzJXZxjHOBldnZNj3w' 
+
+```
+
+**Example Response**
+
+```
+200 OK
+
+{
+    "success": true,
+    "data": null,
+    "time_stamp": 1627304512354
+}
 ```
