@@ -304,10 +304,10 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/catego
 $ curl --location --request POST 'https://bookworms-api.vercel.app/api/signup' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "names":"test",
-    "email":"user@gmail.com",
-    "password":"12345"
-}'
+    "name":"test",
+    "email":"test@test.com",
+    "password":"123456"
+}' 
 ```
 
 
@@ -334,7 +334,7 @@ $ curl --location --request POST 'https://bookworms-api.vercel.app/api/signup' \
 **Example Request**
 
 ```
-$ curl --location --request POST 'localhost:3000/api/signin' \
+$ curl --location --request POST 'https://bookworms-api.vercel.app/api/signin' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "email":"user@gmail.com",

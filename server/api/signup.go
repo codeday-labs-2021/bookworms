@@ -38,7 +38,7 @@ func signUp(request signupRequest) (*signupResponse, error) {
 
 	newUser := db.User{
 		ID:        primitive.NewObjectID(),
-		Names:     request.Names,
+		Name:      request.Name,
 		Email:     request.Email,
 		Password:  utils.HashPassword(request.Password),
 		CreatedAt: time.Now(),
@@ -48,7 +48,7 @@ func signUp(request signupRequest) (*signupResponse, error) {
 	DB.Collection(db.UserCollection).InsertOne(db.Ctx, newUser)
 
 	return &signupResponse{
-		Names:     newUser.Names,
+		Name:      newUser.Name,
 		Email:     newUser.Email,
 		CreatedAt: utils.ConvertDate(newUser.CreatedAt),
 		UpdatedAt: utils.ConvertDate(newUser.UpdatedAt),
@@ -56,14 +56,14 @@ func signUp(request signupRequest) (*signupResponse, error) {
 }
 
 type signupResponse struct {
-	Names     string `json:"names"`
+	Name      string `json:"name"`
 	Email     string `json:"email"`
 	CreatedAt int64  `json:"created_at"`
 	UpdatedAt int64  `json:"updated_at"`
 }
 
 type signupRequest struct {
-	Names    string `json:"names"`
+	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
@@ -85,7 +85,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if len(request.Email) == 0 || len(request.Names) == 0 || len(request.Password) == 0 {
+		if len(request.Email) == 0 || len(request.Name) == 0 || len(request.Password) == 0 {
 			utils.RespondWithError(w, "All fields are required!", http.StatusNotFound)
 			return
 		}
