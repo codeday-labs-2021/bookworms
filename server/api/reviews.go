@@ -22,10 +22,6 @@ type ReviewBody struct {
 	Categories []string `json:"categories"`
 }
 
-type DeleteResponse struct {
-	Message bool `json:"message"`
-}
-
 func getReviews(sortQuery string, sortOrder string, searchQuery string, categoriesQuery string) ([]db.Review, error) {
 	var reviewsCursor *mongo.Cursor
 	var err error
@@ -193,7 +189,7 @@ func createReview(review *db.Review) error {
 }
 
 func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
-	utils.HandleCors(&w, "GET, POST")
+	utils.HandleCors(&w, "GET, POST, DELETE")
 	switch r.Method {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusNoContent)
@@ -249,7 +245,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 			CreatedAt:  time.Now(),
 			UpdatedAt:  time.Now(),
 			BookName:   request.BookName,
-			User:       user.ID,
+			UserID:     user.ID,
 			Text:       request.Text,
 			Categories: request.Categories,
 		}
@@ -311,7 +307,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if reviewFromID.User != user.ID {
+		if reviewFromID.UserID != user.ID {
 			utils.RespondWithError(w, "You are not allowed to delete review you don't own!", http.StatusNonAuthoritativeInfo)
 			return
 		}
@@ -320,6 +316,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			utils.RespondWithError(w, "Delete failed!", http.StatusInternalServerError)
+			return
 		}
 
 		utils.RespondWithSuccess(w, http.StatusOK, nil)

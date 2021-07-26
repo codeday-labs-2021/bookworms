@@ -14,7 +14,7 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-var Jwt_key = []byte(os.Getenv("kdksksm2039"))
+var Jwt_key = []byte(os.Getenv("JWT_SECRET"))
 
 func GetUserFromCookie(r *http.Request) (*db.User, error) {
 	cookie, err := r.Cookie("token")

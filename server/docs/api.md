@@ -4,7 +4,7 @@ API Design
 - [GET /ping](#get-ping)
 - [POST /api/reviews](#post-apireviews)
 - [GET /api/reviews](#get-apireviews)
-- [POST /api/like](#post-apilike)
+- [POST /api/like/:id](#post-apilike)
 - [GET /api/categories](#get-apicategories)
 - [POST /api/signin](#post-apisignin)
 - [POST /api/signup](#post-apisignup)
@@ -25,8 +25,6 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/ping
 
 { "status": "ok" }
 ```
-
-
 
 
 ### GET /api/reviews
@@ -57,18 +55,22 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/review
     "success": true,
     "data": [
         {
-            "id": "60ebe58329dc4addabf50b2c",
-            "user_name": "test_user",
+            "id": "60ff003db1d2675a572ea1d0",
+            "user_id": "60feffb9862cb2628952e37f",
             "book_name": "Harry Potter",
             "text": "I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
             "categories": [
                 "Animals",
                 "Plantation"
             ],
-            "created_at": "2021-07-12T06:47:31.067Z",
-            "updated_at": "2021-07-12T06:47:31.067Z"
+            "created_at": "2021-07-26T18:34:37.323Z",
+            "updated_at": "2021-07-26T18:34:37.323Z",
+            "likes": [
+                "60feffb9862cb2628952e37f"
+            ]
         }
-    ]
+    ],
+    "time_stamp": 1627324785174
 }
 ```
 
@@ -133,9 +135,9 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/review
 **Example Request**
 
 ```
-$ curl --location --request POST 'https://bookworms-api.vercel.app/api/reviews' \
+$ curl --location --request POST 'localhost:3000/api/reviews' \
 --header 'Content-Type: application/json' \
---header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7ImlkIjoiNjBmZTkzZDljZjRiMDQwMjYxMGMyNWNjIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmEkMTQkbzJFOElRM3pja256aS9WbDZiMnh6dXVseHpWT05LMlphekREZkxQLlVubjJHM1lHTHhZNjYiLCJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDIxLTA3LTI2VDEwOjUyOjEwLjc4NVoiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNy0yNlQxMDo1MjoxMC43ODVaIn0sImV4cCI6MTYyNzM4NDQyMH0.6NnP7Nd8GTFTmy4z0glW50MjqyzJXZxjHOBldnZNj3w' \
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7ImlkIjoiNjBmZWZmYjk4NjJjYjI2Mjg5NTJlMzdmIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmEkMTQkQzJKNFJONFRmYjJZWUx4QWw3UUhtLmtkLlR5NzdKSHBLd0FZdmRKUzJhOFJlNzd1clJaeFMiLCJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDIxLTA3LTI2VDE4OjMyOjMxLjA3WiIsInVwZGF0ZWRfYXQiOiIyMDIxLTA3LTI2VDE4OjMyOjMxLjA3WiJ9LCJleHAiOjE2Mjc0MTA4NTF9.caScECyPyNz1CvI59cfvLFHx9lG6mX6bbk1wObn18lM' \
 --data-raw '{
     "book_name": "Harry Potter",
     "text": "I'\''m sure everyone has their own childhood memories of reading the Harry Potter books that they'\''ll tell their grandkids about, but I'\''ll never forget going to see the first movie in the theaters",
@@ -155,17 +157,19 @@ $ curl --location --request POST 'https://bookworms-api.vercel.app/api/reviews' 
 {
     "success": true,
     "data": {
-        "id": "60ebe58329dc4addabf50b2c",
-        "user_name": "test_user",
+        "id": "60ff003db1d2675a572ea1d0",
+        "user_id": "60feffb9862cb2628952e37f",
         "book_name": "Harry Potter",
         "text": "I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
         "categories": [
             "Animals",
             "Plantation"
         ],
-        "created_at": "2021-07-12T08:47:31.0672556+02:00",
-        "updated_at": "2021-07-12T08:47:31.0672571+02:00"
-    }
+        "created_at": "2021-07-26T20:34:37.3232882+02:00",
+        "updated_at": "2021-07-26T20:34:37.3232936+02:00",
+        "likes": null
+    },
+    "time_stamp": 1627324484326
 }
 ```
 

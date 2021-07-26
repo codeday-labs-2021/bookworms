@@ -10,7 +10,7 @@ const ReviewsCollection string = "review"
 
 type Review struct {
 	ID         primitive.ObjectID   `bson:"_id,omitempty" json:"id"`
-	User       primitive.ObjectID   `bson:"user,omitempty" json:"user"`
+	UserID     primitive.ObjectID   `bson:"user_id,omitempty" json:"user_id"`
 	BookName   string               `bson:"book_name,omitempty" json:"book_name"`
 	Text       string               `bson:"text,omitempty" json:"text"`
 	Categories []string             `bson:"categories,omitempty" json:"categories"`
