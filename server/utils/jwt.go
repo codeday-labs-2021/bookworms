@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"errors"
 	"net/http"
+	"os"
 
 	"github.com/codeday-labs/bookworms/server/db"
 	"github.com/golang-jwt/jwt"
@@ -12,7 +14,7 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-var Jwt_key = []byte("kdksksm2039")
+var Jwt_key = []byte(os.Getenv("kdksksm2039"))
 
 func GetUserFromCookie(r *http.Request) (*db.User, error) {
 	cookie, err := r.Cookie("token")
@@ -34,7 +36,7 @@ func GetUserFromCookie(r *http.Request) (*db.User, error) {
 	}
 
 	if !token.Valid {
-		return nil, err
+		return nil, errors.New("Invalid token!")
 	}
 
 	return &claims.User, nil

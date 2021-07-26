@@ -21,7 +21,7 @@ type signinResponse struct {
 	Message bool `json:"message"`
 }
 
-func signin(request signinRequest) (*signinResponse, error, *string) {
+func signin(request signinRequest) (*signinResponse, *string, error) {
 	DB, err := db.DB()
 
 	// close db connection
@@ -32,7 +32,7 @@ func signin(request signinRequest) (*signinResponse, error, *string) {
 	}()
 
 	if err != nil {
-		return nil, err, nil
+		return nil, nil, err
 	}
 
 	var user db.User
@@ -40,18 +40,19 @@ func signin(request signinRequest) (*signinResponse, error, *string) {
 	err = DB.Collection(db.UserCollection).FindOne(db.Ctx, bson.D{{Key: "email", Value: request.Email}}).Decode(&user)
 
 	if err == mongo.ErrNoDocuments {
-		return nil, errors.New("user not found!"), nil
+		return nil, nil, errors.New("user not found!")
 	} else if err != nil {
-		return nil, err, nil
+		return nil, nil, err
 	}
 
 	if !utils.CheckHashPassword(request.Password, user.Password) {
-		return nil, errors.New("Email or password missmatch!"), nil
+		return nil, nil, errors.New("Email or password missmatch!")
 	}
 
 	claims := &utils.Claims{
 		User: user,
 		StandardClaims: jwt.StandardClaims{
+			//Should last for 24 hours
 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 		},
 	}
@@ -61,12 +62,12 @@ func signin(request signinRequest) (*signinResponse, error, *string) {
 	tokenString, err := token.SignedString(utils.Jwt_key)
 
 	if err != nil {
-		return nil, err, nil
+		return nil, nil, err
 	}
 
 	return &signinResponse{
 		Message: true,
-	}, nil, &tokenString
+	}, &tokenString, nil
 }
 
 func SigninHandler(w http.ResponseWriter, r *http.Request) {
@@ -94,7 +95,12 @@ func SigninHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		response, err, token := signin(request)
+		if len(request.Email) == 0 || len(request.Password) == 0 {
+			utils.RespondWithError(w, "All fields are required!", http.StatusBadRequest)
+			return
+		}
+
+		response, token, err := signin(request)
 
 		if err != nil {
 			utils.RespondWithError(w, err.Error(), http.StatusBadRequest)
@@ -105,7 +111,7 @@ func SigninHandler(w http.ResponseWriter, r *http.Request) {
 			http.SetCookie(w, &http.Cookie{
 				Name:     "token",
 				Value:    *token,
-				Expires:  time.Now().Add(time.Hour * 1),
+				Expires:  time.Now().Add(time.Hour * 24),
 				HttpOnly: true,
 			})
 		}
