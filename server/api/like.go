@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/codeday-labs/bookworms/server/db"
 	"github.com/codeday-labs/bookworms/server/utils"
@@ -76,14 +77,14 @@ func unlikeReview(id primitive.ObjectID, review *db.Review) error {
 }
 
 func removeItemFromSlice(s []primitive.ObjectID, x primitive.ObjectID) []primitive.ObjectID {
-
+	var result []primitive.ObjectID
 	for index, value := range s {
 		if value == x {
-			s = append(s[:index], s[index+1:]...)
+			result = append(s[:index], s[index+1:]...)
 		}
 	}
 
-	return s
+	return result
 }
 
 func findReview(id string, review *db.Review) error {
@@ -170,7 +171,7 @@ func LikeHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// unlike if user has aleady liked
-		if contains(reviewFromID.Likes, objectId) {
+		if contains(reviewFromID.Likes, user.ID) {
 			err := unlikeReview(user.ID, &reviewFromID)
 			if err != nil {
 				utils.RespondWithError(w, "Failed to add like", http.StatusInternalServerError)
@@ -196,7 +197,7 @@ func LikeHandler(w http.ResponseWriter, r *http.Request) {
 
 func contains(s []primitive.ObjectID, e primitive.ObjectID) bool {
 	for _, a := range s {
-		if a == e {
+		if strings.EqualFold(a.Hex(), e.Hex()) {
 			return true
 		}
 	}
