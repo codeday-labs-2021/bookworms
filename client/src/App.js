@@ -13,7 +13,8 @@ import {createTheme, ThemeProvider} from '@material-ui/core';
 const theme = createTheme ({
   palette: {
     primary: {
-      main: '#dd9f33'
+      main: '#dd9f33',
+      contrastText: '#fff',
     }
   }
 })
