@@ -1,3 +1,6 @@
 {
-  "rewrites": [{ "source": "/api/reviews/:id", "destination": "/api/reviews" }]
+  "rewrites": [
+    { "source": "/api/reviews/:id", "destination": "/api/reviews" },
+    { "source": "/api/like/:id", "destination": "/api/like" }
+  ]
 }

@@ -133,12 +133,17 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/review
 **Example Request**
 
 ```
-$ curl -d '{
-    "text":"I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
-    "book_name":"Harry Potter",
-    "user_name":"test_user",
-    "categories":["Animals","Plantation"] 
-}' -H 'Content-Type: application/json' -x POST https://bookworms-api.vercel.app/api/reviews 
+$ curl --location --request POST 'https://bookworms-api.vercel.app/api/reviews' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7ImlkIjoiNjBmZTkzZDljZjRiMDQwMjYxMGMyNWNjIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmEkMTQkbzJFOElRM3pja256aS9WbDZiMnh6dXVseHpWT05LMlphekREZkxQLlVubjJHM1lHTHhZNjYiLCJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDIxLTA3LTI2VDEwOjUyOjEwLjc4NVoiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNy0yNlQxMDo1MjoxMC43ODVaIn0sImV4cCI6MTYyNzM4NDQyMH0.6NnP7Nd8GTFTmy4z0glW50MjqyzJXZxjHOBldnZNj3w' \
+--data-raw '{
+    "book_name": "Harry Potter",
+    "text": "I'\''m sure everyone has their own childhood memories of reading the Harry Potter books that they'\''ll tell their grandkids about, but I'\''ll never forget going to see the first movie in the theaters",
+    "categories": [
+        "Animals",
+        "Plantation"
+    ]
+}'
 
 ```
 
@@ -165,20 +170,15 @@ $ curl -d '{
 ```
 
 
-
-
-### POST /api/like
+### POST /api/like/:reviewID
 
 **Example Request**
 
 
 ```
 
-$ curl -d '
-{
-    "review_id": "60eec6d2054f49d2c58d3390"
-}
-' -H 'Content-Type: application/json' -x POST https://bookworms-api.vercel.app/api/like 
+$ curl --location --request POST 'localhost:3000/api/like/60feb9f8d31aa9f9e4ef23e4' \
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7ImlkIjoiNjBmZTkzZDljZjRiMDQwMjYxMGMyNWNjIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmEkMTQkbzJFOElRM3pja256aS9WbDZiMnh6dXVseHpWT05LMlphekREZkxQLlVubjJHM1lHTHhZNjYiLCJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDIxLTA3LTI2VDEwOjUyOjEwLjc4NVoiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNy0yNlQxMDo1MjoxMC43ODVaIn0sImV4cCI6MTYyNzM4NDQyMH0.6NnP7Nd8GTFTmy4z0glW50MjqyzJXZxjHOBldnZNj3w' 
 
 ```
 
@@ -206,62 +206,8 @@ $ curl -d '
     "time_stamp": "Wed Jul 14 13:14:23 +0200 2021"
 }
 ```
+To unlike is to call the same api for like! 
 
-### GET /api/filter
-
-**Example Request**
-
-```
-$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/filter\?categories\=plantation 
-
-```
-
-You can also pass two or more variable just make sure to separate with commas
-
-```
-$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/filter\?categories\=plantation,Animals 
-
-```
-
-
-
-**Example Response**
-
-```
-200 OK
-
-{
-    "success": true,
-    "data": [
-        {
-            "id": "60eec68824137a1bad0f5930",
-            "user_name": "test_user",
-            "book_name": "Harry Potter",
-            "text": "I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
-            "categories": [
-                "Plantation"
-            ],
-            "created_at": "2021-07-14T11:12:08.792Z",
-            "updated_at": "2021-07-14T11:12:08.792Z",
-            "likes": 0
-        },
-        {
-            "id": "60eec6d2054f49d2c58d3390",
-            "user_name": "test_user",
-            "book_name": "Harry Potter",
-            "text": "I'm sure everyone has their own childhood memories of reading the Harry Potter books that they'll tell their grandkids about, but I'll never forget going to see the first movie in the theaters",
-            "categories": [
-                "Animals",
-                "Plantation"
-            ],
-            "created_at": "2021-07-14T11:13:22.619Z",
-            "updated_at": "2021-07-14T11:13:22.619Z",
-            "likes": 1
-        }
-    ],
-    "time_stamp": "Wed Jul 14 13:27:28 +0200 2021"
-}
-```
 
 ### GET /api/categories
 

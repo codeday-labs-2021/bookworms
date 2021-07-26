@@ -1,6 +1,9 @@
 package utils
 
 import (
+	"net/http"
+	"net/url"
+	"path"
 	"sort"
 	"strconv"
 	"strings"
@@ -89,4 +92,10 @@ func FilterReviews(filter interface{}) ([]*db.Review, error) {
 	}
 
 	return reviews, nil
+}
+
+func GetIdFromUrl(r *http.Request) string {
+	u, _ := url.Parse(r.URL.RequestURI())
+
+	return path.Base(u.Path)
 }

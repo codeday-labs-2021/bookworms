@@ -2,10 +2,8 @@ package handler
 
 import (
 	"errors"
-	"log"
 	"net/http"
 	"net/url"
-	"path"
 	"sort"
 	"strings"
 	"time"
@@ -273,11 +271,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		log.Print(r.URL.RequestURI())
-
-		u, _ := url.Parse(r.URL.RequestURI())
-
-		requestId := path.Base(u.Path)
+		requestId := utils.GetIdFromUrl(r)
 
 		if len(requestId) == 0 {
 			utils.RespondWithError(w, "Review id should be passed!", http.StatusBadRequest)
@@ -308,7 +302,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// check if collection exists and owned by user
-		if err := DB.Collection(db.ReviewsCollection).FindOne(db.Ctx, bson.D{{"_id", objectId}}).Decode(&reviewFromID); err != nil {
+		if err := DB.Collection(db.ReviewsCollection).FindOne(db.Ctx, bson.D{{Key: "_id", Value: objectId}}).Decode(&reviewFromID); err != nil {
 			if err == mongo.ErrNoDocuments {
 				utils.RespondWithError(w, "Review passed doesn't exist", http.StatusBadRequest)
 				return
@@ -322,7 +316,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		_, err = DB.Collection(db.ReviewsCollection).DeleteOne(db.Ctx, bson.D{{"_id", objectId}})
+		_, err = DB.Collection(db.ReviewsCollection).DeleteOne(db.Ctx, bson.D{{Key: "_id", Value: objectId}})
 
 		if err != nil {
 			utils.RespondWithError(w, "Delete failed!", http.StatusInternalServerError)
