@@ -31,7 +31,7 @@ function ReviewList ({reviews}) {
     return (
         <div className="review-list">
             {reviews.map((r) => (
-                <div className={styles.normal} key={r.id}>
+                <div className={styles.review} key={r.id}>
                     <h1 className={styles.title}> {r.book_name} </h1>
                     <h2 className={styles.author}> Published by {r.user_name} </h2>
                     <p> {r.text} </p>

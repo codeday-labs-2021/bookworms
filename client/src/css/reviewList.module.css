@@ -1,11 +1,11 @@
 /* review previews / list */
-.normal {
+.review {
     padding: 10px 16px;
     margin: 20px 0;
     border-bottom: 1px solid #ebc686;
 }
 
-.normal:hover {
+.review:hover {
     box-shadow: 1px 1px 1px 1px #dd9f33;
 }
 
