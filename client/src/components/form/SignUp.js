@@ -60,7 +60,7 @@ function Signup () {
     const history = useHistory();
     const [isPending, setIsPending] = useState(false);
 
-    async function handleNewUser () {
+    async function addNewUser () {
         const newUser = {name, userEmail, userPassword};
         const response = await fetch('https://bookworms-api.vercel.app/api/signup', {
             method: 'POST',
@@ -98,7 +98,7 @@ function Signup () {
         } else {
             setIsPending(true);
             setTimeout(() => {
-                handleNewUser();
+                addNewUser();
                 history.push('/');
             }, 2000);
         }
