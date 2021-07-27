@@ -1,4 +1,5 @@
 // import {useState} from 'react';
+import {Link} from 'react-router-dom';
 import FavIcon from './FavIcon';
 import styles from '../css/reviewList.module.css';
 
@@ -32,9 +33,11 @@ function ReviewList ({reviews}) {
         <div className="review-list">
             {reviews.map((r) => (
                 <div className={styles.review} key={r.id}>
-                    <h1 className={styles.title}> {r.book_name} </h1>
-                    <h2 className={styles.author}> Published by {r.user_name} </h2>
-                    <p> {r.text} </p>
+                    <Link to={`/reviews/${r.id}`}>
+                        <h1 className={styles.title}> {r.book_name} </h1>
+                        <h2 className={styles.author}> Published by {r.user_name} </h2>
+                        <p> {r.text} </p>
+                    </Link>
                     <div className={styles.footer}>
                         <p> {r.categories.join(', ')} </p>
                         <FavIcon/>
