@@ -35,6 +35,6 @@
     cursor: pointer;
 }
 
-.submitButton:hover {
+.submitButton:hover, .submitButton:disabled {
     background: #b58026;
 }

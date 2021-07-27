@@ -1,14 +1,19 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import {useParams} from 'react-router-dom';
+
+/**
+ * Individual review pages
+ * 
+ */
 
 function ReviewDetails() {
 
-    const [isPending, setIsPending] = useState(true);
     const [reviewDetails, setReviewDetails] = useState([]);
+    const [isPending, setIsPending] = useState(true);
 
     const {id} = useParams();
 
-    async function getDetails(){
+    const getDetails = useCallback(async () => {
         const response = await fetch('https://bookworms-api.vercel.app/api/reviews', {
             method: 'GET',
             headers: {'Accept': 'application/json'},
@@ -30,9 +35,9 @@ function ReviewDetails() {
             setReviewDetails(details);
             setIsPending(false);
         }
-    }
+    }, [id])
 
-    useEffect(() => getDetails(), []);
+    useEffect(() => getDetails(), [getDetails]);
 
     return (
         <div>
