@@ -9,6 +9,10 @@
     box-shadow: 1px 1px 1px 1px #dd9f33;
 }
 
+.review a {
+    text-decoration: none;
+}
+
 .title {
     font-size: 20px;
     color: #dd9f33;

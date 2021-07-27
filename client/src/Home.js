@@ -6,7 +6,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Fab from '@material-ui/core/Fab';
 import ScrollTop from './components/ScrolltoTop';
 import styles from './css/home.module.css';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
 
 /**
  * Homepage
@@ -18,7 +18,7 @@ function Home(props) {
     const [reviews, setReviews] = useState([]);
     const [isPending, setIsPending] = useState(true);
 
-    async function getReview(){
+    const getReview = useCallback(async () => {
         const response = await fetch('https://bookworms-api.vercel.app/api/reviews', {
             method: 'GET',
             headers: {'Accept': 'application/json'},
@@ -32,9 +32,9 @@ function Home(props) {
             setReviews(reviewsArray.data);
             setIsPending(false);
         }
-    }
+    }, [])
 
-    useEffect(() => getReview(), []);
+    useEffect(() => getReview(), [getReview]);
 
     return (
         <div>

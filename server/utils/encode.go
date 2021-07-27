@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/mail"
 	"strings"
 
 	"github.com/golang/gddo/httputil/header"
@@ -18,6 +19,11 @@ type malformedRequest struct {
 
 func (mr *malformedRequest) Error() string {
 	return mr.msg
+}
+
+func ValidEmail(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }
 
 func DecodeJSONBody(w http.ResponseWriter, r *http.Request, dst interface{}) error {
