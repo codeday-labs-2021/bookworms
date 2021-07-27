@@ -1,6 +1,5 @@
 import {Component} from 'react';
-import UnfavoriteIcon from '@material-ui/icons/FavoriteBorder';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import Icon from '@material-ui/core/Icon';
 import styles from '../css/favIcon.module.css';
 
 class FavIcon extends Component {
@@ -19,7 +18,7 @@ class FavIcon extends Component {
   }
 
   render() {
-    const label = this.state.faved ? <FavoriteIcon/> : <UnfavoriteIcon/>;
+    const label = this.state.faved ? <Icon style={{color: '#f50057'}}>favorite</Icon> : <Icon>favorite_border</Icon>;
 
     return (
         <span onClick={this.handleClick} className={styles.fav}>

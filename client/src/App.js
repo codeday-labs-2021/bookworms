@@ -2,6 +2,7 @@ import Navbar from './components/Navbar';
 import Home from './Home';
 import Create from './components/form/Create';
 import Signup from './components/form/SignUp';
+import ReviewDetails from './components/ReviewDetails';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {createTheme, ThemeProvider} from '@material-ui/core';
 
@@ -13,7 +14,8 @@ import {createTheme, ThemeProvider} from '@material-ui/core';
 const theme = createTheme ({
   palette: {
     primary: {
-      main: '#dd9f33'
+      main: '#dd9f33',
+      contrastText: '#fff',
     }
   }
 })
@@ -34,6 +36,9 @@ function App() {
                 </Route>
                 <Route path="/create"> 
                   <Create />
+                </Route>
+                <Route path="/reviews/:id">
+                  <ReviewDetails />
                 </Route>
             </div>
           </div>
