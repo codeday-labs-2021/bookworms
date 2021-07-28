@@ -1,10 +1,11 @@
 import logo from '../logo192.png';
-import {Link} from 'react-router-dom';
-import {useState} from 'react';
+import {Link, useHistory} from 'react-router-dom';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Popover from 'react-bootstrap/Popover';
+import SignoutButton from 'react-bootstrap/Button';
 import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
-import styles from '../css/navBar.module.css'
-import Signin from './form/SignIn';
+import styles from '../css/navBar.module.css';
 
 /**
  * The navigation bar
@@ -13,7 +14,21 @@ import Signin from './form/SignIn';
 
 function Navbar() {
 
-    const [signInShow, setSignInShow] = useState(false);
+    const history = useHistory();
+
+    const handleSignOut = () => {
+        history.push("/");
+    }
+    
+    const popOver = (
+        <Popover id="popover-basic">
+            <Popover.Header as="h3">My Account</Popover.Header>
+            <Popover.Body>
+                User's name or email here 
+                <SignoutButton className={styles.signOut} onClick={handleSignOut}> Sign out </SignoutButton>
+            </Popover.Body>
+      </Popover>    
+    );
 
     return (
         <nav className={styles.navbar}>
@@ -21,15 +36,13 @@ function Navbar() {
             <Link to="/home"> <h1 className={styles.name}>bookworms</h1> </Link>
             <div className={styles.links}>
                 <Tooltip title="Add Reviews">
-                    <Link to ="/create"><Icon color="primary" className={styles.button} fontSize="large">add</Icon></Link>
+                    <Link to ="/create"><Icon color="primary" className={styles.icons} fontSize="large">add</Icon></Link>
                 </Tooltip>
-                <Tooltip title="Sign In">
-                    <Icon color="primary" className={styles.button} fontSize="large" onClick={() => setSignInShow(true)}>local_library</Icon>
-                </Tooltip>
-                {/* <Signin         
-                    show={signInShow}
-                    onHide={() => setSignInShow(false)}
-                /> */}
+                <OverlayTrigger trigger="click" placement="bottom" overlay={popOver}>
+                    <Tooltip title="My Account">
+                        <Icon color="primary" className={styles.icons} fontSize="large">local_library</Icon>
+                    </Tooltip>
+                </OverlayTrigger>
             </div>
         </nav>
     );

@@ -23,13 +23,27 @@
     padding: 6px;
 }
 
-.button {
+.icons {
     cursor: pointer;
     color: #dd9f33;
 }
 
-.button:hover {
+.icons:hover {
     border: 0px;
     background: #e9d7c2;
     border-radius: 50%;
+}
+
+.signOut, .signOut:active, .signOut:focus {
+    background: #dd9f33;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.signOut:hover {
+    background: #b58026;
 }

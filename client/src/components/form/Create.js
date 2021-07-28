@@ -1,5 +1,6 @@
 import {useState} from 'react';
-import {useHistory, useParams} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
+// import {useParams} from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -15,7 +16,7 @@ import styles from '../../css/create.module.css';
 function Create () {
 
     /* book review components */
-    const {userName} = useParams();
+    // const {userName} = useParams();
     const [bookName, setBookName] = useState('');
     const [text, setText] = useState('');
     const [categories, setCategories] = useState([]);
@@ -41,7 +42,7 @@ function Create () {
     }
 
     async function createReview(){
-        const newReview = {userName, bookName, text, categories};
+        const newReview = {book_name: bookName, text, categories};
         const response = await fetch('https://bookworms-api.vercel.app/api/reviews', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -50,7 +51,7 @@ function Create () {
         })
         // if the request wasn't successful, throw an error for the user to know 
         if (!response.ok) {
-            const message = `An error has occured: ${response.status}`;
+            const message = `An error has occured: ${JSON.stringify(await response.json())}`;
             throw new Error(message);
         } else {
             setIsPending(false);
@@ -67,7 +68,7 @@ function Create () {
             // slow down the switching back to home page for a little
             setTimeout(() => {
                 createReview();
-                history.push('/');
+                history.push('/home');
             }, 2000);
         }
         setValidated(true);

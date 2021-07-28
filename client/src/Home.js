@@ -21,9 +21,15 @@ function Home(props) {
 
     const getReview = useCallback(async () => {
         const response = await axios.get('https://bookworms-api.vercel.app/api/reviews');
-        const reviewsArray = response.data.data;
-        setReviews(reviewsArray);
-        setIsPending(false);
+
+        if (!response.data.success) {
+            const message = `An error has occured: ${JSON.stringify(await response.status)}`;
+            throw new Error(message);
+        } else {
+            const reviewsArray = response.data.data;
+            setReviews(reviewsArray);
+            setIsPending(false);
+        }
     }, [])
 
     useEffect(() => getReview(), [getReview]);

@@ -39,6 +39,7 @@ function Signin() {
         throw new Error(message);
     } else {
         setIsPending(false);
+        history.push('/home');
     }
   }
 
@@ -62,7 +63,6 @@ function Signin() {
       setIsPending(true);
       setTimeout(() => {
         signInUser();
-        history.push('/home');
       }, 2000);
     }
     setValidated(true);
@@ -77,7 +77,7 @@ function Signin() {
               <img src={logo} height={80} width={80} alt="logo"/> 
               <Link to="/"> <h1 className={styles.name}>bookworms</h1> </Link>
           </div>
-          
+          <br/>
           <h4> <span className={styles.name}> bookworms </span> is a CodeDay Labs project to create a web app to share your ideas of a book with others. </h4>
         </Col>
 
