@@ -11,15 +11,44 @@ import {Link} from 'react-router-dom';
 
 function Login(props) {
 
+  // form components
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+
+  // other page components
   const [validated, setValidated] = useState(false);
   const [isPending, setIsPending] = useState(false);
+
+  async function signInUser () {
+    const userAccount = {email: userEmail, password: userPassword};
+    const response = await fetch('https://bookworms-api.vercel.app/api/signin', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        // convert the React state to JSON and send it as the POST body
+        body: JSON.stringify(userAccount)
+    })
+    // if the request wasn't successful, throw an error for the user to know 
+    if (!response.ok) {
+        const message = `An error has occured: ${JSON.stringify(await response.json())}`;
+        throw new Error(message);
+    } else {
+        setIsPending(false);
+    }
+  }
 
   const handleClose = () => {
     props.onHide();
   }
 
-  const afterSubmit = () => {
-    setIsPending(false);
+  const handleChange = (e) => {
+    const field = e.target.name;
+    const value = e.target.value;
+
+    if (field === 'userEmail') {
+        setUserEmail(value);
+    } else {
+        setUserPassword(value);
+    }
   }
 
   function handleSubmit(e) {
@@ -30,7 +59,7 @@ function Login(props) {
     } else {
       setTimeout(() => {
         handleClose();
-        afterSubmit();
+        signInUser();
       }, 2000);
       setIsPending(true);
     }
@@ -57,7 +86,8 @@ function Login(props) {
               required 
               name="userEmail"
               type="email" 
-              placeholder="Enter email"/>
+              placeholder="Enter email"
+              onChange={handleChange}/>
             <Form.Control.Feedback type="invalid">
               Please provide your email.
             </Form.Control.Feedback>
@@ -71,7 +101,8 @@ function Login(props) {
               required
               name="userPassword"
               type="password"
-              placeholder="Password"/>
+              placeholder="Password"
+              onChange={handleChange}/>
             <Form.Control.Feedback type="invalid">
               Please provide your password.
             </Form.Control.Feedback>

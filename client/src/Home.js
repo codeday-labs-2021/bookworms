@@ -7,6 +7,7 @@ import Fab from '@material-ui/core/Fab';
 import ScrollTop from './components/ScrolltoTop';
 import styles from './css/home.module.css';
 import {useState, useEffect, useCallback} from 'react';
+import axios from 'axios';
 
 /**
  * Homepage
@@ -19,19 +20,10 @@ function Home(props) {
     const [isPending, setIsPending] = useState(true);
 
     const getReview = useCallback(async () => {
-        const response = await fetch('https://bookworms-api.vercel.app/api/reviews', {
-            method: 'GET',
-            headers: {'Accept': 'application/json'},
-        });
-
-        if (!response.ok){
-            const message = `An error has occured: ${response.status}`;
-            throw new Error(message);
-        } else {
-            const reviewsArray = await response.json();
-            setReviews(reviewsArray.data);
-            setIsPending(false);
-        }
+        const response = await axios.get('https://bookworms-api.vercel.app/api/reviews');
+        const reviewsArray = response.data.data;
+        setReviews(reviewsArray);
+        setIsPending(false);
     }, [])
 
     useEffect(() => getReview(), [getReview]);
