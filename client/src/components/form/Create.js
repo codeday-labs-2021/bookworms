@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -15,7 +15,7 @@ import styles from '../../css/create.module.css';
 function Create () {
 
     /* book review components */
-    const [userName, setUserName] = useState('');
+    const {userName} = useParams();
     const [bookName, setBookName] = useState('');
     const [text, setText] = useState('');
     const [categories, setCategories] = useState([]);
@@ -30,9 +30,7 @@ function Create () {
         const field = e.target.name;
         const value = e.target.value;
 
-        if (field === 'user') {
-            setUserName(value);
-        } else if (field === 'book') {
+        if (field === 'book') {
             setBookName(value);
         } else if (field === 'review') {
             setText(value);
@@ -81,19 +79,6 @@ function Create () {
             <h2 className={styles.heading}> Add a New Book Review </h2>
 
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Form.Group as={Row} controlId="formName">
-                    <Form.Label column sm="4" className={styles.label}>Name</Form.Label>
-                    <Col sm="8">
-                        <Form.Control 
-                            required 
-                            name="user"
-                            type="text" 
-                            value={userName}
-                            className={styles.inputArea}
-                            onChange={handleChange}/>
-                    </Col>
-                </Form.Group>
-
                 <Form.Group as={Row} controlId="formBookName">
                     <Form.Label column sm="4" className={styles.label}>Book Name</Form.Label>
                     <Col sm="8">

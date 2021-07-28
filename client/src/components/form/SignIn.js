@@ -1,15 +1,20 @@
+import logo from '../../logo192.png';
 import {useState} from 'react';
-import Modal from 'react-bootstrap/Modal';
+import {Link, useHistory} from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-import {Link} from 'react-router-dom';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import styles from '../../css/signIn.module.css';
 
 /**
- * Login pop-up
+ * Sign in page
  * 
  */
 
-function Login(props) {
+function Signin() {
 
   // form components
   const [userEmail, setUserEmail] = useState('');
@@ -18,6 +23,7 @@ function Login(props) {
   // other page components
   const [validated, setValidated] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const history = useHistory();
 
   async function signInUser () {
     const userAccount = {email: userEmail, password: userPassword};
@@ -34,10 +40,6 @@ function Login(props) {
     } else {
         setIsPending(false);
     }
-  }
-
-  const handleClose = () => {
-    props.onHide();
   }
 
   const handleChange = (e) => {
@@ -57,76 +59,70 @@ function Login(props) {
     if (signin.checkValidity() === false){
         e.stopPropagation();
     } else {
-      setTimeout(() => {
-        handleClose();
-        signInUser();
-      }, 2000);
       setIsPending(true);
+      setTimeout(() => {
+        signInUser();
+        history.push('/home');
+      }, 2000);
     }
     setValidated(true);
     e.preventDefault();
   }
 
   return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="signin"
-      centered
-    >
-      <Modal.Header>
-        <Modal.Title id="signin"> Sign in </Modal.Title>
-      </Modal.Header>
+    <Container className={styles.container}>
+      <Row>
+        <Col>
+          <div className={styles.logo}>
+              <img src={logo} height={80} width={80} alt="logo"/> 
+              <Link to="/"> <h1 className={styles.name}>bookworms</h1> </Link>
+          </div>
+          
+          <h4> <span className={styles.name}> bookworms </span> is a CodeDay Labs project to create a web app to share your ideas of a book with others. </h4>
+        </Col>
 
-      <Modal.Body>
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-          <Form.Group controlId="formEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control 
-              required 
-              name="userEmail"
-              type="email" 
-              placeholder="Enter email"
-              onChange={handleChange}/>
-            <Form.Control.Feedback type="invalid">
-              Please provide your email.
-            </Form.Control.Feedback>
-          </Form.Group>
-
-          <br/>
-                  
-          <Form.Group controlId="formPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control 
-              required
-              name="userPassword"
-              type="password"
-              placeholder="Password"
-              onChange={handleChange}/>
-            <Form.Control.Feedback type="invalid">
-              Please provide your password.
-            </Form.Control.Feedback>
-          </Form.Group>
-                  
-          <br/>
-                  
-          <Form.Group controlId="formCheckBox">
-            <Form.Check
-              type="checkbox"
-              label="Remember me"/>
-          </Form.Group>
-
-          <br/>             
-
-          <Button type="submit" disabled={isPending}>  {isPending ? 'Signing in...' : 'Sign in'} </Button>
-        </Form>
-      </Modal.Body>
-
-      <Modal.Footer>
-        <Link to="/signup" onClick={handleClose}> Not a registered user? </Link>
-      </Modal.Footer>
-    </Modal>
+        <Col className={styles.content}>
+          <Form noValidate validated={validated} onSubmit={handleSubmit} className={styles.form}>
+            <Form.Group className={styles.field}>
+              <FloatingLabel controlId="formEmail" label="Email address">
+                <Form.Control 
+                  required 
+                  name="userEmail"
+                  type="email" 
+                  placeholder="Enter email"
+                  onChange={handleChange}/>
+                <Form.Control.Feedback type="invalid">
+                  Please provide your email.
+                </Form.Control.Feedback>
+              </FloatingLabel>
+            </Form.Group>
+                            
+            <Form.Group className={styles.field}>
+              <FloatingLabel controlId="formPassword" label="Password">
+                <Form.Control 
+                  required
+                  name="userPassword"
+                  type="password"
+                  placeholder="Password"
+                  onChange={handleChange}/>
+                <Form.Control.Feedback type="invalid">
+                  Please provide your password.
+                </Form.Control.Feedback>
+              </FloatingLabel>
+            </Form.Group>
+                                                  
+            <Form.Group controlId="formCheckBox" className={styles.field}>
+              <Form.Check
+                type="checkbox"
+                label="Remember me"/>
+            </Form.Group>
+            <Button className={styles.signinButton} disabled={isPending} type="submit"> {isPending ? 'Signing in...' : 'Sign in'} </Button>
+            <p className={styles.newUser}> Don't have an account? <Link to="/signup"> Sign up </Link> </p>
+          </Form>            
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
-export default Login;
+export default Signin;

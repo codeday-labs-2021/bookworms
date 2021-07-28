@@ -18,7 +18,7 @@ function Navbar() {
     return (
         <nav className={styles.navbar}>
             <img src={logo} height={45} width={45} alt="logo"></img>
-            <Link to="/"> <h1 className={styles.name}>bookworms</h1> </Link>
+            <Link to="/home"> <h1 className={styles.name}>bookworms</h1> </Link>
             <div className={styles.links}>
                 <Tooltip title="Add Reviews">
                     <Link to ="/create"><Icon color="primary" className={styles.button} fontSize="large">add</Icon></Link>
@@ -26,10 +26,10 @@ function Navbar() {
                 <Tooltip title="Sign In">
                     <Icon color="primary" className={styles.button} fontSize="large" onClick={() => setSignInShow(true)}>local_library</Icon>
                 </Tooltip>
-                <Signin         
+                {/* <Signin         
                     show={signInShow}
                     onHide={() => setSignInShow(false)}
-                />
+                /> */}
             </div>
         </nav>
     );
