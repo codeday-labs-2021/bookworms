@@ -20,7 +20,7 @@ function Login(props) {
   const [isPending, setIsPending] = useState(false);
 
   async function signInUser () {
-    const userAccount = {userEmail, userPassword};
+    const userAccount = {email: userEmail, password: userPassword};
     const response = await fetch('https://bookworms-api.vercel.app/api/signin', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -29,7 +29,7 @@ function Login(props) {
     })
     // if the request wasn't successful, throw an error for the user to know 
     if (!response.ok) {
-        const message = `An error has occured: ${response.status}`;
+        const message = `An error has occured: ${JSON.stringify(await response.json())}`;
         throw new Error(message);
     } else {
         setIsPending(false);

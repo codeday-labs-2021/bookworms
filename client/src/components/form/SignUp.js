@@ -52,16 +52,23 @@ function Signup () {
 
     // form components 
     const [name, setName] = useState('');
-    const [userEmail, setUserEmail] = useState('');
-    const [userPassword, setUserPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     // other page components 
     const [validated, setValidated] = useState(false);
     const history = useHistory();
     const [isPending, setIsPending] = useState(false);
 
+    // reset form after each new user submitted 
+    const resetForm = () => {
+        setName('');
+        setEmail('');
+        setPassword('');
+    }
+
     async function addNewUser () {
-        const newUser = {name, userEmail, userPassword};
+        const newUser = {name, email, password};
         const response = await fetch('https://bookworms-api.vercel.app/api/signup', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -70,10 +77,11 @@ function Signup () {
         })
         // if the request wasn't successful, throw an error for the user to know 
         if (!response.ok) {
-            const message = `An error has occured: ${response.status}`;
+            const message = `An error has occured: ${JSON.stringify(await response.json())}`;
             throw new Error(message);
         } else {
             setIsPending(false);
+            resetForm();
         }
     }
 
@@ -84,9 +92,9 @@ function Signup () {
         if (field === 'userName') {    
             setName(value);
         } else if (field === 'userEmail') {
-            setUserEmail(value);
+            setEmail(value);
         } else {
-            setUserPassword(value);
+            setPassword(value);
         }
     }
 
