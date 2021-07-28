@@ -46,6 +46,6 @@
     cursor: pointer;
 }
 
-.signupButton:hover{
+.signupButton:hover, .signupButton:disabled {
     background: #b58026;
 }

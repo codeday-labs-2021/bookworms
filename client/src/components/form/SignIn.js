@@ -16,11 +16,11 @@ import styles from '../../css/signIn.module.css';
 
 function Signin() {
 
-  // sign in components
+  // form components
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
 
-  // other page components 
+  // other page components
   const [validated, setValidated] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const history = useHistory();
@@ -81,7 +81,7 @@ function Signin() {
           <h4> <span className={styles.name}> bookworms </span> is a CodeDay Labs project to create a web app to share your ideas of a book with others. </h4>
         </Col>
 
-        <Col xs={6} className={styles.content}>
+        <Col className={styles.content}>
           <Form noValidate validated={validated} onSubmit={handleSubmit} className={styles.form}>
             <Form.Group className={styles.field}>
               <FloatingLabel controlId="formEmail" label="Email address">

@@ -1,0 +1,21 @@
+/* individual review page */
+
+.content {
+    padding: 5px;
+}
+
+.title {
+    font-size: 20px;
+    color: #dd9f33;
+}
+
+.author {
+    font-size:17px;
+    color: #90662e;
+    margin-bottom: 10px;
+    text-align: left;
+}
+  
+.footer{
+    display:flex;
+}

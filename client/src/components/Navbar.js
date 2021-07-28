@@ -1,8 +1,7 @@
 import logo from '../logo192.png';
 import {Link} from 'react-router-dom';
 import {useState} from 'react';
-import AddIcon from '@material-ui/icons/Add';
-import SigninIcon from '@material-ui/icons/LocalLibrary';
+import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
 import styles from '../css/navBar.module.css'
 import Signin from './form/SignIn';
@@ -22,10 +21,10 @@ function Navbar() {
             <Link to="/home"> <h1 className={styles.name}>bookworms</h1> </Link>
             <div className={styles.links}>
                 <Tooltip title="Add Reviews">
-                    <Link to ="/create"><AddIcon className={styles.button} fontSize="large"/></Link>
+                    <Link to ="/create"><Icon color="primary" className={styles.button} fontSize="large">add</Icon></Link>
                 </Tooltip>
                 <Tooltip title="Sign In">
-                    <SigninIcon className={styles.button} fontSize="large" onClick={() => setSignInShow(true)}/>
+                    <Icon color="primary" className={styles.button} fontSize="large" onClick={() => setSignInShow(true)}>local_library</Icon>
                 </Tooltip>
                 {/* <Signin         
                     show={signInShow}

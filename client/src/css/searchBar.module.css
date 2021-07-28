@@ -1,8 +1,7 @@
 /* search bar */
 .search {
-  width: 50%;
+  width: 40%;
   display: flex;
-  /* margin: auto */
 }
 
 .searchTerm {
@@ -20,7 +19,6 @@
   padding: 2px;
   text-align: center;
   border: 1px solid #afb2b3;
-  background: white;
   border-radius: 0 5px 5px 0;
   border-left: none;
   cursor: pointer;
