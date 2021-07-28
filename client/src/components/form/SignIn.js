@@ -21,7 +21,7 @@ function Login(props) {
 
   async function signInUser () {
     const userAccount = {userEmail, userPassword};
-    const response = await fetch('https://bookworms-api.vercel.app/api/signup', {
+    const response = await fetch('https://bookworms-api.vercel.app/api/signin', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         // convert the React state to JSON and send it as the POST body
