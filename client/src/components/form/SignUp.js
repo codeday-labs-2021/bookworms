@@ -15,7 +15,6 @@ import MailIcon from '@material-ui/icons/Mail';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import styles from '../../css/signUp.module.css';
 
-
 // media tabs
 const useStyles = makeStyles ({
     gmail: {
