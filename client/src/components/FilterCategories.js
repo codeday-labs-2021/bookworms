@@ -27,6 +27,10 @@ function FilterCategories () {
                 <Chip 
                     key={i}
                     label={c}
+                    variant="outlined"
+                    color="primary"
+                    clickable
+                    disableRipple
                     className={styles.chip}/>
             )}
         </div>

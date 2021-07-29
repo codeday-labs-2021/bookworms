@@ -7,3 +7,7 @@
 .chip {
     flex-wrap: 'wrap';
 }
+
+.chip:hover, .chip:active, .chip:focus {
+    background:#f9e9d4;
+}
