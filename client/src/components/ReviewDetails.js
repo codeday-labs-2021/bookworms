@@ -2,8 +2,9 @@ import {useState, useEffect, useCallback} from 'react';
 import {useParams} from 'react-router-dom';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover';
-import DeleteButton from 'react-bootstrap/Button';
+import DeleteButton from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
+import DeleteIcon from '@material-ui/icons/Delete';
 import axios from 'axios';
 import styles from '../css/reviewDetails.module.css';
 
@@ -15,7 +16,9 @@ import styles from '../css/reviewDetails.module.css';
 const popOver = (
     <Popover id="popover-basic">
         <Popover.Body>
-            <DeleteButton className={styles.delete}> Delete </DeleteButton>
+            <DeleteButton 
+                className={styles.delete} 
+                endIcon={<DeleteIcon/>}> Delete </DeleteButton>
         </Popover.Body>
   </Popover>    
 );
