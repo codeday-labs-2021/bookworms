@@ -1,16 +1,32 @@
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import FavoriteIcon from '@material-ui/icons/Favorite'; 
-import {useState} from 'react';
+// import {useState} from 'react';
+import FavIcon from './FavIcon';
 import styles from '../css/reviewList.module.css';
 
 function ReviewList ({reviews}) {
 
-    const [fav, setFav] = useState(false);
-    const toggleFavorite = () => {
-       setFav(!fav);
-    }
+    // const [reviewId, setReviewId] = useState('');
 
-    const FavIcon = fav ? FavoriteIcon : FavoriteBorderIcon;
+    // const toggleFav = (id) => {
+    //     setReviewId(id);
+    //     updateFav();
+    // }
+
+    // async function updateFav(){
+    //     const response = await fetch('https://bookworms-api.vercel.app/api/like', {
+    //         method: 'POST',
+    //         headers: {'Content-Type': 'application/json'},
+    //         // convert the React state to JSON and send it as the POST body
+    //         body: JSON.stringify({review_id: reviewId})
+    //     })
+    //     // if the request wasn't successful, throw an error for the user to know 
+    //     if (!response.ok) {
+    //         const message = `An error has occured: ${response.status}`;
+    //         throw new Error(message);
+    //     } else {
+    //         console.log("fav updated");
+    //     }
+    // }
+
 
     return (
         <div className="review-list">
@@ -21,9 +37,9 @@ function ReviewList ({reviews}) {
                     <p> {r.text} </p>
                     <div className={styles.footer}>
                         <p> {r.categories.join(', ')} </p>
-                        <FavIcon 
-                            className={styles.footerRight} 
-                            onClick={toggleFavorite}/>
+                        <FavIcon/>
+                            {/* onClick={toggleFav(r.id)}/> */}
+                        <p> {r.likes} </p>
                     </div>
                 </div>
             ))}
