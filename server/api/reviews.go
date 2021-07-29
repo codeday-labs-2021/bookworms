@@ -17,7 +17,6 @@ import (
 )
 
 type ReviewBody struct {
-	UserName   string   `json:"user_name"`
 	BookName   string   `json:"book_name"`
 	Text       string   `json:"text"`
 	Categories []string `json:"categories"`
@@ -158,7 +157,7 @@ func (s SortableReview) Less(i, j int) bool {
 		} else if s.sortQuery == "created_at" {
 			less = utils.ConvertDate(s.reviews[i].CreatedAt) > utils.ConvertDate(s.reviews[j].CreatedAt)
 		} else {
-			less = s.reviews[i].Likes > s.reviews[j].Likes
+			less = len(s.reviews[i].Likes) > len(s.reviews[j].Likes)
 		}
 	}
 	return less
@@ -190,7 +189,7 @@ func createReview(review *db.Review) error {
 }
 
 func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
-	utils.HandleCors(&w, "GET, POST")
+	utils.HandleCors(&w, "GET, POST, DELETE")
 	switch r.Method {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusNoContent)
@@ -219,9 +218,16 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 		utils.RespondWithSuccess(w, http.StatusOK, reviews)
 
 	case http.MethodPost:
+		user, err := utils.GetUserFromCookie(r)
+
+		if err != nil {
+			utils.RespondWithError(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+
 		var request ReviewBody
 
-		err := utils.DecodeJSONBody(w, r, &request)
+		err = utils.DecodeJSONBody(w, r, &request)
 
 		if err != nil {
 			utils.RespondWithError(w, err.Error(), http.StatusBadRequest)
@@ -229,7 +235,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// validate request and Handle errors
-		if len(request.UserName) == 0 || len(request.BookName) == 0 || len(request.Text) == 0 || len(request.Categories) == 0 {
+		if len(request.BookName) == 0 || len(request.Text) == 0 || len(request.Categories) == 0 {
 			utils.RespondWithError(w, "All fields are required", http.StatusBadRequest)
 			return
 		}
@@ -238,8 +244,8 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 			ID:         primitive.NewObjectID(),
 			CreatedAt:  time.Now(),
 			UpdatedAt:  time.Now(),
-			UserName:   request.UserName,
 			BookName:   request.BookName,
+			UserID:     user.ID,
 			Text:       request.Text,
 			Categories: request.Categories,
 		}
@@ -253,6 +259,67 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 
 		utils.RespondWithSuccess(w, http.StatusCreated, review)
 
+	case http.MethodDelete:
+		user, err := utils.GetUserFromCookie(r)
+
+		if err != nil {
+			utils.RespondWithError(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		requestId := utils.GetIdFromUrl(r)
+
+		if len(requestId) == 0 {
+			utils.RespondWithError(w, "Review id should be passed!", http.StatusBadRequest)
+			return
+		}
+
+		DB, err := db.DB()
+
+		// close db connection
+		defer func() {
+			if err := DB.Client().Disconnect(db.Ctx); err != nil {
+				panic(err)
+			}
+		}()
+
+		if err != nil {
+			utils.RespondWithError(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		var reviewFromID db.Review
+
+		objectId, err := primitive.ObjectIDFromHex(requestId)
+
+		if err != nil {
+			utils.RespondWithError(w, "Invalid id passed", http.StatusBadRequest)
+			return
+		}
+
+		// check if collection exists and owned by user
+		if err := DB.Collection(db.ReviewsCollection).FindOne(db.Ctx, bson.D{{Key: "_id", Value: objectId}}).Decode(&reviewFromID); err != nil {
+			if err == mongo.ErrNoDocuments {
+				utils.RespondWithError(w, "Review passed doesn't exist", http.StatusBadRequest)
+				return
+			}
+			utils.RespondWithError(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		if reviewFromID.UserID != user.ID {
+			utils.RespondWithError(w, "You are not allowed to delete review you don't own!", http.StatusNonAuthoritativeInfo)
+			return
+		}
+
+		_, err = DB.Collection(db.ReviewsCollection).DeleteOne(db.Ctx, bson.D{{Key: "_id", Value: objectId}})
+
+		if err != nil {
+			utils.RespondWithError(w, "Delete failed!", http.StatusInternalServerError)
+			return
+		}
+
+		utils.RespondWithSuccess(w, http.StatusOK, nil)
 	default:
 		utils.RespondWithError(w, "Route not found!", http.StatusBadRequest)
 	}

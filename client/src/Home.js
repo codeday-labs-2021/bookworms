@@ -1,13 +1,13 @@
 import ReviewList from './components/ReviewList';
 import SearchBar from './components/SearchBar';
 import FilterOrder from './components/FilterOrder';
-import useFetch from './components/useFetch';
 import Toolbar from '@material-ui/core/Toolbar';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Fab from '@material-ui/core/Fab';
 import ScrollTop from './components/ScrolltoTop';
 import styles from './css/home.module.css';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
+import axios from 'axios';
 
 /**
  * Homepage
@@ -16,32 +16,23 @@ import {useState, useEffect} from 'react';
 
 function Home(props) {    
 
-    const {data: reviews, isPending, error} = useFetch('https://bookworms-api.vercel.app/api/reviews', 'GET');
+    const [reviews, setReviews] = useState([]);
+    const [isPending, setIsPending] = useState(true);
 
-    if (error){
-        throw new Error(error);
-    }
+    const getReview = useCallback(async () => {
+        const response = await axios.get('https://bookworms-api.vercel.app/api/reviews');
 
-    // const [reviews, setReviews] = useState([]);
-    // const [isPending, setIsPending] = useState(true);
+        if (!response.data.success) {
+            const message = `An error has occured: ${JSON.stringify(await response.status)}`;
+            throw new Error(message);
+        } else {
+            const reviewsArray = response.data.data;
+            setReviews(reviewsArray);
+            setIsPending(false);
+        }
+    }, [])
 
-    // async function getReview(){
-    //     const response = await fetch('https://bookworms-api.vercel.app/api/reviews', {
-    //         method: 'GET',
-    //         headers: {'Accept': 'application/json'},
-    //     });
-
-    //     if (!response.ok){
-    //         const message = `An error has occured: ${response.status}`;
-    //         throw new Error(message);
-    //     } else {
-    //         const reviewsArray = await response.json();
-    //         setReviews(reviewsArray.data);
-    //         setIsPending(false);
-    //     }
-    // }
-
-    // useEffect(() => getReview(), []);
+    useEffect(() => getReview(), [getReview]);
 
     return (
         <div>
