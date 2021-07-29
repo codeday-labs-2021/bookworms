@@ -17,11 +17,43 @@ import axios from 'axios';
 
 function Home(props) {    
 
+    // reviews components 
     const [reviews, setReviews] = useState([]);
     const [isPending, setIsPending] = useState(true);
+    const baseUrl = 'https://bookworms-api.vercel.app/api/reviews';
+    const [url, setUrl] = useState(baseUrl);
 
-    const getReview = useCallback(async () => {
-        const response = await axios.get('https://bookworms-api.vercel.app/api/reviews');
+    // filter order
+    const [orderValue, setOrderValue] = useState('latest');
+
+    const changeOrder = (option) => {
+        if (option === 'latest'){
+            setUrl(baseUrl);
+        } else if (option === 'popular') {
+            setUrl(baseUrl + '?sort=likes&sortOrder=1');
+        } else if (option === 'bookasc') {
+            setUrl(baseUrl + '?sort=book_name&sortOrder=-1');
+        } else {
+            setUrl(baseUrl + '?sort=book_name&sortOrder=1');
+        }
+        getReview(url);
+        setOrderValue(option);
+    }
+
+    // search
+    const searchReview = (term) => {
+        if (term === ''){
+            setUrl(baseUrl);
+        } else {
+            setUrl(baseUrl + '?search=' + term + '&sort=likes&sortOrder=1');
+        }
+        getReview(url);
+    }
+
+    // fetch reviews
+    const getReview = useCallback(async (url) => {
+        console.log(url);
+        const response = await axios.get(url);
 
         if (!response.data.success) {
             const message = `An error has occured: ${JSON.stringify(await response.status)}`;
@@ -33,14 +65,14 @@ function Home(props) {
         }
     }, [])
 
-    useEffect(() => getReview(), [getReview]);
+    useEffect(() => getReview(url), [getReview, url]);
 
     return (
         <div>
             <div className={styles.top}>
                 <div className={styles.filter}>
-                    <SearchBar /> 
-                    <div className={styles.order}><FilterOrder /></div>
+                    <SearchBar handleSearch={searchReview}/> 
+                    <div className={styles.order}><FilterOrder orderValue={orderValue} handleChange={changeOrder}/></div>
                 </div>
                 <FilterCategories />
             </div>

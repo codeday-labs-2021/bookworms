@@ -3,28 +3,25 @@ import CloseIcon from '@material-ui/icons/Close';
 import {useState} from 'react';
 import styles from '../css/searchBar.module.css';
 
-function SearchBar () {
+function SearchBar(props) {
 
-    // const [filteredData, setFilteredData] = useState([]);
-    const [wordEntered, setWordEntered] = useState("");  
+    const [wordEntered, setWordEntered] = useState('');  
     const [isSearching, setIsSearching] = useState(false);
 
     const handleSearch = (e) => {
         const searchWord = e.target.value;
         setWordEntered(searchWord);
     
-        if (searchWord === "") {
-        //   setFilteredData([]);
+        if (searchWord === '') {
             setIsSearching(false);
         } else {
-        //   setFilteredData(searchWord);
           setIsSearching(true);
         }
+        props.handleSearch(searchWord);
     }
     
     const clearInput = () => {
-        // setFilteredData([]);
-        setWordEntered("");
+        setWordEntered('');
         setIsSearching(false);
     };
     

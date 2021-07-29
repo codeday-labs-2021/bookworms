@@ -28,7 +28,6 @@ function ReviewList ({reviews}) {
     //     }
     // }
 
-
     return (
         <div className="review-list">
             {reviews.map((r) => (
@@ -42,7 +41,7 @@ function ReviewList ({reviews}) {
                         <p> {r.categories.join(', ')} </p>
                         <FavIcon/>
                             {/* onClick={toggleFav(r.id)}/> */}
-                        <p> {r.likes} </p>
+                        <p> {(r.likes).length} </p>
                     </div>
                 </div>
             ))}

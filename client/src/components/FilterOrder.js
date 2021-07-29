@@ -10,12 +10,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FilterOrder() {
+export default function FilterOrder(props) {
   const classes = useStyles();
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(props.orderValue);
 
   const handleChange = (e) => {
-    setValue(e.target.value);
+    const option = e.target.value;
+    setValue(option);
+    props.handleChange(option);
   };
 
   return (
@@ -27,8 +29,10 @@ export default function FilterOrder() {
           displayEmpty
           className={classes.selectEmpty}
         >
-          <MenuItem value="">Latest Reviews</MenuItem>
-          <MenuItem value={30}>Popularity</MenuItem>
+          <MenuItem value="latest">Latest Reviews</MenuItem>
+          <MenuItem value="popular">Popularity</MenuItem>
+          <MenuItem value="bookasc">Book Name (Ascending)</MenuItem>
+          <MenuItem value="bookdesc">Book Name (Descending)</MenuItem>
         </Select>
       </FormControl>
     </div>
