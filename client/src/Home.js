@@ -1,6 +1,7 @@
 import ReviewList from './components/ReviewList';
 import SearchBar from './components/SearchBar';
 import FilterOrder from './components/FilterOrder';
+import FilterCategories from './components/FilterCategories';
 import Toolbar from '@material-ui/core/Toolbar';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Fab from '@material-ui/core/Fab';
@@ -37,12 +38,17 @@ function Home(props) {
     return (
         <div>
             <div className={styles.top}>
-                <SearchBar /> 
-                <div className={styles.topRight}><FilterOrder /></div>
+                <div className={styles.filter}>
+                    <SearchBar /> 
+                    <div className={styles.order}><FilterOrder /></div>
+                </div>
+                <FilterCategories />
             </div>
+
             <div className={styles.body}>
                {isPending ? "Loading..." : <ReviewList reviews={reviews}/>}
             </div>
+            
             <Toolbar id="back-to-top-anchor" />
                 <ScrollTop {...props}>
                     <Fab size="small" aria-label="scroll to top">
