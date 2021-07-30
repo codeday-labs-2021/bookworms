@@ -52,7 +52,6 @@ function Home(props) {
 
     // fetch reviews
     const getReview = useCallback(async (url) => {
-        console.log(url);
         const response = await axios.get(url);
 
         if (!response.data.success) {

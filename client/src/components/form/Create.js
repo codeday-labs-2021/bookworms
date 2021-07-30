@@ -43,13 +43,12 @@ function Create () {
 
     async function createReview(){
         const newReview = {book_name: bookName, text, categories};
-        const response = await fetch('https://bookworms-api.vercel.app/api/reviews', {                    
+        const response = await fetch('https://bookworms-api.vercel.app/api/reviews', {       
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             // convert the React state to JSON and send it as the POST body
             body: JSON.stringify(newReview)
         })
-        console.log(JSON.stringify(await response.json()));
         // if the request wasn't successful, throw an error for the user to know 
         if (!response.ok) {
             const message = `An error has occured: ${JSON.stringify(await response.json())}`;
