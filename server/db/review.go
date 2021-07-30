@@ -17,4 +17,5 @@ type Review struct {
 	CreatedAt  time.Time            `bson:"created_at,omitempty" json:"created_at"`
 	UpdatedAt  time.Time            `bson:"updated_at,omitempty" json:"updated_at"`
 	Likes      []primitive.ObjectID `bson:"likes,omitempty" json:"likes"`
+	//User       User
 }

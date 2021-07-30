@@ -30,10 +30,10 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/ping
 ### GET /api/reviews
 
 
-This api does three things
+This api does three operations
 
-- Get all reviews (By default are arranged in descending order of the date they were created meaning the most recent comes first)
-- Get all reviews with a partular keyword in review body(text) 
+- Get all reviews (By default reviews arranged in descending order of the date they were created meaning the most recent comes first)
+- Get all reviews with a partular keyword in review body(text)
 - Get reviews  ordered by likes(use `likes` in request) , books names(use `book_name`) or recency (use `created_at`)
 - Filter reviews by categories
 - All those operations can also happen in single api call
@@ -116,17 +116,17 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/review
 
 This will return data in descending order based on likes
 
-- If you would like to filter the following can be used
+- If you would like to filter the following use the following
 
 ```
-$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews\?categories\=plantation 
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews\?categories\=plantation
 
 ```
 
-You can also pass two or more variable just make sure to separate with commas
+You can also pass two or more variable  make sure to separate with commas
 
 ```
-$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews\?categories\=plantation,Animals 
+$ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/reviews\?categories\=plantation,Animals
 
 ```
 
@@ -135,7 +135,7 @@ $ curl -H "Accept: application/json" https://bookworms-api.vercel.app/api/review
 **Example Request**
 
 ```
-$ curl --location --request POST 'localhost:3000/api/reviews' \
+$ curl --location --request POST 'https://bookworms-api.vercel.app/reviews' \
 --header 'Content-Type: application/json' \
 --header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7ImlkIjoiNjBmZWZmYjk4NjJjYjI2Mjg5NTJlMzdmIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmEkMTQkQzJKNFJONFRmYjJZWUx4QWw3UUhtLmtkLlR5NzdKSHBLd0FZdmRKUzJhOFJlNzd1clJaeFMiLCJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDIxLTA3LTI2VDE4OjMyOjMxLjA3WiIsInVwZGF0ZWRfYXQiOiIyMDIxLTA3LTI2VDE4OjMyOjMxLjA3WiJ9LCJleHAiOjE2Mjc0MTA4NTF9.caScECyPyNz1CvI59cfvLFHx9lG6mX6bbk1wObn18lM' \
 --data-raw '{
@@ -181,8 +181,8 @@ $ curl --location --request POST 'localhost:3000/api/reviews' \
 
 ```
 
-$ curl --location --request POST 'localhost:3000/api/like/60feb9f8d31aa9f9e4ef23e4' \
---header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7ImlkIjoiNjBmZTkzZDljZjRiMDQwMjYxMGMyNWNjIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmEkMTQkbzJFOElRM3pja256aS9WbDZiMnh6dXVseHpWT05LMlphekREZkxQLlVubjJHM1lHTHhZNjYiLCJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDIxLTA3LTI2VDEwOjUyOjEwLjc4NVoiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNy0yNlQxMDo1MjoxMC43ODVaIn0sImV4cCI6MTYyNzM4NDQyMH0.6NnP7Nd8GTFTmy4z0glW50MjqyzJXZxjHOBldnZNj3w' 
+$ curl --location --request POST 'https://bookworms-api.vercel.app/like/60feb9f8d31aa9f9e4ef23e4' \
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7ImlkIjoiNjBmZTkzZDljZjRiMDQwMjYxMGMyNWNjIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmEkMTQkbzJFOElRM3pja256aS9WbDZiMnh6dXVseHpWT05LMlphekREZkxQLlVubjJHM1lHTHhZNjYiLCJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDIxLTA3LTI2VDEwOjUyOjEwLjc4NVoiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNy0yNlQxMDo1MjoxMC43ODVaIn0sImV4cCI6MTYyNzM4NDQyMH0.6NnP7Nd8GTFTmy4z0glW50MjqyzJXZxjHOBldnZNj3w'
 
 ```
 
@@ -210,7 +210,7 @@ $ curl --location --request POST 'localhost:3000/api/like/60feb9f8d31aa9f9e4ef23
     "time_stamp": "Wed Jul 14 13:14:23 +0200 2021"
 }
 ```
-To unlike is to call the same api for like! 
+To unlike is to call the same api for like!
 
 
 ### GET /api/categories
@@ -258,7 +258,7 @@ $ curl --location --request POST 'https://bookworms-api.vercel.app/api/signup' \
     "name":"test",
     "email":"test@test.com",
     "password":"123456"
-}' 
+}'
 ```
 
 
@@ -313,7 +313,7 @@ $ curl --location --request POST 'https://bookworms-api.vercel.app/api/signin' \
 
 ```
 $ curl --location --request DELETE 'https://bookworms-api.vercel.app/api/reviews/60feb2279d2d5eb2d830112b' \
---header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7ImlkIjoiNjBmZTkzZDljZjRiMDQwMjYxMGMyNWNjIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmEkMTQkbzJFOElRM3pja256aS9WbDZiMnh6dXVseHpWT05LMlphekREZkxQLlVubjJHM1lHTHhZNjYiLCJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDIxLTA3LTI2VDEwOjUyOjEwLjc4NVoiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNy0yNlQxMDo1MjoxMC43ODVaIn0sImV4cCI6MTYyNzM4NDQyMH0.6NnP7Nd8GTFTmy4z0glW50MjqyzJXZxjHOBldnZNj3w' 
+--header 'Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7ImlkIjoiNjBmZTkzZDljZjRiMDQwMjYxMGMyNWNjIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmEkMTQkbzJFOElRM3pja256aS9WbDZiMnh6dXVseHpWT05LMlphekREZkxQLlVubjJHM1lHTHhZNjYiLCJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDIxLTA3LTI2VDEwOjUyOjEwLjc4NVoiLCJ1cGRhdGVkX2F0IjoiMjAyMS0wNy0yNlQxMDo1MjoxMC43ODVaIn0sImV4cCI6MTYyNzM4NDQyMH0.6NnP7Nd8GTFTmy4z0glW50MjqyzJXZxjHOBldnZNj3w'
 
 ```
 
