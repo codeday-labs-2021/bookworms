@@ -193,6 +193,7 @@ func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusNoContent)
+		//return
 	case http.MethodGet:
 		var reviews []db.Review
 		var err error
