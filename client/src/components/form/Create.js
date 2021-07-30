@@ -46,7 +46,6 @@ function Create () {
         const response = await fetch('https://bookworms-api.vercel.app/api/reviews', {                    
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
             // convert the React state to JSON and send it as the POST body
             body: JSON.stringify(newReview)
         })
