@@ -131,7 +131,7 @@ func search(reviews []db.Review, search string, sort string) ([]db.Review, error
 	}
 
 	if len(occurences) == 0 {
-		return reviews, nil
+		return withKeywordsReviews, nil
 	}
 
 	sortReviews(&withKeywordsReviews, occurences, sort)
