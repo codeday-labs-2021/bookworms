@@ -23,6 +23,10 @@ function Home(props) {
     const baseUrl = 'https://bookworms-api.vercel.app/api/reviews';
     const [url, setUrl] = useState(baseUrl);
 
+    const triggerGetReview = useCallback(() => {
+        getReview(url);
+    }, [url]);
+
     // filter order
     const [orderValue, setOrderValue] = useState('latest');
 
@@ -36,22 +40,22 @@ function Home(props) {
         } else {
             setUrl(baseUrl + '?sort=book_name&sortOrder=1');
         }
-        getReview(url);
         setOrderValue(option);
+        triggerGetReview();
     }
 
     // search
     const searchReview = (term) => {
-        if (term === ''){
+        if (term === ""){
             setUrl(baseUrl);
         } else {
             setUrl(baseUrl + '?search=' + term + '&sort=likes&sortOrder=1');
         }
-        getReview(url);
+        triggerGetReview();
     }
 
     // fetch reviews
-    const getReview = useCallback(async (url) => {
+    async function getReview (url) {
         const response = await axios.get(url);
 
         if (!response.data.success) {
@@ -62,9 +66,9 @@ function Home(props) {
             setReviews(reviewsArray);
             setIsPending(false);
         }
-    }, [])
+    }
 
-    useEffect(() => getReview(url), [getReview, url]);
+    useEffect(() => triggerGetReview(), [triggerGetReview]);
 
     return (
         <div>

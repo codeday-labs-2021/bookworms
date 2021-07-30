@@ -41,7 +41,7 @@ function ReviewList ({reviews}) {
                         <p> {r.categories.join(', ')} </p>
                         <FavIcon/>
                             {/* onClick={toggleFav(r.id)}/> */}
-                        <p> {(r.likes).length} </p>
+                        <p> {(r.likes)} </p>
                     </div>
                 </div>
             ))}

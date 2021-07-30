@@ -21,6 +21,7 @@ function SearchBar(props) {
     }
     
     const clearInput = () => {
+        props.handleSearch("");
         setWordEntered('');
         setIsSearching(false);
     };
