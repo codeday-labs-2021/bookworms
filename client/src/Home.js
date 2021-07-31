@@ -8,7 +8,6 @@ import Fab from '@material-ui/core/Fab';
 import ScrollTop from './components/ScrolltoTop';
 import styles from './css/home.module.css';
 import {useState, useEffect, useCallback} from 'react';
-import axios from 'axios';
 
 /**
  * Homepage

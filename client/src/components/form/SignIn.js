@@ -31,7 +31,8 @@ function Signin() {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         // convert the React state to JSON and send it as the POST body
-        body: JSON.stringify(userAccount)
+        body: JSON.stringify(userAccount),
+        credentials: 'include',
     })
     // if the request wasn't successful, throw an error for the user to know 
     if (!response.ok) {
