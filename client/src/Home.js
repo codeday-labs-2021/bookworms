@@ -56,14 +56,18 @@ function Home(props) {
 
     // fetch reviews
     async function getReview (url) {
-        const response = await axios.get(url);
-
-        if (!response.data.success) {
+        console.log(url);
+        const response = await fetch(url,{
+            method: 'GET',
+            headers: {'Accept': 'application/json'},
+        });
+        if (!response.ok) {
             const message = `An error has occured: ${JSON.stringify(await response.status)}`;
             throw new Error(message);
         } else {
-            const reviewsArray = response.data.data;
-            setReviews(reviewsArray);
+            const reviewsArray = await response.json();
+            console.log(reviewsArray.data);
+            setReviews(reviewsArray.data);
             setIsPending(false);
         }
     }

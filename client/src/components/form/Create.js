@@ -47,7 +47,8 @@ function Create () {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             // convert the React state to JSON and send it as the POST body
-            body: JSON.stringify(newReview)
+            body: JSON.stringify(newReview),
+            credentials: 'include',
         })
         // if the request wasn't successful, throw an error for the user to know 
         if (!response.ok) {

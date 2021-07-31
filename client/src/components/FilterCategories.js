@@ -6,16 +6,22 @@ import styles from '../css/categories.module.css';
 function FilterCategories () {
 
     const [categories, setCategories] = useState([]);
+    const [isPending, setIsPending] = useState(true);
+    const [choosenCat, setChoosenCat] = useState([]);
 
     const getCategories = useCallback(async () => {
-        const response = await axios.get('https://bookworms-api.vercel.app/api/categories');
+        const response = await fetch('https://bookworms-api.vercel.app/api/categories', {
+            method: 'GET',
+            headers: {'Accept': 'application/json'},
+        });
 
-        if (!response.data.success) {
+        if (!response.ok) {
             const message = `An error has occured: ${JSON.stringify(await response.status)}`;
             throw new Error(message);
         } else {
-            const categoriesArray = response.data.data;
-            setCategories(categoriesArray);
+            const categoriesArray = response.json();
+            setCategories(categoriesArray.data);
+            setIsPending(false);
         }
     }, []);
 
@@ -23,7 +29,7 @@ function FilterCategories () {
 
     return (
         <div className={styles.categories}> 
-            {categories.map((c, i) => 
+            {isPending ? undefined: categories.map((c, i) => 
                 <Chip 
                     key={i}
                     label={c}
