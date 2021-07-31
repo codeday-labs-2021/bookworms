@@ -71,7 +71,7 @@ func signin(request signinRequest) (*signinResponse, *string, error) {
 }
 
 func SigninHandler(w http.ResponseWriter, r *http.Request) {
-	utils.HandleCors(&w, "POST")
+	utils.HandleCors(&w, r, "POST")
 	switch r.Method {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusNoContent)
@@ -113,6 +113,8 @@ func SigninHandler(w http.ResponseWriter, r *http.Request) {
 				Value:    *token,
 				Expires:  time.Now().Add(time.Hour * 24),
 				HttpOnly: true,
+				SameSite: http.SameSiteNoneMode,
+				Secure:   true,
 			})
 		}
 
