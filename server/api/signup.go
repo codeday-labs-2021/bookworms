@@ -69,7 +69,7 @@ type signupRequest struct {
 }
 
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
-	utils.HandleCors(&w, "POST")
+	utils.HandleCors(&w, r, "POST")
 	switch r.Method {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusNoContent)
