@@ -55,7 +55,6 @@ function Home(props) {
 
     // fetch reviews
     async function getReview (url) {
-        console.log(url);
         const response = await fetch(url,{
             method: 'GET',
             headers: {'Accept': 'application/json'},
@@ -65,7 +64,6 @@ function Home(props) {
             throw new Error(message);
         } else {
             const reviewsArray = await response.json();
-            console.log(reviewsArray.data);
             setReviews(reviewsArray.data);
             setIsPending(false);
         }

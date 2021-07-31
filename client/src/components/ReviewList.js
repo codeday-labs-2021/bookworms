@@ -34,7 +34,7 @@ function ReviewList ({reviews}) {
                 <div className={styles.review} key={r.id}>
                     <Link to={`/reviews/${r.id}`}>
                         <h1 className={styles.title}> {r.book_name} </h1>
-                        <h2 className={styles.author}> Published by {r.user_name} </h2>
+                        {/* <h2 className={styles.author}> Published by {r.user_name} </h2> */}
                         <p> {r.text} </p>
                     </Link>
                     <div className={styles.footer}>
