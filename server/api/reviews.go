@@ -189,7 +189,7 @@ func createReview(review *db.Review) error {
 }
 
 func ReviewsHandler(w http.ResponseWriter, r *http.Request) {
-	utils.HandleCors(&w, "GET, POST, DELETE")
+	utils.HandleCors(&w, r, "GET, POST, DELETE")
 	switch r.Method {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusNoContent)

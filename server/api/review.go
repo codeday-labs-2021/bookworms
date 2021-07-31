@@ -7,7 +7,7 @@ import (
 )
 
 func ReviewHandler(w http.ResponseWriter, r *http.Request) {
-	utils.HandleCors(&w, "GET")
+	utils.HandleCors(&w, r, "GET")
 	switch r.Method {
 	case http.MethodOptions:
 		w.WriteHeader(http.StatusNoContent)
