@@ -1,7 +1,6 @@
 import ReviewList from './components/ReviewList';
 import SearchBar from './components/SearchBar';
 import FilterOrder from './components/FilterOrder';
-import FilterCategories from './components/FilterCategories';
 import Toolbar from '@material-ui/core/Toolbar';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Fab from '@material-ui/core/Fab';
@@ -78,7 +77,6 @@ function Home(props) {
                     <SearchBar handleSearch={searchReview}/> 
                     <div className={styles.order}><FilterOrder orderValue={orderValue} handleChange={changeOrder}/></div>
                 </div>
-                <FilterCategories />
             </div>
 
             <div className={styles.body}>

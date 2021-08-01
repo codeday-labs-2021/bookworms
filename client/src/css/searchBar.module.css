@@ -23,3 +23,11 @@
   border-left: none;
   cursor: pointer;
 }
+
+.filterButton {
+  text-align: center;
+  border: 1px solid #afb2b3;
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
+}

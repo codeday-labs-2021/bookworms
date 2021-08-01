@@ -1,12 +1,24 @@
 import {useState, useEffect, useCallback} from 'react';
-import Chip from '@material-ui/core/Chip';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import styles from '../css/categories.module.css';
 
-function FilterCategories () {
+function FilterCategories (props) {
 
     const [categories, setCategories] = useState([]);
     const [isPending, setIsPending] = useState(true);
-    // const [choosenCat, setChoosenCat] = useState([]);
+
+    const [selectedCat, setSelectedCat] = useState([]);
+      
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleChange = (e) => {
+        setSelectedCat(e.target.value);
+    };
 
     const getCategories = useCallback(async () => {
         const response = await fetch('https://bookworms-api.vercel.app/api/categories', {
@@ -29,21 +41,39 @@ function FilterCategories () {
     return (
         <div className={styles.categories}> 
             {isPending ? "" : 
-                <div>
-                    {categories.map((c, i) => 
-                        <Chip 
-                            key={i}
-                            label={c}
-                            variant="outlined"
-                            color="primary"
-                            clickable
-                            disableRipple
-                            className={styles.chip}/>
-                    )}
-                </div>
+                <Modal
+                {...props}
+                size="lg"
+                aria-labelledby="filter"
+                centered
+              >
+                <Modal.Header>
+                    <Modal.Title> Filter by Categories </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <FormControl component="fieldset">
+                        <FormGroup>
+                            {categories.map((c,i) => {
+                                return (
+                                    <FormControlLabel
+                                        key={i}
+                                        control={<Checkbox onChange={handleChange} name={c} />}
+                                        label={c}
+                                    />
+                                );
+                            })}
+                        </FormGroup>
+                    </FormControl>
+
+                </Modal.Body>
+          
+                <Modal.Footer>
+                    <Button type="submit" onClick={props.onHide}> Close </Button>
+                </Modal.Footer>
+              </Modal>
             }
         </div>
     ) ;
-}
 
+}
 export default FilterCategories;

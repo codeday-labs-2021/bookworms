@@ -27,7 +27,6 @@ export default function FilterOrder(props) {
           value={value}
           onChange={handleChange}
           displayEmpty
-          className={classes.selectEmpty}
         >
           <MenuItem value="latest">Latest Reviews</MenuItem>
           <MenuItem value="popular">Popularity</MenuItem>

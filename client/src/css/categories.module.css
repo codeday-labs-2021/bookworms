@@ -8,6 +8,6 @@
     flex-wrap: 'wrap';
 }
 
-.chip:hover, .chip:active, .chip:focus {
+.chipSelected {
     background:#f9e9d4;
 }
