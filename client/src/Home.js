@@ -1,12 +1,13 @@
+import {useState, useEffect, useCallback} from 'react';
 import ReviewList from './components/ReviewList';
 import SearchBar from './components/SearchBar';
 import FilterOrder from './components/FilterOrder';
-import Toolbar from '@material-ui/core/Toolbar';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Fab from '@material-ui/core/Fab';
 import ScrollTop from './components/ScrolltoTop';
+import Toolbar from '@material-ui/core/Toolbar';
+import Fab from '@material-ui/core/Fab';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import axios from 'axios';
 import styles from './css/home.module.css';
-import {useState, useEffect, useCallback} from 'react';
 
 /**
  * Homepage
@@ -55,23 +56,24 @@ function Home(props) {
 
     // filter categories
     const updateCategories = (categoriesArray) => {
-        const filterUrl = '?categories=' + categoriesArray.join(',');
-        setUrl(baseUrl + filterUrl);
+        if (categoriesArray){
+            const filterUrl = '?categories=' + categoriesArray.join(',');
+            setUrl(baseUrl + filterUrl);
+        } else {
+            setUrl(baseUrl);
+        }
         triggerGetReview();
     }
 
     // fetch reviews
     async function getReview (url) {
-        const response = await fetch(url,{
-            method: 'GET',
-            headers: {'Accept': 'application/json'},
-        });
-        if (!response.ok) {
-            const message = `An error has occured: ${JSON.stringify(await response.status)}`;
+        const response = await axios.get(url);
+        if (!response.data.success) {
+            const message = 'An error has occured';
             throw new Error(message);
         } else {
-            const reviewsArray = await response.json();
-            setReviews(reviewsArray.data);
+            const reviewsArray = await response.data.data;
+            setReviews(reviewsArray);
             setIsPending(false);
         }
     }

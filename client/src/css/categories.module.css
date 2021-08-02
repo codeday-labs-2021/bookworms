@@ -1,13 +1,11 @@
-.categories {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .closeButton, .closeButton:active, .closeButton:focus {
     background: #dd9f33;
     color: #fff;
     border: 0;
     border-radius: 8px;
     cursor: pointer;
+}
+
+.closeButton:hover {
+    background: #b58026;
 }

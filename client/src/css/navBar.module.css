@@ -34,7 +34,7 @@
     border-radius: 50%;
 }
 
-.signOut, .signOut:active, .signOut:focus {
+.signOut {
     background: #dd9f33;
     color: #fff;
     border: 0;

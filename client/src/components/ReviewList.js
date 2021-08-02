@@ -29,7 +29,7 @@ function ReviewList ({reviews}) {
     // }
 
     return (
-        <div className="review-list">
+        <>
             {reviews.map((r) => (
                 <div className={styles.review} key={r.id}>
                     <Link to={`/reviews/${r.id}`}>
@@ -45,7 +45,7 @@ function ReviewList ({reviews}) {
                     </div>
                 </div>
             ))}
-        </div>
+        </>
     );
 }
 

@@ -5,6 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import axios from 'axios';
 import styles from '../css/categories.module.css';
 
 function FilterCategories (props) {
@@ -46,17 +47,13 @@ function FilterCategories (props) {
 
     // get all categories for users to choose from
     const getCategories = useCallback(async () => {
-        const response = await fetch('https://bookworms-api.vercel.app/api/categories', {
-            method: 'GET',
-            headers: {'Accept': 'application/json'},
-        });
-
-        if (!response.ok) {
-            const message = `An error has occured: ${JSON.stringify(await response.status)}`;
+        const response = await axios.get('https://bookworms-api.vercel.app/api/categories');
+        if (!response.data.success) {
+            const message = 'An error has occured';
             throw new Error(message);
         } else {
-            const categoriesArray = await response.json();
-            setCategories(categoriesArray.data);
+            const categoriesArray = await response.data.data;
+            setCategories(categoriesArray);
             setIsPending(false);
         }
     }, []);
