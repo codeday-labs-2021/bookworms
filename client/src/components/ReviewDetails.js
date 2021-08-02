@@ -5,6 +5,7 @@ import Popover from 'react-bootstrap/Popover';
 import Snackbar from '@material-ui/core/Snackbar';
 import DeleteButton from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
+import {makeStyles} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import axios from 'axios';
 import styles from '../css/reviewDetails.module.css';
@@ -14,6 +15,12 @@ import styles from '../css/reviewDetails.module.css';
  * 
  */
 
+const useStyles = makeStyles ({
+    error: {
+        backgroundColor: '#d8bb95',
+    }
+})
+
 function ReviewDetails() {
 
     const [reviewDetails, setReviewDetails] = useState([]);
@@ -22,6 +29,7 @@ function ReviewDetails() {
     const [showAlert, setShowAlert] = useState(false);
     const [error, setError] = useState('');
 
+    const classes = useStyles();
     const {id} = useParams();
     const history = useHistory();
 
@@ -80,12 +88,13 @@ function ReviewDetails() {
         <>
             <>
                 {error ? <Snackbar 
-                    open={showAlert} 
-                    anchorOrigin={{vertical:'top', horizontal:'center'}} 
-                    autoHideDuration = {3000}
-                    message={error} 
-                    action={<Icon color="primary" onClick={() => setShowAlert(false)}>close</Icon>}
-                    /> : ""}
+                            open={showAlert} 
+                            autoHideDuration = {3000}
+                            ContentProps={{className: classes.error}}
+                            message={error} 
+                            action={<Icon color="primary" onClick={() => setShowAlert(false)}>close</Icon>}
+                            /> 
+                : null}
             </>
             {isPending ? "Loading..." :
                 <div className={styles.content}>

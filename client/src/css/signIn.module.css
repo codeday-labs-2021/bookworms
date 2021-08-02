@@ -13,6 +13,10 @@
     text-decoration: none;
 }
 
+.description {
+    margin-bottom: 10px;
+}
+
 .name {
     color: #dd9f33;
 }

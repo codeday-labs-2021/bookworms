@@ -73,7 +73,7 @@ function Signin() {
   return (
     <Container className={styles.container}>
       <Row>
-        <Col>
+        <Col className={styles.description}>
           <div className={styles.logo}>
               <img src={logo} height={80} width={80} alt="logo"/> 
               <Link to="/"> <h1 className={styles.name}>bookworms</h1> </Link>
@@ -82,7 +82,7 @@ function Signin() {
           <h4> <span className={styles.name}> bookworms </span> is a CodeDay Labs project to create a web app to share your ideas of a book with others. </h4>
         </Col>
 
-        <Col className={styles.content}>
+        <Col>
           <Form noValidate validated={validated} onSubmit={handleSubmit} className={styles.form}>
             <Form.Group className={styles.field}>
               <FloatingLabel controlId="formEmail" label="Email address">
