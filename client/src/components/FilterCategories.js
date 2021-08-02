@@ -9,17 +9,42 @@ import styles from '../css/categories.module.css';
 
 function FilterCategories (props) {
 
+    // all categories
     const [categories, setCategories] = useState([]);
-    const [isPending, setIsPending] = useState(true);
-
+    // filtered categories
     const [selectedCat, setSelectedCat] = useState([]);
-      
-    const [isClicked, setIsClicked] = useState(false);
+
+    // page component
+    const [isPending, setIsPending] = useState(true);
+    
+    // add the filtered list
+    const addCategories = (category) => {
+        const tempAdd = selectedCat.concat(category);
+        setSelectedCat(tempAdd);
+    }
+
+    // remove from the filtered list
+    const removeCategories = (category) => {
+        const tempRemove = selectedCat.filter((c) => c !== category);
+        setSelectedCat(tempRemove);
+    }
 
     const handleChange = (e) => {
-        setSelectedCat(e.target.value);
+        const checked = e.target.checked;
+        const chosenCat = e.target.name;
+        if (checked){
+            addCategories(chosenCat);
+        } else {
+            removeCategories(chosenCat)
+        }
     };
 
+    const handleClose = () => {
+        props.handleChange(selectedCat);
+        props.onHide();
+    }
+
+    // get all categories for users to choose from
     const getCategories = useCallback(async () => {
         const response = await fetch('https://bookworms-api.vercel.app/api/categories', {
             method: 'GET',
@@ -51,13 +76,18 @@ function FilterCategories (props) {
                     <Modal.Title> Filter by Categories </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FormControl component="fieldset">
+                    <FormControl>
                         <FormGroup>
                             {categories.map((c,i) => {
                                 return (
                                     <FormControlLabel
+                                        color="primary"
                                         key={i}
-                                        control={<Checkbox onChange={handleChange} name={c} />}
+                                        control={<Checkbox 
+                                                    disableRipple 
+                                                    color="primary" 
+                                                    onChange={handleChange} 
+                                                    name={c} />}
                                         label={c}
                                     />
                                 );
@@ -68,7 +98,7 @@ function FilterCategories (props) {
                 </Modal.Body>
           
                 <Modal.Footer>
-                    <Button type="submit" onClick={props.onHide}> Close </Button>
+                    <Button type="submit" onClick={handleClose} className={styles.closeButton}> Close </Button>
                 </Modal.Footer>
               </Modal>
             }

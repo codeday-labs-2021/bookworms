@@ -48,6 +48,7 @@ function SearchBar(props) {
             <FilterCategories
                 show={filterShow}
                 onHide={() => setFilterShow(false)}
+                handleChange={props.handleFilter}
             />
 
             <BarIcon

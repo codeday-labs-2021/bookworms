@@ -47,8 +47,16 @@ function Home(props) {
         if (term === ""){
             setUrl(baseUrl);
         } else {
-            setUrl(baseUrl + '?search=' + term + '&sort=likes&sortOrder=1');
+            const searchUrl = '?search=' + term + '&sort=likes&sortOrder=1';
+            setUrl(baseUrl + searchUrl);
         }
+        triggerGetReview();
+    }
+
+    // filter categories
+    const updateCategories = (categoriesArray) => {
+        const filterUrl = '?categories=' + categoriesArray.join(',');
+        setUrl(baseUrl + filterUrl);
         triggerGetReview();
     }
 
@@ -74,7 +82,7 @@ function Home(props) {
         <div>
             <div className={styles.top}>
                 <div className={styles.filter}>
-                    <SearchBar handleSearch={searchReview}/> 
+                    <SearchBar handleSearch={searchReview} handleFilter={updateCategories}/> 
                     <div className={styles.order}><FilterOrder orderValue={orderValue} handleChange={changeOrder}/></div>
                 </div>
             </div>

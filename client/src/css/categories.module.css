@@ -4,10 +4,10 @@
     justify-content: center;
 }
 
-.chip {
-    flex-wrap: 'wrap';
-}
-
-.chipSelected {
-    background:#f9e9d4;
+.closeButton, .closeButton:active, .closeButton:focus {
+    background: #dd9f33;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
 }

@@ -24,7 +24,6 @@ function Navbar() {
         <Popover id="popover-basic">
             <Popover.Header as="h3">My Account</Popover.Header>
             <Popover.Body>
-                User's name or email here 
                 <SignoutButton className={styles.signOut} onClick={handleSignOut}> Sign out </SignoutButton>
             </Popover.Body>
       </Popover>    
