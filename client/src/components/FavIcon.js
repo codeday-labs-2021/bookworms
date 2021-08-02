@@ -1,31 +1,21 @@
-import {Component} from 'react';
+import {useState} from 'react';
 import Icon from '@material-ui/core/Icon';
 import styles from '../css/favIcon.module.css';
 
-class FavIcon extends Component {
-  constructor() {
-    super();
-    this.state = {
-      faved: false
-    };
-    this.handleClick = this.handleClick.bind(this);
+function FavIcon () {
+  const [faved, setFaved] = useState(false);
+
+  const handleClick = () => {
+    setFaved(!faved);
   }
 
-  handleClick() {
-    this.setState({
-      faved: !this.state.faved
-    });
-  }
+  const label = faved ? <Icon style={{color: '#f50057'}}>favorite</Icon> : <Icon>favorite_border</Icon>;
 
-  render() {
-    const label = this.state.faved ? <Icon style={{color: '#f50057'}}>favorite</Icon> : <Icon>favorite_border</Icon>;
-
-    return (
-        <span onClick={this.handleClick} className={styles.fav}>
-          {label}
-        </span>
-    );
-  }
+  return (
+    <span onClick={handleClick} className={styles.fav}>
+      {label}
+    </span>
+  );
 }
 
 export default FavIcon;

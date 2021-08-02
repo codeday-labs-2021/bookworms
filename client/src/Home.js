@@ -74,6 +74,7 @@ function Home(props) {
         } else {
             const reviewsArray = await response.data.data;
             setReviews(reviewsArray);
+            console.log(reviewsArray);
             setIsPending(false);
         }
     }
