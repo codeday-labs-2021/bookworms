@@ -3,6 +3,7 @@ import ReviewList from './components/ReviewList';
 import SearchBar from './components/SearchBar';
 import FilterOrder from './components/FilterOrder';
 import ScrollTop from './components/ScrolltoTop';
+import getQuery from './components/getQuery';
 import Toolbar from '@material-ui/core/Toolbar';
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -22,6 +23,14 @@ function Home(props) {
     const baseUrl = 'https://bookworms-api.vercel.app/api/reviews';
     const [url, setUrl] = useState(baseUrl);
 
+    // keep track of what filters user is changing
+    let query = {
+        search: '',
+        categories: '',
+        sort: '',
+        sortOrder: ''
+    }
+
     const triggerGetReview = useCallback(() => {
         getReview(url);
     }, [url]);
@@ -31,37 +40,35 @@ function Home(props) {
 
     const changeOrder = (option) => {
         if (option === 'popular') {
-            setUrl(baseUrl + '?sort=likes&sortOrder=-1');
+            query = {sort: 'likes', sortOrder:'-1'};
         } else if (option === 'bookasc') {
-            setUrl(baseUrl + '?sort=book_name&sortOrder=1');
+            query = {sort: 'book_name', sortOrder:'1'};
         } else if (option === 'bookdesc') {
-            setUrl(baseUrl + '?sort=book_name&sortOrder=-1');
-        } else {
-            setUrl(baseUrl);
+            query = {sort: 'book_name', sortOrder:'-1'};
         }
         setOrderValue(option);
+        const orderOption = getQuery(query);
+        setUrl(`${baseUrl}?${orderOption}`);
         triggerGetReview();
     }
 
     // search
     const searchReview = (term) => {
-        if (term === ""){
-            setUrl(baseUrl);
-        } else {
-            const searchUrl = '?search=' + term + '&sort=likes&sortOrder=1';
-            setUrl(baseUrl + searchUrl);
+        if (term !== ''){
+            query = {search: term, sort: 'likes', sortOrder: '1'};
         }
+        const search = getQuery(query);
+        setUrl(`${baseUrl}?${search}`);
         triggerGetReview();
     }
 
     // filter categories
     const updateCategories = (categoriesArray) => {
         if (categoriesArray){
-            const filterUrl = '?categories=' + categoriesArray.join(',');
-            setUrl(baseUrl + filterUrl);
-        } else {
-            setUrl(baseUrl);
+            query = {categories: '' + categoriesArray.join(',')}
         }
+        const categoriesChosen = getQuery(query);
+        setUrl(`${baseUrl}?${categoriesChosen}`);
         triggerGetReview();
     }
 
