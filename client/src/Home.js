@@ -30,14 +30,14 @@ function Home(props) {
     const [orderValue, setOrderValue] = useState('latest');
 
     const changeOrder = (option) => {
-        if (option === 'latest'){
-            setUrl(baseUrl);
-        } else if (option === 'popular') {
-            setUrl(baseUrl + '?sort=likes&sortOrder=1');
+        if (option === 'popular') {
+            setUrl(baseUrl + '?sort=likes&sortOrder=-1');
         } else if (option === 'bookasc') {
+            setUrl(baseUrl + '?sort=book_name&sortOrder=1');
+        } else if (option === 'bookdesc') {
             setUrl(baseUrl + '?sort=book_name&sortOrder=-1');
         } else {
-            setUrl(baseUrl + '?sort=book_name&sortOrder=1');
+            setUrl(baseUrl);
         }
         setOrderValue(option);
         triggerGetReview();
@@ -67,6 +67,7 @@ function Home(props) {
 
     // fetch reviews
     async function getReview (url) {
+        console.log(url);
         const response = await axios.get(url);
         if (!response.data.success) {
             const message = 'An error has occured';
@@ -74,19 +75,18 @@ function Home(props) {
         } else {
             const reviewsArray = await response.data.data;
             setReviews(reviewsArray);
-            console.log(reviewsArray);
             setIsPending(false);
         }
     }
 
-    useEffect(() => triggerGetReview(), [triggerGetReview]);
+    useEffect(() => triggerGetReview(), [triggerGetReview, url]);
 
     return (
         <div>
             <div className={styles.top}>
                 <div className={styles.filter}>
-                    <SearchBar handleSearch={searchReview} handleFilter={updateCategories}/> 
-                    <div className={styles.order}><FilterOrder orderValue={orderValue} handleChange={changeOrder}/></div>
+                    <SearchBar searchReview={searchReview} updateCategories={updateCategories}/> 
+                    <div className={styles.order}><FilterOrder orderValue={orderValue} changeOrder={changeOrder}/></div>
                 </div>
             </div>
 
@@ -103,5 +103,4 @@ function Home(props) {
         </div>
     );
 }
-
 export default Home;

@@ -5,20 +5,44 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import {makeStyles} from '@material-ui/core';
 import axios from 'axios';
-import styles from '../css/categories.module.css';
+
+// react component styles
+const useStyles = makeStyles ({
+    title: {
+        color: '#dd9f33',
+    },
+
+    close: {
+        border: 0,
+        backgroundColor: '#dd9f33',
+        '&:hover': {
+            backgroundColor: '#b58026',
+        }
+    }
+})
+
+/**
+ * Pop-up for filtering categories
+ * @param props props send from Searchbar to update categories filtered 
+ *  
+ */
 
 function FilterCategories (props) {
+
+    // css for components
+    const classes = useStyles();
 
     // all categories
     const [categories, setCategories] = useState([]);
     // filtered categories
     const [selectedCat, setSelectedCat] = useState([]);
 
-    // page component
+    // other page component
     const [isPending, setIsPending] = useState(true);
     
-    // add the filtered list
+    // add to the filtered list
     const addCategories = (category) => {
         const tempAdd = selectedCat.concat(category);
         setSelectedCat(tempAdd);
@@ -61,7 +85,7 @@ function FilterCategories (props) {
     useEffect(() => getCategories(), [getCategories]);
 
     return (
-        <div className={styles.categories}> 
+        <div> 
             {isPending ? "" : 
                 <Modal
                 {...props}
@@ -70,7 +94,7 @@ function FilterCategories (props) {
                 centered
               >
                 <Modal.Header>
-                    <Modal.Title> Filter by Categories </Modal.Title>
+                    <Modal.Title className={classes.title}> Filter by Categories </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <FormControl>
@@ -78,11 +102,9 @@ function FilterCategories (props) {
                             {categories.map((c,i) => {
                                 return (
                                     <FormControlLabel
-                                        color="primary"
                                         key={i}
                                         control={<Checkbox 
                                                     disableRipple 
-                                                    color="primary" 
                                                     onChange={handleChange} 
                                                     name={c} />}
                                         label={c}
@@ -95,7 +117,7 @@ function FilterCategories (props) {
                 </Modal.Body>
           
                 <Modal.Footer>
-                    <Button type="submit" onClick={handleClose} className={styles.closeButton}> Close </Button>
+                    <Button type="submit" onClick={handleClose} className={classes.close}> Close </Button>
                 </Modal.Footer>
               </Modal>
             }

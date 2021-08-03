@@ -4,20 +4,28 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+// styles for form
 const useStyles = makeStyles((theme) => ({
   formControl: {
     minWidth: 120,
   },
 }));
 
-export default function FilterOrder(props) {
+/**
+ * Dropdown for filtering order of reviews
+ * @param orderValue the option that user clicks on to filter
+ * @param changeOrder function from Home to trigger the changes
+ *  
+ */
+
+export default function FilterOrder ({orderValue, changeOrder}) {
   const classes = useStyles();
-  const [value, setValue] = useState(props.orderValue);
+  const [value, setValue] = useState(orderValue);
 
   const handleChange = (e) => {
     const option = e.target.value;
     setValue(option);
-    props.handleChange(option);
+    changeOrder(option);
   };
 
   return (

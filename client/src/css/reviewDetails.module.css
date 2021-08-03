@@ -21,8 +21,12 @@
     text-align: left;
 }
   
-.footer{
+.footer {
     display:flex;
+}
+
+.footerRight {
+    margin-left: auto;
 }
 
 .more {

@@ -10,27 +10,31 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import axios from 'axios';
 import styles from '../css/reviewDetails.module.css';
 
-/**
- * Individual review pages
- * 
- */
-
+// snackbar styles 
 const useStyles = makeStyles ({
     error: {
         backgroundColor: '#d8bb95',
     }
 })
 
-function ReviewDetails() {
+/**
+ * Individual review pages
+ * 
+ */
 
+function ReviewDetails () {
+
+    // review details components
     const [reviewDetails, setReviewDetails] = useState([]);
     const [isPending, setIsPending] = useState(true);
 
+    // error alert components
     const [showAlert, setShowAlert] = useState(false);
     const [error, setError] = useState('');
 
-    const classes = useStyles();
+    // other components
     const {id} = useParams();
+    const classes = useStyles();
     const history = useHistory();
 
     // handle delete 
@@ -108,12 +112,11 @@ function ReviewDetails() {
                     <p> {reviewDetails.text} </p>
                     <div className={styles.footer}>
                         <p> {reviewDetails.categories.join(', ')} </p>
-                        <p> {reviewDetails.likes} </p>
+                        <p className={styles.footerRight}> {reviewDetails.likes.length === 0 ? "Be the first to favorite this review!" : "Favorite: " + reviewDetails.likes.length} </p>
                     </div>
                 </div>
             }
         </>
     );
 }
-
 export default ReviewDetails;

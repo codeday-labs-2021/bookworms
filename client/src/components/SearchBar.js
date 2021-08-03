@@ -5,7 +5,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import FilterCategories from './FilterCategories';
 import styles from '../css/searchBar.module.css';
 
-function SearchBar(props) {
+/**
+ * Search bar for users
+ * @param searchReview function send from Home to update feed according to search term
+ * @param updateCategories function send from Home to update feed according to categories chosen 
+ *  
+ */
+
+function SearchBar ({searchReview, updateCategories}) {
 
     // search bar components 
     const [wordEntered, setWordEntered] = useState('');  
@@ -20,11 +27,11 @@ function SearchBar(props) {
         } else {
           setIsSearching(true);
         }
-        props.handleSearch(searchWord);
+        searchReview(searchWord);
     }
     
     const clearInput = () => {
-        props.handleSearch("");
+        searchReview("");
         setWordEntered('');
         setIsSearching(false);
     };
@@ -48,7 +55,7 @@ function SearchBar(props) {
             <FilterCategories
                 show={filterShow}
                 onHide={() => setFilterShow(false)}
-                handleChange={props.handleFilter}
+                handleChange={updateCategories}
             />
 
             <BarIcon
@@ -57,5 +64,4 @@ function SearchBar(props) {
         </div>
     );
 }
-
 export default SearchBar;

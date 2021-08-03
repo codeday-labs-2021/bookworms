@@ -33,16 +33,3 @@
     background: #e9d7c2;
     border-radius: 50%;
 }
-
-.signOut {
-    background: #dd9f33;
-    color: #fff;
-    border: 0;
-    border-radius: 8px;
-    width: 100%;
-    cursor: pointer;
-}
-
-.signOut:hover {
-    background: #b58026;
-}

@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {useHistory} from 'react-router-dom';
-// import {useParams} from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -15,13 +14,12 @@ import styles from '../../css/create.module.css';
 
 function Create () {
 
-    /* book review components */
-    // const {userName} = useParams();
+    // book review components
     const [bookName, setBookName] = useState('');
     const [text, setText] = useState('');
     const [categories, setCategories] = useState([]);
 
-    /* other page related components */
+    // other page related components
     const [isPending, setIsPending] = useState(false);
     const history = useHistory();
     const [validated, setValidated] = useState(false);
@@ -126,5 +124,4 @@ function Create () {
         
     );
 }
-
 export default Create;

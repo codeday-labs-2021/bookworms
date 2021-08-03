@@ -1,8 +1,12 @@
-// import {useState} from 'react';
 import {Link} from 'react-router-dom';
 import FavIcon from './FavIcon';
 import styles from '../css/reviewList.module.css';
 
+/**
+ * Generating all reviews in database on homepage
+ * @param reviews array of reviews to display
+ *  
+ */
 function ReviewList ({reviews}) {
 
     return (
@@ -18,7 +22,7 @@ function ReviewList ({reviews}) {
                     </Link>
                     <div className={styles.footer}>
                         <p> {r.categories.join(', ')} </p>
-                        <FavIcon/>
+                        <FavIcon reviewId={r.id}/>
                         <p> {r.likes ? (r.likes).length : "0"} </p>
                     </div>
                 </div>
@@ -26,5 +30,4 @@ function ReviewList ({reviews}) {
         </>
     );
 }
-
 export default ReviewList;

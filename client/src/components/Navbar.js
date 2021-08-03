@@ -3,28 +3,42 @@ import {Link, useHistory} from 'react-router-dom';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Popover from 'react-bootstrap/Popover';
 import SignoutButton from 'react-bootstrap/Button';
+import {makeStyles} from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
 import styles from '../css/navBar.module.css';
+
+// material ui styles
+const useStyles = makeStyles ({
+    signOut: {
+        border: 0,
+        backgroundColor: '#dd9f33',
+        '&:hover': {
+            backgroundColor: '#b58026',
+        }
+    }
+})
 
 /**
  * The navigation bar
  * 
  */
 
-function Navbar() {
-
+function Navbar () {
+    
+    const classes = useStyles();
     const history = useHistory();
 
     const handleSignOut = () => {
         history.push("/");
     }
     
+    // user's account details
     const popOver = (
         <Popover id="popover-basic">
             <Popover.Header as="h3">My Account</Popover.Header>
             <Popover.Body>
-                <SignoutButton onClick={handleSignOut}> Sign out </SignoutButton>
+                <SignoutButton onClick={handleSignOut} className={classes.signOut}> Sign out </SignoutButton>
             </Popover.Body>
       </Popover>    
     );
@@ -46,5 +60,4 @@ function Navbar() {
         </nav>
     );
 } 
-
 export default Navbar;
