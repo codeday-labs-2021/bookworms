@@ -67,7 +67,6 @@ function Home(props) {
 
     // fetch reviews
     async function getReview (url) {
-        console.log(url);
         const response = await axios.get(url);
         if (!response.data.success) {
             const message = 'An error has occured';

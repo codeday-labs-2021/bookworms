@@ -14,7 +14,7 @@ import styles from '../../css/signIn.module.css';
  * 
  */
 
-function Signin() {
+function Signin () {
 
   // form components
   const [userEmail, setUserEmail] = useState('');
@@ -125,5 +125,4 @@ function Signin() {
     </Container>
   );
 }
-
 export default Signin;
