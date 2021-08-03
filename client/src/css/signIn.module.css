@@ -1,0 +1,54 @@
+.container {
+    justify-content: center;
+    align-items: center;
+    margin-top: 10%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo a {
+    text-decoration: none;
+}
+
+.description {
+    margin-bottom: 10px;
+}
+
+.name {
+    color: #dd9f33;
+}
+
+.form {
+    background-color: #f9e9d4;
+    border-radius: 8px;
+    padding: 15px;
+    width: 80%;
+    text-align: left;
+    margin: auto;
+}
+
+.field {
+    margin-bottom: 10px;
+}
+
+.newUser {
+    text-align: right;
+    margin-bottom: 0px;
+}
+
+.signinButton, .signinButton:active, .signinButton:focus {
+    background: #dd9f33;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.signinButton:hover, .signinButton:disabled {
+    background: #b58026;
+}

@@ -4,18 +4,28 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+// styles for form
 const useStyles = makeStyles((theme) => ({
   formControl: {
     minWidth: 120,
   },
 }));
 
-export default function FilterOrder() {
+/**
+ * Dropdown for filtering order of reviews
+ * @param orderValue the option that user clicks on to filter
+ * @param changeOrder function from Home to trigger the changes
+ *  
+ */
+
+export default function FilterOrder ({orderValue, changeOrder}) {
   const classes = useStyles();
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(orderValue);
 
   const handleChange = (e) => {
-    setValue(e.target.value);
+    const option = e.target.value;
+    setValue(option);
+    changeOrder(option);
   };
 
   return (
@@ -25,10 +35,11 @@ export default function FilterOrder() {
           value={value}
           onChange={handleChange}
           displayEmpty
-          className={classes.selectEmpty}
         >
-          <MenuItem value="">Latest Reviews</MenuItem>
-          <MenuItem value={30}>Popularity</MenuItem>
+          <MenuItem value="latest">Latest Reviews</MenuItem>
+          <MenuItem value="popular">Popularity</MenuItem>
+          <MenuItem value="bookasc">Book Name (Ascending)</MenuItem>
+          <MenuItem value="bookdesc">Book Name (Descending)</MenuItem>
         </Select>
       </FormControl>
     </div>

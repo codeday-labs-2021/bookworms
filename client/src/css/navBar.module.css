@@ -23,12 +23,12 @@
     padding: 6px;
 }
 
-.button {
+.icons {
     cursor: pointer;
     color: #dd9f33;
 }
 
-.button:hover {
+.icons:hover {
     border: 0px;
     background: #e9d7c2;
     border-radius: 50%;
