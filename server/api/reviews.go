@@ -25,10 +25,13 @@ type ReviewBody struct {
 func getReviews(sortQuery string, sortOrder string, searchQuery string, categoriesQuery string) ([]db.Review, error) {
 	var reviewsCursor *mongo.Cursor
 	var err error
+	var reviews []db.Review
 
 	DB, err := db.DB()
 
-	var reviews []db.Review
+	if err != nil {
+		return nil, err
+	}
 
 	// close db connection
 	defer func() {
@@ -36,10 +39,6 @@ func getReviews(sortQuery string, sortOrder string, searchQuery string, categori
 			panic(err)
 		}
 	}()
-
-	if err != nil {
-		return nil, err
-	}
 
 	opts := options.Find()
 

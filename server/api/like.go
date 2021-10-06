@@ -16,15 +16,15 @@ func likeReview(id primitive.ObjectID, review *db.Review) error {
 
 	DB, err := db.DB()
 
+	if err != nil {
+		return err
+	}
+
 	defer func() {
 		if err := DB.Client().Disconnect(db.Ctx); err != nil {
 			panic(err)
 		}
 	}()
-
-	if err != nil {
-		return err
-	}
 
 	_, err = DB.Collection(db.ReviewsCollection).UpdateOne(
 		db.Ctx,

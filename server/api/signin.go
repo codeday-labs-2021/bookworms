@@ -23,17 +23,15 @@ type signinResponse struct {
 
 func signin(request signinRequest) (*signinResponse, *string, error) {
 	DB, err := db.DB()
-
+	if err != nil {
+		return nil, nil, err
+	}
 	// close db connection
 	defer func() {
 		if err := DB.Client().Disconnect(db.Ctx); err != nil {
 			panic(err)
 		}
 	}()
-
-	if err != nil {
-		return nil, nil, err
-	}
 
 	var user db.User
 

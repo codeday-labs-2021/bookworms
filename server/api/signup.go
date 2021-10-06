@@ -14,17 +14,15 @@ import (
 
 func signUp(request signupRequest) (*signupResponse, error) {
 	DB, err := db.DB()
-
+	if err != nil {
+		return nil, err
+	}
 	// close db connection
 	defer func() {
 		if err := DB.Client().Disconnect(db.Ctx); err != nil {
 			panic(err)
 		}
 	}()
-
-	if err != nil {
-		return nil, err
-	}
 
 	var user bson.M
 
