@@ -1,10 +1,15 @@
 /* homepage */
 .top {
-    display: flex;
     align-items: center;
+    justify-content: center;
 }
 
-.topRight {
+.filter {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.order {
     margin-left: auto;
 }
 

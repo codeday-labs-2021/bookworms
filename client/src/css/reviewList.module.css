@@ -1,12 +1,16 @@
 /* review previews / list */
-.normal {
+.review {
     padding: 10px 16px;
     margin: 20px 0;
     border-bottom: 1px solid #ebc686;
 }
 
-.normal:hover {
+.review:hover {
     box-shadow: 1px 1px 1px 1px #dd9f33;
+}
+
+.review a {
+    text-decoration: none;
 }
 
 .title {
@@ -20,7 +24,15 @@
     margin-bottom: 10px;
     text-align: left;
 }
+
+.reviewText {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    margin-bottom: 10px;
+}
   
-.footer{
+.footer {
     display:flex;
 }

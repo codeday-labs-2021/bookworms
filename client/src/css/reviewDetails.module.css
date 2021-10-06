@@ -1,0 +1,54 @@
+/* individual review page */
+
+.content {
+    padding: 5px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    font-size: 20px;
+    color: #dd9f33;
+}
+
+.author {
+    font-size:17px;
+    color: #90662e;
+    margin-bottom: 10px;
+    text-align: left;
+}
+  
+.footer {
+    display:flex;
+}
+
+.footerRight {
+    margin-left: auto;
+}
+
+.more {
+    cursor: pointer;
+    color: #dd9f33;
+    margin-left: auto;
+}
+
+.more:hover {
+    border: 0px;
+    background: #e9d7c2;
+    border-radius: 50%;
+}
+
+.delete {
+    width: 100%;
+    border: 0;
+    background: none;
+    color: #000;
+}
+
+.delete:hover, .delete:active, .delete:focus {
+    background: #eae8e8;
+    color: #000;
+}

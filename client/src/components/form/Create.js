@@ -14,13 +14,12 @@ import styles from '../../css/create.module.css';
 
 function Create () {
 
-    /* book review components */
-    const [userName, setUserName] = useState('');
+    // book review components
     const [bookName, setBookName] = useState('');
     const [text, setText] = useState('');
     const [categories, setCategories] = useState([]);
 
-    /* other page related components */
+    // other page related components
     const [isPending, setIsPending] = useState(false);
     const history = useHistory();
     const [validated, setValidated] = useState(false);
@@ -30,9 +29,7 @@ function Create () {
         const field = e.target.name;
         const value = e.target.value;
 
-        if (field === 'user') {
-            setUserName(value);
-        } else if (field === 'book') {
+        if (field === 'book') {
             setBookName(value);
         } else if (field === 'review') {
             setText(value);
@@ -43,16 +40,17 @@ function Create () {
     }
 
     async function createReview(){
-        const newReview = {userName, bookName, text, categories};
-        const response = await fetch('https://bookworms-api.vercel.app/api/reviews', {
+        const newReview = {book_name: bookName, text, categories};
+        const response = await fetch('https://bookworms-api.vercel.app/api/reviews', {       
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             // convert the React state to JSON and send it as the POST body
-            body: JSON.stringify(newReview)
+            body: JSON.stringify(newReview),
+            credentials: 'include',
         })
         // if the request wasn't successful, throw an error for the user to know 
         if (!response.ok) {
-            const message = `An error has occured: ${response.status}`;
+            const message = `An error has occured: ${JSON.stringify(await response.json())}`;
             throw new Error(message);
         } else {
             setIsPending(false);
@@ -69,7 +67,7 @@ function Create () {
             // slow down the switching back to home page for a little
             setTimeout(() => {
                 createReview();
-                history.push('/');
+                history.push('/home');
             }, 2000);
         }
         setValidated(true);
@@ -81,19 +79,6 @@ function Create () {
             <h2 className={styles.heading}> Add a New Book Review </h2>
 
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Form.Group as={Row} controlId="formName">
-                    <Form.Label column sm="4" className={styles.label}>Name</Form.Label>
-                    <Col sm="8">
-                        <Form.Control 
-                            required 
-                            name="user"
-                            type="text" 
-                            value={userName}
-                            className={styles.inputArea}
-                            onChange={handleChange}/>
-                    </Col>
-                </Form.Group>
-
                 <Form.Group as={Row} controlId="formBookName">
                     <Form.Label column sm="4" className={styles.label}>Book Name</Form.Label>
                     <Col sm="8">
@@ -139,5 +124,4 @@ function Create () {
         
     );
 }
-
 export default Create;
